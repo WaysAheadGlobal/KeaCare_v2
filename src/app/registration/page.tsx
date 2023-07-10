@@ -44,6 +44,7 @@ export default function Registration() {
                     <div className='flex flex-col'>
                         <span>Province</span>
                         <select className="border-2 p-4 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none rounded-lg" >
+                            <option value="Select">Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
                             <option value="Manitoba">Manitoba</option>
