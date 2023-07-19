@@ -1,35 +1,25 @@
-"use client"
-
-import React, { useMemo, useState } from 'react'
-import Navbar from '@/components/Navbar'
+import React from 'react'
 import './globals.css'
-import { Inter } from 'next/font/google'
-import Footer from '@/components/Footer'
-import UserTypeContext from '@/context/UserType'
+import { Inter, Rubik } from 'next/font/google'
 import logo from '../../public/logo.png'
-import Login from '@/components/Login'
-import Signup from '@/components/Signup'
+import Client from './client'
+import { Metadata } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
+const rubic = Rubik({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: "KeaCare",
+  icons: logo.src
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [userType, setUserType] = useState<"careseeker" | "caregiver">("careseeker");
-  const values = useMemo(() => ({ userType, setUserType }), [userType]);
-
   return (
     <html lang="en">
-      <head>
-        <title>KeaCare</title>
-        <link rel="shortcut icon" href={logo.src} type="image/png" />
-      </head>
-      <body className={`${inter.className} bg-[#ecece7]`}>
-        <UserTypeContext.Provider value={values} >
-          <Navbar />
-          <Login />
-          <Signup />
+      <body className={`${rubic.className} overflow-x-hidden`} suppressHydrationWarning>
+        <Client>
           {children}
-          <Footer />
-        </UserTypeContext.Provider>
+        </Client>
       </body>
     </html>
   )

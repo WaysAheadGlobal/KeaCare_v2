@@ -1,3 +1,5 @@
+"use client"
+
 import Link from 'next/link'
 import React from 'react'
 import { HiMail } from 'react-icons/hi'
@@ -5,8 +7,12 @@ import { BsInstagram } from 'react-icons/bs'
 import { SiLinkedin } from 'react-icons/si'
 import { ImFacebook2 } from 'react-icons/im'
 import { FaTwitterSquare } from 'react-icons/fa'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function Footer() {
+    const pathname = usePathname();
+    const router = useRouter();
+
     return (
         <footer className="bg-teal-500 flex flex-col md:flex-row flex-wrap gap-10 items-start md:items-center justify-between p-10 text-white bg-[url('../../public/worldMap.png')] bg-no-repeat bg-cover bg-center min-h-[36.2rem]">
             <div className='w-full md:w-[27rem] space-y-5'>
@@ -16,10 +22,51 @@ export default function Footer() {
             <div className='text-lg'>
                 <p className='text-3xl font-semibold mb-5'>Menu</p>
                 <ul className='space-y-3'>
-                    <li>About Us</li>
-                    <li>Leadership</li>
-                    <li>How it Works</li>
-                    <li>Book a Service</li>
+                    <li className='cursor-pointer hover:text-red-500' onClick={() => {
+                        if (pathname !== "/") {
+                            router.push("/");
+                        }
+                        document.querySelector("body")?.scrollIntoView({
+                            behavior: "smooth",
+                            inline: 'start'
+                        });
+                    }}>Home</li>
+                    <li className='cursor-pointer hover:text-red-500' onClick={() => {
+                        if (pathname !== "/") {
+                            router.push("/#about");
+                        }
+                        document.getElementById("about")?.scrollIntoView({
+                            behavior: "smooth",
+                            inline: 'center'
+                        })
+                    }}>About Us</li>
+                    <li className='cursor-pointer hover:text-red-500' onClick={() => {
+                        if (pathname !== "/") {
+                            router.push("/#leaders");
+                        }
+                        document.getElementById("leaders")?.scrollIntoView({
+                            behavior: "smooth",
+                            inline: 'center'
+                        })
+                    }}>Leadership</li>
+                    <li className='cursor-pointer hover:text-red-500' onClick={() => {
+                        if (pathname !== "/") {
+                            router.push("/#working");
+                        }
+                        document.getElementById("working")?.scrollIntoView({
+                            behavior: "smooth",
+                            inline: 'center'
+                        })
+                    }}>How It Works</li>
+                    <li className='cursor-pointer hover:text-red-500' onClick={() => {
+                        if (pathname !== "/") {
+                            router.push("/#responsive_compassionate");
+                        }
+                        document.getElementById("responsive_compassionate")?.scrollIntoView({
+                            behavior: "smooth",
+                            inline: 'center'
+                        })
+                    }}>Book a Service</li>
                 </ul>
             </div>
             <div className='text-lg'>

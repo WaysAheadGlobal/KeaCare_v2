@@ -1,41 +1,65 @@
-import React from 'react'
+"use client"
+
+import React, { useState, useEffect } from 'react'
 import profilePic from '../../../public/profilePic.jpg'
-import MultipleSelect from '@/components/MultipleSelect'
+import { MultiSelect } from '@mantine/core';
+
+async function getUserInfo({ id, email }: { id?: string, email?: string }) {
+    if (id) {
+        console.log(id);
+        console.log("first");
+        const response = await fetch(`http://localhost:3001/api/caregiver/getCaregiverInfo?id=${id}`);
+        const data = await response.json();
+        return data;
+    } else if (email) {
+        const response = await fetch(`http://localhost:3001/api/caregiver/getCaregiverInfo?email=${email}`);
+        const data = await response.json();
+        return data;
+    } else {
+        return Promise.reject("Invalid Credentials");
+    }
+}
 
 export default function Account() {
+    const [userInfo, setUserInfo] = useState<any>()
+    useEffect(() => {
+        const email = sessionStorage.getItem("email");
+        getUserInfo({ email: email as string }).then(user => setUserInfo(user));
+    }, [])
+
     return (
         <>
             <div className='p-20 text-3xl font-semibold text-white bg-teal-500 text-center'>Complete Your Registration</div>
-            <section className='px-[8rem] py-[2rem] grid grid-cols-[18rem_1fr] grid-rows-1 gap-10'>
+            <section className='px-[2rem] md:px-[8rem] py-[2rem] flex flex-col lg:grid lg:grid-cols-[18rem_1fr] grid-rows-1 gap-10'>
                 <div className='flex flex-col gap-[3rem]'>
                     <div className='bg-teal-500 rounded-lg flex flex-col items-center justify-start gap-10 h-[17rem]'>
-                        <div className='rounded-full aspect-square w-[8rem] bg-cover bg-no-repeat bg-center relative top-[1rem]' style={{
-                            backgroundImage: `url(${profilePic.src})`
+                        <div className='rounded-full aspect-square w-[7rem] bg-cover bg-no-repeat bg-center relative top-[1rem]' style={{
+                            backgroundImage: `url(${userInfo?.imageUrl})`
                         }}></div>
-                        <p className='text-white font-semibold'>Niladitya Sen</p>
+                        <p className='text-white font-semibold'>{userInfo?.fname + " " + userInfo?.lname}</p>
                         <button className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold'>Update Profile Photo</button>
                     </div>
                     <button className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
                     <button className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Sign out</button>
                 </div>
 
-                <div className='px-20 pb-10 grid grid-cols-2 grid-rows-[repeat(23,_minmax(0,_1fr))] gap-5 border-[1px] border-black rounded-lg h-fit' >
-                    <h1 className='col-[1/3] font-semibold text-2xl self-end'>Your Personal Information</h1>
+                <div className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
+                    <h1 className='col-[1/3] font-semibold text-2xl self-start sm:self-end'>Your Personal Information</h1>
                     <div className='flex flex-col col-[1/2]'>
                         <span>First Name</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="text" defaultValue={userInfo?.fname} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col col-[2/3]'>
-                        <span>First Name</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <span>Last Name</span>
+                        <input required type="text" defaultValue={userInfo?.lname} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
                         <span>Date of Birth</span>
-                        <input required type="date" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="date" defaultValue={userInfo?.dob} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender</span>
-                        <select className='p-3 border-[1px] border-black  rounded-lg'>
+                        <select defaultValue={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="other">Other</option>
@@ -43,19 +67,19 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Phone Number</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="text" defaultValue={userInfo?.mobile} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Email</span>
-                        <input required type="email" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="email" defaultValue={userInfo?.email} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Address</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="text" defaultValue={userInfo?.address} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
                         <span>Province</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select value={userInfo?.province} className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="Select">Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
@@ -74,27 +98,53 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>City</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="text" defaultValue={userInfo?.city} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
                         <span>Zip Code</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="text" defaultValue={userInfo?.zipcode} className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
                         <span>Price per Hour</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' placeholder='Example 20' />
+                        <input required type="text" defaultValue={userInfo?.rate} className='border-[1px] border-black   p-3 rounded-lg' placeholder='Example 20' />
                     </div>
                     <p className='col-[1/3] text-center self-center'>Add Video Introduction (add one of the following format mp4, avi, mov)</p>
-                    <button className='col-[1/3] text-white rounded-lg bg-teal-500 h-[3rem] w-[30rem] justify-self-center'>Upload Intro Video</button>
+                    <button className='col-[1/3] text-white rounded-lg bg-teal-500 h-[3rem] w-full sm:w-[30rem] justify-self-center'>Update Intro Video</button>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Add Bio</span>
-                        <textarea required className='border-[1px] border-black   p-3 rounded-lg' />
+                        <textarea defaultValue={userInfo?.bio} required className='border-[1px] border-black   p-3 rounded-lg' />
                     </div>
-                    <MultipleSelect heading='Type of Care you can provide.' options={["Child Care", "Senior Care"]} backgroundColor='bg-white' />
-                    <MultipleSelect heading='Additional service you can provide.' options={["Cook", "Cleaning", "Laundry"]} backgroundColor='bg-white' />
+                    <div className='flex flex-col'>
+                        <span>Type of Care</span>
+                        <select value={userInfo?.speciality} id="careType" className='p-3 border-[1px] border-black rounded-lg'>
+                            <option value="select">Select</option>
+                            <option value="child_care">Child Care</option>
+                            <option value="senior_care">Senior Care</option>
+                            <option value="child_senior_care">Both</option>
+                        </select>
+                    </div>
+                    <MultiSelect value={userInfo?.task.split(",")} size='md' radius='md' styles={{
+                        input: {
+                            borderColor: "black",
+                            ":focus-within": {
+                                borderColor: "black"
+                            }
+                        },
+                        label: {
+                            fontStyle: "normal",
+                            fontWeight: "normal"
+                        }
+                    }}
+                        label='Additional service you can provide.'
+                        data={[
+                            { label: "Cook", value: 'cook' },
+                            { label: "Cleaning", value: "cleaning" },
+                            { label: "Laundry", value: "laundry" }
+                        ]}
+                    />
                     <div className='flex flex-col'>
                         <span>How far you can travel from your locality.</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select value={userInfo?.distance} id="distance" className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="Select">Select</option>
                             <option value="1">Within 1 km</option>
                             <option value="2">Within 2 km</option>
@@ -110,7 +160,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Experience (in years)</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select value={userInfo?.experience} className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="Select">Select</option>
                             <option value="1">1+</option>
                             <option value="2">2+</option>
@@ -124,7 +174,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Education Qualification</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select value={userInfo?.education} className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="Select">Select</option>
                             <option value="Under Graduate">Under Graduate</option>
                             <option value="Graduate">Graduate</option>
@@ -133,7 +183,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Certifications (Degree/Diploma)</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select value={userInfo?.certifications} className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="Select">Select</option>
                             <option
                                 value="A Child Development Assistant (formerly Level 1)">
@@ -187,10 +237,30 @@ export default function Account() {
                             </option>
                         </select>
                     </div>
-                    <MultipleSelect heading='Add Languages' options={["English", "French", "German", "Spanish", "Hindi"]} backgroundColor='bg-white' />
+                    <MultiSelect value={userInfo?.languages.split(",")} size='md' radius='md' styles={{
+                        input: {
+                            borderColor: "black",
+                            ":focus-within": {
+                                borderColor: "black"
+                            }
+                        },
+                        label: {
+                            fontStyle: "normal",
+                            fontWeight: "normal"
+                        }
+                    }}
+                        label='Add Language'
+                        data={[
+                            { label: "English", value: "English" },
+                            { label: "French", value: "French" },
+                            { label: "German", value: "German" },
+                            { label: "Spanish", value: "Spanish" },
+                            { label: "Hindi", value: "Hindi" }
+                        ]}
+                    />
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Days)</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select value={userInfo?.daysAWeek.toString()} className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="Select">Select</option>
                             <option value="1">1 Day a week</option>
                             <option value="2">2 Days a week</option>
@@ -203,7 +273,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Hours)</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select value={userInfo?.workingHrs.toString()} className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="Select">Select</option>
                             <option value="1">1 Hour a day</option>
                             <option value="2">2 Hours a day</option>
@@ -215,56 +285,9 @@ export default function Account() {
                             <option value="7">8 Hours a day</option>
                         </select>
                     </div>
-                    <p className='row-[17/18] col-[1/3] place-self-center font-semibold text-xl'>Add Professional References</p>
-                    <p className='col-[1/3] place-self-center font-semibold'>Reference 1</p>
-                    <div className='flex flex-col'>
-                        <span>Name</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
-                    </div>
-                    <div className='flex flex-col'>
-                        <span>Phone Number</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
-                    </div>
-                    <div className='flex flex-col'>
-                        <span>Email</span>
-                        <input required type="email" className='border-[1px] border-black   p-3 rounded-lg' />
-                    </div>
-                    <div className='flex flex-col'>
-                        <span>Relation</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
-                            <option value="Sibling">Sibling</option>
-                            <option value="Colleague">Colleague</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <p className='col-[1/3] place-self-center font-semibold'>Reference 2</p>
-                    <div className='flex flex-col'>
-                        <span>Name</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
-                    </div>
-                    <div className='flex flex-col'>
-                        <span>Phone Number</span>
-                        <input required type="text" className='border-[1px] border-black   p-3 rounded-lg' />
-                    </div>
-                    <div className='flex flex-col'>
-                        <span>Email</span>
-                        <input required type="email" className='border-[1px] border-black   p-3 rounded-lg' />
-                    </div>
-                    <div className='flex flex-col'>
-                        <span>Relation</span>
-                        <select className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
-                            <option value="Sibling">Sibling</option>
-                            <option value="Colleague">Colleague</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div className='flex flex-row col-[1/3] justify-between items-center w-full'>
-                        <button className='bg-teal-500 text-white font-semibold py-3 px-[5rem] rounded-lg'>Update</button>
-                        <button className='bg-white text-black font-semibold py-3 px-[5rem] rounded-lg border-[1px] border-black'>Disgard</button>
+                    <div className='col-[1/3] flex flex-row justify-between'>
+                        <button className='bg-teal-500 text-white font-semibold px-[3rem] py-[1rem] rounded-xl'>Update</button>
+                        <button className='text-teal-500 font-semibold'>Disgard</button>
                     </div>
                 </div>
             </section>

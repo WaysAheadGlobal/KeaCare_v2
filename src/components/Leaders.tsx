@@ -1,4 +1,6 @@
-import React from 'react'
+"use client"
+
+import React, { useEffect, useRef } from 'react'
 import leader1 from '../../public/leader1.jpg'
 import leader2 from '../../public/leader2.jpg'
 import leader3 from '../../public/leader3a.png'
@@ -8,10 +10,29 @@ import { BsInstagram } from 'react-icons/bs'
 import { SiLinkedin } from 'react-icons/si'
 import { ImFacebook2 } from 'react-icons/im'
 import { FaTwitterSquare } from 'react-icons/fa'
+import { motion, useInView, useAnimation } from 'framer-motion'
 
-function Card({ image, heading, subHeading, text }: { image: StaticImageData, heading: string, subHeading: string, text: string }) {
+function Card({ image, heading, subHeading, text, delay }: { image: StaticImageData, heading: string, subHeading: string, text: string, delay: number }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true });
+    const animate = useAnimation();
+
+    useEffect(() => {
+        if (isInView) {
+            animate.start("visible")
+        }
+    }, [isInView]);
     return (
-        <div className='bg-teal-500 items-center w-[20rem] rounded-lg pb-10 flex flex-col'>
+        <motion.div className='bg-teal-500 items-center w-[20rem] rounded-lg pb-10 flex flex-col'
+            ref={ref}
+            variants={{
+                hidden: { opacity: 0, y: 75 },
+                visible: { opacity: 1, y: 0 }
+            }}
+            initial="hidden"
+            animate={animate}
+            transition={{ duration: 0.5, delay: delay }}
+        >
             <Image src={image.src} alt={heading} width={image.width} height={image.height} className='w-full h-[20rem] rounded-t-md' />
             <div className='p-5 flex flex-col gap-3'>
                 <p className='text-2xl font-bold text-white'>{heading}</p>
@@ -25,23 +46,41 @@ function Card({ image, heading, subHeading, text }: { image: StaticImageData, he
                 <ImFacebook2 />
                 <FaTwitterSquare />
             </div>
-        </div>
+        </motion.div>
     )
 }
 
 export default function Leaders() {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true });
+    const animate = useAnimation();
+
+    useEffect(() => {
+        if (isInView) {
+            animate.start("visible")
+        }
+    }, [isInView]);
     return (
-        <section id="leaders" className='p-20 bg-[#3f3f3f] space-y-10 flex flex-col items-center justify-center'>
+        <motion.section id="leaders" className='p-20 bg-[#3f3f3f] space-y-10 flex flex-col items-center justify-center'
+            ref={ref}
+            variants={{
+                hidden: { opacity: 0, y: 75 },
+                visible: { opacity: 1, y: 0 }
+            }}
+            initial="hidden"
+            animate={animate}
+            transition={{ duration: 0.5 }}
+        >
             <h1 className='text-teal-500 text-3xl font-semibold text-center'>Leadership</h1>
             <div className='flex flex-col flex-wrap items-center justify-center md:items-stretch md:flex-row gap-5'>
-                <Card image={leader1} heading='Ho Ngoc Choung' subHeading='Chief Executive Officer' text='Ho Ngoc Chuong is the founder and CEO at KEACARE. He is also the founder and CEO of Metromart Convenience Stores where he defined and built the ERP systems, defined key functions and processes and also oversaw development of specialised software. He has over 25 years of experience in increasing revenues, gaining market share, enhancing profitability and improving the financial performance of multiple companies.' />
+                <Card image={leader1} heading='Ho Ngoc Choung' subHeading='Chief Executive Officer' text='Ho Ngoc Chuong is the founder and CEO at KEACARE. He is also the founder and CEO of Metromart Convenience Stores where he defined and built the ERP systems, defined key functions and processes and also oversaw development of specialised software. He has over 25 years of experience in increasing revenues, gaining market share, enhancing profitability and improving the financial performance of multiple companies.' delay={0} />
 
-                <Card image={leader2} heading='Tran Thoung Thu' subHeading='Chief Executive Officer' text='Tran Thuong Thu Giang is the Chief Technology Officer at KEACARE. She has spent over 15 years working in information technology and software development across a range of industries, and hold an MSc in Computer Science from Vrije Universiteit, in Belgium.' />
+                <Card image={leader2} heading='Tran Thoung Thu' subHeading='Chief Executive Officer' text='Tran Thuong Thu Giang is the Chief Technology Officer at KEACARE. She has spent over 15 years working in information technology and software development across a range of industries, and hold an MSc in Computer Science from Vrije Universiteit, in Belgium.' delay={0.25} />
 
-                <Card image={leader3} heading='Pham Ngoc Anh' subHeading='Head of Data and Analytics' text='Pham Ngoc Anh is Head of Data & Analytics at KEACARE. She has over 16 years of experience in project management, business intelligence and analytics in the Oil and gas industry with one of the largest companies in Vietnam. She has degrees in geological science and economic insurance.' />
+                <Card image={leader3} heading='Pham Ngoc Anh' subHeading='Head of Data and Analytics' text='Pham Ngoc Anh is Head of Data & Analytics at KEACARE. She has over 16 years of experience in project management, business intelligence and analytics in the Oil and gas industry with one of the largest companies in Vietnam. She has degrees in geological science and economic insurance.' delay={0.5} />
 
-                <Card image={leader4} heading='Nguyen Ngoc Nam' subHeading='Head of Customer Success (Onboarding)' text='Nguyen Ngoc Nam is Head of Customer Success (Onboarding) at KEACARE. He has over 15 years experience working in account management and market development in the telecom industry. He has a Bachelor’s degree in Telecom Informatics and Business Economics from Ha Noi National University in Vietnam.' />
+                <Card image={leader4} heading='Nguyen Ngoc Nam' subHeading='Head of Customer Success (Onboarding)' text='Nguyen Ngoc Nam is Head of Customer Success (Onboarding) at KEACARE. He has over 15 years experience working in account management and market development in the telecom industry. He has a Bachelor’s degree in Telecom Informatics and Business Economics from Ha Noi National University in Vietnam.' delay={0.75} />
             </div>
-        </section>
+        </motion.section>
     )
 }

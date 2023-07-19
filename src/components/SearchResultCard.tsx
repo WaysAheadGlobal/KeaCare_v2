@@ -10,13 +10,16 @@ import specialityIcon from '../../public/specialityIcon.png'
 import experienceIcon from '../../public/experienceIcon.png'
 import multitaskIcon from '../../public/multitaskIcon.png'
 import petsIcon from '../../public/petsIcon.png'
+import Link from 'next/link'
 
 export default function SearchResultCard() {
     return (
         <div className='flex flex-row gap-3 p-2 bg-white rounded-lg w-fit'>
             <div>
                 <Image src={caregiverPerson.src} width={caregiverPerson.width} height={caregiverPerson.height} alt='caregiver' className='w-[20rem] rounded-lg' />
-                <p className='text-teal-500 font-semibold underline text-center my-3'>Learn More</p>
+                <Link href={"/details"}>
+                    <p className='text-teal-500 font-semibold underline text-center my-3'>Learn More</p>
+                </Link>
             </div>
             <div className='flex flex-col gap-[1rem] mt-5'>
                 <div className='flex flex-row gap-3 items-center justify-between w-full'>

@@ -1,0 +1,181 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  Male
+  Female
+  Other
+}
+
+enum Device {
+  android
+  web
+  ios
+}
+
+enum Status {
+  active
+  inactive
+  deleted
+}
+
+enum Speciality {
+  child_care
+  senior_care
+  child_senior_care
+}
+
+enum Time {
+  PM_1_2
+  PM_2_3
+  PM_3_4
+  PM_4_5
+  PM_5_6
+  AM_10_11
+  AM_11_12
+  PM_12_1
+}
+
+enum ApplicationStatus {
+  Upcoming
+  Completed
+  Canceled
+  Missed
+}
+
+enum Language {
+  English
+  Espanol
+  French
+  German
+  Hindi
+}
+
+model careseekers_ {
+  id           Int      @id @unique @default(autoincrement())
+  fname        String?
+  lname        String?
+  email        String   @unique
+  mobile       String?
+  dob          String?  @db.VarChar(500)
+  gender       Gender?
+  address      String?  @db.VarChar(1000)
+  city         String?
+  province     String?
+  zipcode      String?
+  device_type  Device   @default(web)
+  android_id   Int?
+  ios_id       Int?
+  token        String   @db.VarChar(1000)
+  status       Status   @default(active)
+  password     String?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  imageUrl     String?  @db.VarChar(500)
+  planType     String?  @db.VarChar(100)
+  planDuration String?  @db.VarChar(100)
+  planPrice    String?  @db.VarChar(100)
+}
+
+model caregivers_ {
+  id                  Int         @id @unique @default(autoincrement())
+  fname               String?
+  lname               String?
+  email               String      @unique
+  mobile              String?
+  dob                 String?     @db.VarChar(500)
+  gender              Gender?
+  address             String?     @db.VarChar(1000)
+  city                String?
+  province            String?
+  zipcode             String?
+  device_type         Device      @default(web)
+  android_id          Int?
+  ios_id              Int?
+  token               String      @db.VarChar(1000)
+  status              Status      @default(active)
+  password            String?
+  created_at          DateTime    @default(now())
+  updated_at          DateTime    @updatedAt
+  imageUrl            String?     @db.VarChar(500)
+  rating              Float?      @default(0.0)
+  languages           String?
+  isVerified          Boolean     @default(false)
+  speciality          Speciality?
+  experience          String?
+  comfortableWithPets Boolean?
+  task                String?
+  rate                Float?
+  daysAWeek           Int?
+  workingHrs          Int?
+  bio                 String?     @db.VarChar(500)
+  certifications      String?     @db.VarChar(500)
+  distance            String?     @db.VarChar(500)
+  education           String?     @db.VarChar(500)
+  ref1Email           String?     @db.VarChar(500)
+  ref1Name            String?     @db.VarChar(500)
+  ref1Phone           String?     @db.VarChar(500)
+  ref1Relation        String?     @db.VarChar(500)
+  ref2Email           String?     @db.VarChar(500)
+  ref2Name            String?     @db.VarChar(500)
+  ref2Phone           String?     @db.VarChar(500)
+  ref2Relation        String?     @db.VarChar(500)
+}
+
+model jobs_ {
+  id                  Int      @id @unique @default(autoincrement())
+  userId              Int
+  additionalService   String   @db.VarChar(100)
+  age                 String   @db.VarChar(100)
+  availability        Int
+  comfortableWithPets Boolean
+  experience          Int
+  hourlyRate          Int
+  jobDateStart        DateTime
+  jobDateEnd          DateTime
+  jobDescription      String   @db.VarChar(1000)
+  language            String?
+  location            String   @db.VarChar(100)
+  rating              Float
+  speciality          String   @db.VarChar(100)
+  time                Time
+  status              Status   @default(active)
+  createdOn           DateTime @default(now())
+  modifiedOn          DateTime @updatedAt
+  responses           Int      @default(0)
+}
+
+model appointments_ {
+  id                Int               @id @unique @default(autoincrement())
+  userId            Int
+  careGiverId       Int
+  name              String            @db.VarChar(500)
+  careGiverImageUrl String            @db.VarChar(500)
+  pricePerHour      Int
+  rating            Int
+  reviews           Int
+  speciality        String            @db.VarChar(100)
+  totalPrice        Int
+  jobDateStart      String            @db.VarChar(100)
+  jobDateEnd        String            @db.VarChar(500)
+  time              Time
+  status            ApplicationStatus
+  created_on        DateTime          @default(now())
+  modified_on       DateTime          @updatedAt
+  cancelReason      String            @db.VarChar(500)
+}
+
+model applicants {
+  id     Int @id @unique @default(autoincrement())
+  jobId  Int
+  userId Int
+}

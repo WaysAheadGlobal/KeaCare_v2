@@ -1,11 +1,41 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import RecommendedCard from './RecommendedCard'
-import SearchResultCard from './SearchResultCard'
+/* import SearchResultCard from './SearchResultCard' */
 
-export default function Caregivers() {
+
+export default function Caregivers({ filters }: { filters: any }) {
+    const [caregivers, setCaregivers] = useState<any[]>([]);
+    const [page, setPage] = useState<string>("1");
+
+    useEffect(() => {
+        async function getCaregivers() {
+            const response = await fetch(`http://localhost:3001/api/careseeker/getCaregivers?page=${page}`, {
+                next: {
+                    revalidate: 10
+                }
+            });
+            const data = await response.json();
+            setCaregivers(data);
+        }
+        getCaregivers();
+    }, [page])
+
+    useEffect(() => {
+        async function filter() {
+            const response = await fetch(`http://localhost:3001/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rate=${filters?.rate}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}`);
+
+            const data = await response.json();
+            setCaregivers(data);
+        }
+        filter();
+        return () => {
+            Promise.resolve();
+        }
+    }, [filters]);
+
     return (
         <div id="contents" className='flex flex-col gap-8 w-full items-start'>
             <div className='flex flex-col md:flex-row md:items-center gap-3 md:gap-10 w-full'>
@@ -31,14 +61,16 @@ export default function Caregivers() {
             </div>
             <div className='w-full'>
                 <h1 className='text-3xl font-semibold text-teal-500'>Recommended for you</h1>
-                <p className='text-gray-400 mt-2'>5 People in your locality have already appointed these three caregivers.</p>
-                <div className='flex flex-row flex-wrap gap-5 items-center justify-evenly mt-5'>
-                    <RecommendedCard />
-                    <RecommendedCard />
-                    <RecommendedCard />
+                <p className='text-gray-400 mt-2'>{caregivers?.length} People in your locality have already appointed these caregivers.</p>
+                <div className='flex flex-row flex-wrap gap-5 mt-5'>
+                    {
+                        caregivers.map((caregiver: any) => {
+                            return <RecommendedCard key={caregiver?.id} caregiver={caregiver} />
+                        })
+                    }
                 </div>
             </div>
-            <div className='w-full'>
+            {/* <div className='w-full'>
                 <h1 className='text-3xl font-semibold text-teal-500'>Search Results</h1>
                 <p className='text-gray-400 mt-2'>34 profiles based on your search criteria.</p>
                 <div className='flex flex-col items-center justify-center gap-5 mt-5'>
@@ -47,7 +79,7 @@ export default function Caregivers() {
                     <SearchResultCard />
                     <SearchResultCard />
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
