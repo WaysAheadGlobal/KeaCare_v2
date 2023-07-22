@@ -78,7 +78,7 @@ export default function Account() {
                         </div>
                     </div>
                     <button className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
-                    <button className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Sign out</button>
+                    <button className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Delete My Account</button>
                 </div>
 
                 <div className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >

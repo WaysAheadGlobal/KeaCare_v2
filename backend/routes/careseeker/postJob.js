@@ -20,8 +20,6 @@ async function PostJob(req, res) {
             if (careseeker) {
                 const { additionalService, age, availability, comfortableWithPets, experience, hourlyRate, jobDateStart, jobDateEnd, jobDescription, language, location, rating, speciality, time } = req.body;
 
-                console.log(dayjs(jobDateStart));
-
                 const newJob = await prisma.jobs_.create({
                     data: {
                         userId: careseeker.id,

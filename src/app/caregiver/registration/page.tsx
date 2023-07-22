@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import defaultUser from '../../../../public/defaultUser.png'
 import Image from 'next/image';
 import { MultiSelect } from '@mantine/core';
@@ -11,6 +11,11 @@ export default function Registration() {
     const [imageURL, setImageURL] = useState<string>(defaultUser.src);
     const [languages, setLanguages] = useState<string[]>([]);
     const [additionalServices, setAdditionalServices] = useState<string[]>([]);
+    const [email, setEmail] = useState<string | null>("");
+
+    useEffect(() => {
+        setEmail(sessionStorage.getItem("email"));
+    }, [])
 
     const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
         return new Promise((resolve, reject) => {
@@ -156,7 +161,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Email</span>
-                        <input id="email_regis" required type="email" className='border-[1px] border-black p-3 rounded-lg' />
+                        <input id="email_regis" required type="email" defaultValue={email ? email : undefined} className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Address</span>

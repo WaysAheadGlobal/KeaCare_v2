@@ -4,10 +4,10 @@ const cloudinary = require("cloudinary").v2;
 
 const prisma = new PrismaClient();
 
-cloudinary.config({
-    cloud_name: 'dp80qqzsw',
-    api_key: '867115631113898',
-    api_secret: 'KoFw8fVjFfFRmiMwREAPoH0MOdQ'
+cloudinary.config({ 
+  cloud_name: 'dbimbo0su', 
+  api_key: '323346454524645', 
+  api_secret: 'XXosQxG2fnCfBSrPCZRwCI2e_cM' 
 });
 
 async function UpdateAccount(req, res) {

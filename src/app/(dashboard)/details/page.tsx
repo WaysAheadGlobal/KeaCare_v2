@@ -30,15 +30,19 @@ export default function Details() {
             const data = await response.json();
             setCaregivers(data);
         }
+        getCaregivers();
+    }, []);
 
+    useEffect(() => {
+        console.log(searchParams.get("id"));
         async function getCaregiverById() {
             const response = await fetch(`http://localhost:3001/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`);
             const data = await response.json();
             setCaregiver(data);
         }
-        getCaregivers();
         getCaregiverById();
-    })
+    }, [])
+
     const speciality: any = {
         child_care: "Child Care",
         senior_care: "Senior Care",
@@ -54,7 +58,7 @@ export default function Details() {
                 </Link>
                 <div className='flex flex-row gap-[5rem] w-full'>
                     <div className='flex flex-col gap-5'>
-                        <Image src={caregiver.imageUrl} alt='caregiver' width={caregiverPerson.width} height={caregiverPerson.height} className='w-[35rem] rounded-lg' />
+                        <Image src={caregiver?.imageUrl} alt='caregiver' width={caregiverPerson.width} height={caregiverPerson.height} className='w-[35rem] rounded-lg' />
                         <div className='flex flex-col gap-3 md:flex-row justify-between'>
                             <div>
                                 <div className='flex flex-row items-center justify-start gap-3 font-semibold'>
@@ -126,7 +130,7 @@ export default function Details() {
                                     </div>
                                     <ul className='list-disc list-inside pl-[2rem]'>
                                         {
-                                            caregiver?.languages.split(",").map((language: string) => {
+                                            caregiver?.languages?.split(",").map((language: string) => {
                                                 return <li key={language}>{language}</li>
                                             })
                                         }
@@ -139,7 +143,7 @@ export default function Details() {
                                     </div>
                                     <ul className='list-disc list-inside pl-[2rem]'>
                                         {
-                                            caregiver?.task.split(",").map((work: string) => {
+                                            caregiver?.task?.split(",").map((work: string) => {
                                                 return <li key={work}>{work.charAt(0).toUpperCase() + work.substring(1)}</li>
                                             })
                                         }

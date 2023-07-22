@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { body, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 const { PrismaClient } = require("@prisma/client");
 const { sendOTP } = require("../../mail/MailService.js");
 

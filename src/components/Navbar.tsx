@@ -115,6 +115,8 @@ export default function Navbar() {
                                     <div role='button' onClick={() => {
                                         sessionStorage.removeItem("otp");
                                         sessionStorage.removeItem("email");
+                                        sessionStorage.removeItem("userType");
+                                        sessionStorage.removeItem("planType");
                                         router.push("/");
                                         setUserType("careseeker")
                                     }}>Log out</div>
