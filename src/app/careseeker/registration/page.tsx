@@ -1,16 +1,40 @@
 "use client"
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 export default function Registration() {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const [Email, setEmail] = useState<string>();
 
     useEffect(() => {
         setEmail(sessionStorage.getItem("email")?.toString());
     }, []);
+    useEffect(() => {
+        const planType = sessionStorage.getItem("planType");
+        async function setSubscription() {
+            if (searchParams.get("completed") === "true") {
+                const body = JSON.stringify({
+                    planType: planType,
+                    planDuration: planType?.toLowerCase()?.includes("month") ? "month" : "year",
+                    planPrice: planType?.toLowerCase()?.includes("month") ? "30" : "100",
+                    email: sessionStorage.getItem("email")
+                })
+                await fetch("http://localhost:3001/api/careseeker/setSubcription", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: body
+                });
+            }
+        }
+        if (planType) {
+            setSubscription();
+        }
+    }, [])
 
     return (
         <form className='pb-20' onSubmit={async (e) => {

@@ -7,6 +7,13 @@ const getCaregivers = require("./getCaregivers");
 const filters = require("./getCaregiversByFilters");
 const PostJob = require("./postJob");
 const postings = require("./posting");
+const getCareseekerInfo = require("./account");
+const UpdateAccount = require("./updateAccount");
+const getProducts = require("./pricing");
+const payment = require("./payment");
+const bodyParser = require("body-parser");
+const webHook = require("./events");
+const setSubscription = require("./setSubscription");
 
 const CareseekerRouter = Router();
 
@@ -19,5 +26,11 @@ CareseekerRouter.get("/getCaregivers", getCaregivers);
 CareseekerRouter.get("/filters", filters);
 CareseekerRouter.post("/postjob", body("email").trim().isEmail(), PostJob);
 CareseekerRouter.get("/posts", query("email").trim().isEmail(), postings);
+CareseekerRouter.get("/account", query("email").trim().isEmail(), getCareseekerInfo);
+CareseekerRouter.put("/updateAccount", body("email").trim().isEmail(), UpdateAccount);
+CareseekerRouter.get("/getproducts", getProducts);
+CareseekerRouter.post("/payment", payment);
+CareseekerRouter.post("/webhook", bodyParser.raw({ type: 'application/json' }), webHook);
+CareseekerRouter.post("/setSubcription", setSubscription);
 
 module.exports = CareseekerRouter;

@@ -25,7 +25,7 @@ export default function Signup() {
                         (document.getElementById("signup") as HTMLDialogElement).close();
                         (document.getElementById("login") as HTMLDialogElement).showModal();
                     }}>Log In</span></h2>
-                    <div className='flex flex-row gap-2'>
+                    <div className='flex flex-col md:flex-row gap-2'>
                         <button className='bg-[#4267b2] flex flex-row items-center justify-center px-3 py-2 gap-3 text-white rounded-lg'>
                             <ImFacebook2 className='text-xl' />
                             <p>Log in with Facebook</p>

@@ -114,7 +114,7 @@ export default function Registration() {
                         const data = await response.json();
                         if (data?.success) {
                             console.log(data);
-                            router.push("/account");
+                            router.push("/caregiver/account");
                         }
                     } catch (error) {
                         console.log(error);

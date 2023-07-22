@@ -18,10 +18,10 @@ export default function Navbar() {
 
     useEffect(() => {
         setOtp(sessionStorage.getItem("otp"));
-    }, [])
+    }, [pathname, userType])
 
     return (
-        <header>
+        <header className={`${pathname === "/" ? 'sticky' : 'relative'} top-0 z-50 bg-white bg-opacity-40 backdrop-blur-md`}>
             <nav className='shadow-md'>
                 <section className='flex flex-col lg:flex-row items-start lg:items-center gap-5 lg:gap-[3rem] justify-between px-8 pt-5 pb-[2rem] sm:pb-2 h-[7rem] overflow-hidden'>
                     <Link href={"/"}>
@@ -85,6 +85,7 @@ export default function Navbar() {
                                     <p onClick={() => {
                                         (document.getElementById("login") as HTMLDialogElement).showModal();
                                         setUserType("careseeker");
+                                        sessionStorage.setItem("userType", "careseeker");
                                     }}>Careseeker</p>
                                 </Menu.Item>
                                 <Menu.Divider />
@@ -92,13 +93,14 @@ export default function Navbar() {
                                     <p onClick={() => {
                                         (document.getElementById("login") as HTMLDialogElement).showModal();
                                         setUserType("caregiver");
+                                        sessionStorage.setItem("userType", "caregiver");
                                     }}>Caregiver</p>
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>
                         <Menu trigger='click' shadow="lg" width={200}>
                             <Menu.Target>
-                                <button className={`${!otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg`}>My Account</button>
+                                <div className={`${!otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg cursor-pointer`}>My Account</div>
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
                                 <Menu.Item className={`${(userType === 'caregiver') && 'hidden'} font-semibold hover:bg-teal-500 hover:bg-opacity-60`} icon={<MdSpaceDashboard className='text-xl' />}>
@@ -106,15 +108,16 @@ export default function Navbar() {
                                 </Menu.Item>
                                 <Menu.Divider />
                                 <Menu.Item className='font-semibold hover:bg-teal-500 hover:bg-opacity-60' icon={<MdAccountCircle className='text-xl' />}>
-                                    <Link href={"/account"}>Profile</Link>
+                                    <Link href={`/${userType}/account`}>Profile</Link>
                                 </Menu.Item>
                                 <Menu.Divider />
                                 <Menu.Item className='font-semibold hover:bg-teal-500 hover:bg-opacity-60' icon={<MdLogout className='text-xl' />}>
-                                    <button onClick={() => {
+                                    <div role='button' onClick={() => {
                                         sessionStorage.removeItem("otp");
                                         sessionStorage.removeItem("email");
                                         router.push("/");
-                                    }}>Log out</button>
+                                        setUserType("careseeker")
+                                    }}>Log out</div>
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>

@@ -39,7 +39,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <p>Post a Job</p>
                     </button>
                 </Link>
-                <button className='flex flex-col items-center' onClick={() => {
+                <button className='flex flex-col items-center md:hidden' onClick={() => {
                     document.getElementById("filters")?.classList.toggle("-translate-x-full");
                     document.getElementById("filters")?.classList.toggle("translate-x-0");
                 }}>

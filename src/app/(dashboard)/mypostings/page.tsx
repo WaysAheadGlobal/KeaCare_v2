@@ -19,17 +19,28 @@ export default function MyPostings() {
         getPostings(sessionStorage.getItem("email"));
     })
 
-    return (
-        <section className='py-10 px-[3rem] lg:px-[7rem]'>
-            <h1 className='text-3xl font-semibold text-teal-500'>Your Job Posts</h1>
-            <p className='text-gray-500 text-sm'>Your job postings will expire in 30 days, you can always renew and edit your jobs.</p>
-            <div className='mt-8 flex flex-row flex-wrap xl:flex-col gap-5 items-center justify-center'>
-                {
-                    posts.map(post => {
-                        return <JobPostings key={post?.id} postedOn={post?.createdOn} rate={post?.hourlyRate} speciality={post?.speciality} views={post?.responses} status={post?.status} />
-                    })
-                }
-            </div>
-        </section>
-    )
+    if (posts.length !== 0) {
+        return (
+            <section className='py-10 px-[3rem] lg:px-[7rem]'>
+                <h1 className='text-3xl font-semibold text-teal-500'>Your Job Posts</h1>
+                <p className='text-gray-500 text-sm'>Your job postings will expire in 30 days, you can always renew and edit your jobs.</p>
+                <div className='mt-8 flex flex-row flex-wrap xl:flex-col gap-5 items-center justify-center'>
+                    {
+                        posts.map(post => {
+                            return <JobPostings key={post?.id} postedOn={post?.createdOn} rate={post?.hourlyRate} speciality={post?.speciality} views={post?.responses} status={post?.status} />
+                        })
+                    }
+                </div>
+            </section>
+        )
+    } else {
+        return (
+            <section className='py-10 px-[3rem] lg:px-[7rem]'>
+                <h1 className='text-3xl font-semibold text-teal-500'>Your Job Posts</h1>
+                <div className='text-gray-500 flex items-center justify-center h-[30rem] text-lg'>
+                    <p>Start posting to see your job posts here.</p>
+                </div>                
+            </section>
+        )
+    }
 }

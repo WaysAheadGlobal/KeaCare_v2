@@ -1,5 +1,7 @@
+"use client"
+
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import caregiverPerson from '../../../../public/caregiverPerson.jpg'
 import Link from 'next/link'
 import { BsCalendarCheck, BsCalendar2Week, BsFillStarFill, BsCalendar3Week, BsArrowLeft } from 'react-icons/bs'
@@ -12,27 +14,31 @@ import { MdOutlineReviews } from 'react-icons/md'
 import { IoChatbubbles, IoLanguage } from 'react-icons/io5'
 import Review from '@/components/Review'
 import RecommendedCard from '@/components/RecommendedCard'
+import { useSearchParams } from 'next/navigation'
 
-async function getCaregivers() {
-    const response = await fetch("http://localhost:3001/api/careseeker/getCaregivers?page=1", {
-        next: {
-            revalidate: 10
+export default function Details() {
+    const [caregivers, setCaregivers] = useState<any>([]);
+    const [caregiver, setCaregiver] = useState<any>();
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        async function getCaregivers() {
+            const response = await fetch("http://localhost:3001/api/careseeker/getCaregivers?page=1", {
+                next: {
+                    revalidate: 10
+                }
+            });
+            const data = await response.json();
+            setCaregivers(data);
         }
-    });
-    const data = await response.json();
-    return data;
-}
 
-async function getCaregiverById(id: string) {
-    console.log(id);
-    const response = await fetch(`http://localhost:3001/api/caregiver/getCaregiverInfo?id=${id}`);
-    const data = await response.json();
-    return data;
-}
-
-export default async function Details({ searchParams }: { searchParams: { [key: string]: string } }) {
-    const caregivers = await getCaregivers();
-    const caregiver = await getCaregiverById(searchParams["id"]);
+        async function getCaregiverById() {
+            const response = await fetch(`http://localhost:3001/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`);
+            const data = await response.json();
+            setCaregiver(data);
+        }
+        getCaregivers();
+        getCaregiverById();
+    })
     const speciality: any = {
         child_care: "Child Care",
         senior_care: "Senior Care",
@@ -168,7 +174,7 @@ export default async function Details({ searchParams }: { searchParams: { [key: 
                 <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-rows-[auto] gap-5 my-5 px-[1rem]'>
                     {
                         caregivers.map((caregiver: any) => {
-                            if (searchParams["id"] !== caregiver?.id.toString()) {
+                            if (searchParams.get("id") !== caregiver?.id.toString()) {
                                 return <RecommendedCard key={caregiver?.id} caregiver={caregiver} />
                             }
                         })

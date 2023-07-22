@@ -25,7 +25,7 @@ export default function Login() {
                         (document.getElementById("login") as HTMLDialogElement).close();
                         (document.getElementById("signup") as HTMLDialogElement).showModal();
                     }}>Sign up</span></h2>
-                    <div className='flex flex-row gap-2'>
+                    <div className='flex flex-col md:flex-row gap-2'>
                         <button className='bg-[#4267b2] flex flex-row items-center justify-center px-3 py-2 gap-3 text-white rounded-lg'>
                             <ImFacebook2 className='text-xl' />
                             <p>Log in with Facebook</p>
@@ -69,7 +69,7 @@ export default function Login() {
                             if (userType === "careseeker") {
                                 router.push("/dashboard");
                             } else {
-                                router.push("/account");
+                                router.push("/caregiver/account");
                             }
                         }
                     }}>
