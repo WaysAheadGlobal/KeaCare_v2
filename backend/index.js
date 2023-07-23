@@ -8,8 +8,8 @@ const app = express();
 app.use(express.json({ limit: "5MB" }));
 app.use(cors());
 
-app.use("/api/careseeker", CareseekerRouter);
-app.use("/api/caregiver", CaregiverRouter);
+app.use("/keacare/api/careseeker", CareseekerRouter);
+app.use("/keacare/api/caregiver", CaregiverRouter);
 
 app.listen(3004, () => {
     console.log("Server Started on Port 3004");
