@@ -70,39 +70,39 @@ export default function Chat() {
             }
             try {
                 if (userType === "careseeker") {
-                    if (chat.value.includes("membership")) {
+                    if (chat.value.toLowerCase().includes("membership")) {
                         addChat("membership");
-                    } else if (chat.value.includes("edit") && chat.value.includes("personal") && chat.value.includes("info")) {
+                    } else if (chat.value.toLowerCase().includes("edit") && chat.value.toLowerCase().includes("personal") && chat.value.toLowerCase().includes("info")) {
                         addChat("editPersonalInfo");
-                    } else if (chat.value.includes("personal") && chat.value.includes("info")) {
+                    } else if (chat.value.toLowerCase().includes("personal") && chat.value.toLowerCase().includes("info")) {
                         addChat("personalInfo");
-                    } else if (chat.value.includes("post") && chat.value.includes("job")) {
+                    } else if (chat.value.toLowerCase().includes("post") && chat.value.toLowerCase().includes("job")) {
                         addChat("postajob");
-                    } else if (chat.value.includes("search") && chat.value.includes("caregiver")) {
+                    } else if (chat.value.toLowerCase().includes("search") && chat.value.toLowerCase().includes("caregiver")) {
                         addChat("searchcaregivers");
-                    } else if (chat.value.includes("caregiver") && chat.value.includes("document")) {
+                    } else if (chat.value.toLowerCase().includes("caregiver") && chat.value.toLowerCase().includes("document")) {
                         addChat("caregiverdocuments");
-                    } else if (chat.value.includes("write") && chat.value.includes("review")) {
+                    } else if (chat.value.toLowerCase().includes("write") && chat.value.toLowerCase().includes("review")) {
                         addChat("writereview");
-                    } else if (chat.value.includes("view") && chat.value.includes("payment")) {
+                    } else if (chat.value.toLowerCase().includes("view") && chat.value.toLowerCase().includes("payment")) {
                         addChat("viewpayments");
-                    } else if (chat.value.includes("payment")) {
+                    } else if (chat.value.toLowerCase().includes("payment")) {
                         addChat("payments");
                     } else {
                         addChat("error");
                     }
                 } else if (userType === "caregiver") {
-                    if (chat.value.includes("edit") && chat.value.includes("personal") && chat.value.includes("info")) {
+                    if (chat.value.toLowerCase().includes("edit") && chat.value.toLowerCase().includes("personal") && chat.value.toLowerCase().includes("info")) {
                         addChat("editPersonalInfo");
-                    } else if (chat.value.includes("see") && chat.value.includes("personal") && chat.value.includes("info")) {
+                    } else if (chat.value.toLowerCase().includes("see") && chat.value.toLowerCase().includes("personal") && chat.value.toLowerCase().includes("info")) {
                         addChat("seePersonalInfo");
-                    } else if (chat.value.includes("close") && chat.value.includes("account")) {
+                    } else if (chat.value.toLowerCase().includes("close") && chat.value.toLowerCase().includes("account")) {
                         addChat("closeAccount");
-                    } else if (chat.value.includes("search") && chat.value.includes("job")) {
+                    } else if (chat.value.toLowerCase().includes("search") && chat.value.toLowerCase().includes("job")) {
                         addChat("searchJobs");
-                    } else if (chat.value.includes("better") && chat.value.includes("profile")) {
+                    } else if (chat.value.toLowerCase().includes("better") && chat.value.toLowerCase().includes("profile")) {
                         addChat("createBetterProfile");
-                    } else if (chat.value.includes("profile") && chat.value.includes("not") && chat.value.includes("approved")) {
+                    } else if (chat.value.toLowerCase().includes("profile") && chat.value.toLowerCase().includes("not") && chat.value.toLowerCase().includes("approved")) {
                         addChat("profileNotApproved");
                     } else {
                         addChat("error");

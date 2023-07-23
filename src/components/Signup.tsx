@@ -48,12 +48,12 @@ export default function Signup() {
                             <span className='text-teal-500'>Phone Number</span>
                             <input type='text' id="phoneno" placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' />
                         </div>
-                        <div className='flex flex-row gap-3 mt-3 items-center justify-start'>
+                        <div className='flex flex-col md:flex-row gap-3 mt-3 items-center justify-start'>
                             <div className='flex flex-col gap-1'>
                                 <span className='text-teal-500'>Zip Code</span>
                                 <input type='text' placeholder='Enter your zip code' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none flex-grow' />
                             </div>
-                            <button className='py-[0.8rem] px-8 bg-teal-500 rounded-lg mt-7 text-white self-center'
+                            <button className='py-[0.8rem] px-8 bg-teal-500 rounded-lg mt-0 md:mt-7 text-white self-center'
                                 onClick={async (e) => {
                                     e.preventDefault();
 
