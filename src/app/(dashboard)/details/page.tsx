@@ -50,13 +50,13 @@ export default function Details() {
     };
 
     return (
-        <section className='md:flex md:flex-col items-center px-[5rem]'>
-            <section className='flex flex-col gap-3 mt-5'>
+        <section className='md:flex md:flex-col items-center px-[1rem] lg:px-[5rem]'>
+            <section className='flex flex-col gap-3 mt-5 mb-5 lg:mb-0'>
                 <Link href={"/dashboard"} className='self-start text-teal-500 font-semibold flex gap-2 items-center justify-center hover:underline'>
                     <BsArrowLeft />
                     Back to Search Results
                 </Link>
-                <div className='flex flex-row gap-[5rem] w-full'>
+                <div className='flex flex-col lg:flex-row gap-[2rem] lg:gap-[5rem] w-full'>
                     <div className='flex flex-col gap-5'>
                         <Image src={caregiver?.imageUrl} alt='caregiver' width={caregiverPerson.width} height={caregiverPerson.height} className='w-[35rem] rounded-lg' />
                         <div className='flex flex-col gap-3 md:flex-row justify-between'>
@@ -165,8 +165,8 @@ export default function Details() {
                 </div>
             </section>
             <hr className='h-[2px] bg-gray-300 w-full' />
-            <section className='grid grid-cols-1 md:grid-cols-2 grid-rows-[auto] gap-5 my-5 px-[1rem] max-w-[75rem]'>
-                <h1 className='text-3xl font-bold text-teal-400 col-[1/3]'>Reviews</h1>
+            <section className='grid grid-cols-1 lg:grid-cols-2 grid-rows-[auto] gap-5 my-5 px-[1rem] max-w-[75rem]'>
+                <h1 className='text-3xl font-bold text-teal-400 lg:col-[1/3]'>Reviews</h1>
                 <Review />
                 <Review />
                 <Review />
