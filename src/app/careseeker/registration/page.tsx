@@ -22,7 +22,7 @@ export default function Registration() {
                     planPrice: planType?.toLowerCase()?.includes("month") ? "30" : "100",
                     email: sessionStorage.getItem("email")
                 })
-                await fetch("http://localhost:3001/api/careseeker/setSubcription", {
+                await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/setSubcription", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -67,7 +67,7 @@ export default function Registration() {
 
             console.log(bodyContent);
 
-            const response = await fetch("http://localhost:3001/api/careseeker/registration", {
+            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/registration", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

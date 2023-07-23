@@ -22,7 +22,7 @@ export default function Details() {
     const searchParams = useSearchParams();
     useEffect(() => {
         async function getCaregivers() {
-            const response = await fetch("http://localhost:3001/api/careseeker/getCaregivers?page=1", {
+            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/getCaregivers?page=1", {
                 next: {
                     revalidate: 10
                 }
@@ -36,7 +36,7 @@ export default function Details() {
     useEffect(() => {
         console.log(searchParams.get("id"));
         async function getCaregiverById() {
-            const response = await fetch(`http://localhost:3001/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`);
             const data = await response.json();
             setCaregiver(data);
         }

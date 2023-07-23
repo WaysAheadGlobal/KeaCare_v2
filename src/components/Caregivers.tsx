@@ -12,7 +12,7 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     useEffect(() => {
         async function getCaregivers() {
-            const response = await fetch(`http://localhost:3001/api/careseeker/getCaregivers?page=${page}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getCaregivers?page=${page}`, {
                 next: {
                     revalidate: 10
                 }
@@ -25,7 +25,7 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     useEffect(() => {
         async function filter() {
-            const response = await fetch(`http://localhost:3001/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rate=${filters?.rate}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rate=${filters?.rate}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}`);
 
             const data = await response.json();
             setCaregivers(data);

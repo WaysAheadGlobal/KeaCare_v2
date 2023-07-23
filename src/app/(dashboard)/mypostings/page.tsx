@@ -9,7 +9,7 @@ export default function MyPostings() {
     useEffect(() => {
         async function getPostings(email: string | null) {
             if (email) {
-                const response = await fetch(`http://localhost:3001/api/careseeker/posts?email=${email}`);
+                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/posts?email=${email}`);
                 const data = await response.json();
                 setPosts(data);
             } else {

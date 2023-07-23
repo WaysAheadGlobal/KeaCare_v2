@@ -108,7 +108,7 @@ export default function Registration() {
                     console.log(bodyContent);
 
                     try {
-                        const response = await fetch("http://localhost:3001/api/caregiver/registration", {
+                        const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/registration", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
