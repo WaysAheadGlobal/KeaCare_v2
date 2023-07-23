@@ -3,12 +3,19 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function getCaregiverInfo(req, res) {
-    const { id } = req.query;
+    const { id, email } = req.query;
 
     if (id) {
         const caregiver = await prisma.caregivers_.findUnique({
             where: {
                 id: parseInt(id)
+            }
+        });
+        res.status(200).json(caregiver);
+    } else if (email) {
+        const caregiver = await prisma.caregivers_.findUnique({
+            where: {
+                id: email
             }
         });
         res.status(200).json(caregiver);
