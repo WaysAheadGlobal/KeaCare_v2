@@ -105,8 +105,6 @@ export default function Registration() {
                         ref2Relation: ref2Relation
                     });
 
-                    console.log(bodyContent);
-
                     try {
                         const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/registration", {
                             method: "POST",
@@ -118,7 +116,6 @@ export default function Registration() {
 
                         const data = await response.json();
                         if (data?.success) {
-                            console.log(data);
                             router.push("/caregiver/account");
                         }
                     } catch (error) {

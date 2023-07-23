@@ -11,7 +11,7 @@ import { TfiHeadphoneAlt } from 'react-icons/tfi';
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     return (
         <main>
-            <div className='sticky top-0 z-20 flex flex-row flex-wrap gap-5 py-5 px-2 md:p-5 bg-teal-500 text-white text-lg items-center md:justify-evenly'>
+            <div className='flex flex-row flex-wrap gap-5 py-5 px-2 md:p-5 bg-teal-500 text-white text-lg items-center md:justify-evenly'>
                 <Link href={"/mypostings"}>
                     <button className='flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500'>
                         <BsPostcardFill />

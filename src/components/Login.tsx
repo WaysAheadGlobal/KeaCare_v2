@@ -65,7 +65,6 @@ export default function Login() {
                                 dialog.close();
                             });
                             sessionStorage.setItem("email", data?.email.toString());
-                            console.log(data);
                             if (userType === "careseeker") {
                                 router.push("/dashboard");
                             } else {
@@ -101,10 +100,8 @@ export default function Login() {
                             });
 
                             const data: Otp = await response.json();
-                            console.log(data);
 
                             sessionStorage.setItem("otp", data?.otp.toString());
-
                         }}>Send OTP</button>
                     </form>
                     <div className='flex flex-col gap-3 items-center justify-center mt-3'>

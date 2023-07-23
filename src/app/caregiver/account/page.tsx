@@ -12,7 +12,6 @@ export default function Account() {
             if (email) {
                 const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
                 const data = await response.json();
-                console.log(data);
                 setUserInfo(data);
             } else {
                 Promise.reject("Invalid Credentials");
@@ -23,7 +22,6 @@ export default function Account() {
     }, [])
 
     useEffect(() => {
-        console.log(userInfo);
         setTask(userInfo?.task.split(","));
         setLanguages(userInfo?.languages.split(","));
     }, [userInfo]);
@@ -51,7 +49,6 @@ export default function Account() {
                         ...userInfo,
                         [(e.target as any).name]: (e.target as any).value
                     });
-                    console.log({ [(e.target as any).name]: (e.target as any).value });
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
@@ -64,7 +61,6 @@ export default function Account() {
                     })
 
                     const data = await response.json();
-                    console.log(data);
                     setUserInfo(data);
                 }}
             >

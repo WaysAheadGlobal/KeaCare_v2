@@ -73,8 +73,6 @@ export default function Signup() {
                                     });
 
                                     const data: Otp = await response.json();
-                                    console.log(data);
-
                                     sessionStorage.setItem("otp", data?.otp.toString());
 
                                 }}>Send OTP</button>
@@ -106,7 +104,6 @@ export default function Signup() {
                                     document.querySelectorAll("dialog").forEach(dialog => {
                                         dialog.close();
                                     });
-                                    console.log(data);
                                     sessionStorage.setItem("email", email.value);
                                     if (userType === 'caregiver') {
                                         router.push("/caregiver/registration");

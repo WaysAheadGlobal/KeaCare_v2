@@ -34,14 +34,13 @@ export default function Details() {
     }, []);
 
     useEffect(() => {
-        console.log(searchParams.get("id"));
         async function getCaregiverById() {
             const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`);
             const data = await response.json();
             setCaregiver(data);
         }
         getCaregiverById();
-    }, [])
+    }, [searchParams])
 
     const speciality: any = {
         child_care: "Child Care",

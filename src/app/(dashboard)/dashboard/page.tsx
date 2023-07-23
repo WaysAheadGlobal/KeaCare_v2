@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Filter from '@/components/Filter'
 import Caregivers from '@/components/Caregivers'
 
@@ -19,10 +19,6 @@ export default function Dashboard() {
         addservices: "",
         rating: ""
     });
-
-    useEffect(() => {
-        console.log(filters);
-    }, [filters])
 
     return (
         <section>

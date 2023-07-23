@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 async function getCaregiverInfo(req, res) {
     const { id, email } = req.query;
-    console.log(req.query);
 
     if (id) {
         const caregiver = await prisma.caregivers_.findUnique({

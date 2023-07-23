@@ -17,7 +17,6 @@ async function UpdateAccount(req, res) {
         if (!errors.isEmpty() && errors.errors[0].path === 'email') {
             res.status(400).send('Invalid email address. Please try again.');
         } else {
-            console.log(req.body);
             const { email } = req.body;
             const caregiver = await prisma.caregivers_.findFirst({
                 where: {

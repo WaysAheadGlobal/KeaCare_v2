@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Calendar } from '@mantine/dates';
 import dayjs from 'dayjs';
 import { MultiSelect } from '@mantine/core';
@@ -11,11 +11,6 @@ export default function PostJob() {
     const [info, setInfo] = useState<{ [key: string]: string }[]>([]);
     const [additionalService, setAdditionalService] = useState<string>("");
     const [languages, setLanguages] = useState<string>("");
-
-    useEffect(() => {
-        console.log(selected)
-        console.log(info);
-    }, [selected])
 
     const handleSelect = (date: Date) => {
         const isSelected = selected.some((s) => dayjs(date).isSame(s, 'date'));
@@ -62,8 +57,6 @@ export default function PostJob() {
 
             });
 
-            console.log(bodyContent)
-
             const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/postjob", {
                 method: "POST",
                 headers: {
@@ -72,9 +65,7 @@ export default function PostJob() {
                 body: bodyContent
             });
 
-            const data = await response.json();
-
-            console.log(data);
+            await response.json();
         }}>
             <h1 className='text-3xl font-semibold text-teal-500 leading-[4rem]'>Post a Job</h1>
             <p className='font-bold'>Provide some information about services you need</p>

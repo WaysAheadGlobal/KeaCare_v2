@@ -65,8 +65,6 @@ export default function Registration() {
                 device_type: "web"
             });
 
-            console.log(bodyContent);
-
             const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/registration", {
                 method: "POST",
                 headers: {
@@ -78,7 +76,6 @@ export default function Registration() {
             const data = await response.json();
 
             if (data?.success) {
-                console.log(data);
                 router.push("/dashboard");
             }
         }}>

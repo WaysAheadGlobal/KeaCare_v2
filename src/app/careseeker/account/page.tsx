@@ -11,7 +11,6 @@ export default function Account() {
             if (email) {
                 const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/account?email=${email}`);
                 const data = await response.json();
-                console.log(data);
                 setUserInfo(data);
             } else {
                 Promise.reject("Invalid Credentials");
@@ -43,7 +42,6 @@ export default function Account() {
                         ...userInfo,
                         [(e.target as any).name]: (e.target as any).value
                     });
-                    console.log({ [(e.target as any).name]: (e.target as any).value });
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
