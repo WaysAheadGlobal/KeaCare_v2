@@ -35,7 +35,7 @@ enum Speciality {
 }
 
 enum Time {
-  AM_10_1
+  AM_10_11
   AM_11_12
   PM_12_13
   PM_13_14
