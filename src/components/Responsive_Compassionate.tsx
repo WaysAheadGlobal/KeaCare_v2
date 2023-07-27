@@ -8,6 +8,7 @@ import mobile from '../../public/mobile.png'
 import playstore from '../../public/playstore.png'
 import { motion, useInView, useAnimation } from 'framer-motion'
 import UserTypeContext from '@/context/UserType'
+import { useRouter } from 'next/navigation'
 
 
 export default function Responsive_Compassionate() {
@@ -15,6 +16,7 @@ export default function Responsive_Compassionate() {
     const isInView = useInView(ref, { once: true });
     const animate = useAnimation();
     const { setUserType } = useContext(UserTypeContext);
+    const router = useRouter();
 
     useEffect(() => {
         if (isInView) {
@@ -49,9 +51,13 @@ export default function Responsive_Compassionate() {
                     <p className='font-bold text-teal-700'>Senior Care</p>
                     <p>We have specialist and trusted elderly care takers equipped to help you in your own home.</p>
                     <button className='border-2 hover:border-teal-500 hover:text-teal-500 hover:bg-white border-white bg-teal-500 text-white px-5 py-3 rounded-lg' onClick={() => {
-                        (document.getElementById("login") as HTMLDialogElement).showModal();
-                        setUserType("careseeker");
-                        sessionStorage.setItem("userType", "careseeker");
+                        if (sessionStorage.getItem("email")) {
+                            router.push("/dashboard");
+                        } else {
+                            (document.getElementById("login") as HTMLDialogElement).showModal();
+                            setUserType("careseeker");
+                            sessionStorage.setItem("userType", "careseeker");
+                        }
                     }}>Book Now</button>
                 </motion.div>
                 <motion.div className='rounded-xl w-[20rem] sm:w-[30rem] p-5 flex flex-col gap-5 shadow-md hover:shadow-xl'
@@ -68,9 +74,13 @@ export default function Responsive_Compassionate() {
                     <p className='font-bold text-teal-700'>Child Care</p>
                     <p>Our safe, secure, warm and friendly childcare service for your loved ones.</p>
                     <button className='border-2 hover:border-teal-500 hover:text-teal-500 hover:bg-white border-white bg-teal-500 text-white px-5 py-3 rounded-lg' onClick={() => {
-                        (document.getElementById("login") as HTMLDialogElement).showModal();
-                        setUserType("careseeker");
-                        sessionStorage.setItem("userType", "careseeker");
+                        if (sessionStorage.getItem("email")) {
+                            router.push("/dashboard");
+                        } else {
+                            (document.getElementById("login") as HTMLDialogElement).showModal();
+                            setUserType("careseeker");
+                            sessionStorage.setItem("userType", "careseeker");
+                        }
                     }}>Book Now</button>
                 </motion.div>
             </div>
