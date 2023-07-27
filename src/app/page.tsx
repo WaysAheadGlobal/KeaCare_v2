@@ -10,10 +10,10 @@ import ValueProposition from '@/components/ValueProposition'
 import Introduction_New from '@/components/Introduction_New'
 import ValueProposition_New from '@/components/ValueProposition_New'
 import AboutUs_New from '@/components/AboutUs_New'
-import { BsChat, BsChatFill } from 'react-icons/bs'
 import Chat from '@/components/Chat'
 import { Menu } from '@mantine/core'
 import UserTypeContext from '@/context/UserType'
+import { BsRobot } from 'react-icons/bs'
 
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
                 <Menu trigger='click'>
                     <Menu.Target>
                         <button className='bg-teal-500 p-1 rounded-lg'>
-                            <BsChatFill />
+                            <BsRobot />
                         </button>
                     </Menu.Target>
                     <Menu.Dropdown className='rounded-lg'>

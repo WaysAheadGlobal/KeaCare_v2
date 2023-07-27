@@ -58,9 +58,9 @@ async function UpdateAccount(req, res) {
                             experience: experience,
                             comfortableWithPets: comfortableWithPets,
                             task: task,
-                            rate: parseFloat(rate),
-                            daysAWeek: parseInt(daysAWeek),
-                            workingHrs: parseInt(workingHrs),
+                            rate: rate ? parseFloat(rate) : caregiver.rate,
+                            daysAWeek: daysAWeek ? parseInt(daysAWeek) : caregiver.daysAWeek,
+                            workingHrs: workingHrs ? parseInt(workingHrs) : caregiver.workingHrs,
                             bio: bio,
                             certifications: certifications,
                             distance: distance,
@@ -81,7 +81,7 @@ async function UpdateAccount(req, res) {
                     res.status(401).json({ "error": "Invalid Credentials" });
                 }
             } else {
-                res.status(404).json({ "error": "Caregiver not found" });
+                res.status(401).json({ "error": "Caregiver not found" });
             }
         }
     }

@@ -1,18 +1,20 @@
 "use client"
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
 import Image from 'next/image'
 import seniorCare from '../../public/seniorCare.png'
 import childCare from '../../public/childCare.png'
 import mobile from '../../public/mobile.png'
 import playstore from '../../public/playstore.png'
 import { motion, useInView, useAnimation } from 'framer-motion'
+import UserTypeContext from '@/context/UserType'
 
 
 export default function Responsive_Compassionate() {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true });
     const animate = useAnimation();
+    const { setUserType } = useContext(UserTypeContext);
 
     useEffect(() => {
         if (isInView) {
@@ -41,12 +43,16 @@ export default function Responsive_Compassionate() {
                     }}
                     initial="hidden"
                     animate={animate}
-                    transition={{ duration: 0.5}}
+                    transition={{ duration: 0.5 }}
                 >
                     <Image src={seniorCare.src} width={seniorCare.width} height={seniorCare.height} alt='Senior Care' className='w-[10rem] self-center' />
                     <p className='font-bold text-teal-700'>Senior Care</p>
                     <p>We have specialist and trusted elderly care takers equipped to help you in your own home.</p>
-                    <button className='border-2 hover:border-teal-500 hover:text-teal-500 hover:bg-white border-white bg-teal-500 text-white px-5 py-3 rounded-lg'>Book Now</button>
+                    <button className='border-2 hover:border-teal-500 hover:text-teal-500 hover:bg-white border-white bg-teal-500 text-white px-5 py-3 rounded-lg' onClick={() => {
+                        (document.getElementById("login") as HTMLDialogElement).showModal();
+                        setUserType("careseeker");
+                        sessionStorage.setItem("userType", "careseeker");
+                    }}>Book Now</button>
                 </motion.div>
                 <motion.div className='rounded-xl w-[20rem] sm:w-[30rem] p-5 flex flex-col gap-5 shadow-md hover:shadow-xl'
                     ref={ref}
@@ -61,7 +67,11 @@ export default function Responsive_Compassionate() {
                     <Image src={childCare.src} width={childCare.width} height={childCare.height} alt='Child Care' className='w-[10rem] self-center' />
                     <p className='font-bold text-teal-700'>Child Care</p>
                     <p>Our safe, secure, warm and friendly childcare service for your loved ones.</p>
-                    <button className='border-2 hover:border-teal-500 hover:text-teal-500 hover:bg-white border-white bg-teal-500 text-white px-5 py-3 rounded-lg'>Book Now</button>
+                    <button className='border-2 hover:border-teal-500 hover:text-teal-500 hover:bg-white border-white bg-teal-500 text-white px-5 py-3 rounded-lg' onClick={() => {
+                        (document.getElementById("login") as HTMLDialogElement).showModal();
+                        setUserType("careseeker");
+                        sessionStorage.setItem("userType", "careseeker");
+                    }}>Book Now</button>
                 </motion.div>
             </div>
             <div className='flex flex-col xl:flex-row gap-10 mt-[5rem] items-center justify-center'>

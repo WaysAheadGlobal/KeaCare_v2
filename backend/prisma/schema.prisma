@@ -35,14 +35,14 @@ enum Speciality {
 }
 
 enum Time {
-  PM_1_2
-  PM_2_3
-  PM_3_4
-  PM_4_5
-  PM_5_6
-  AM_10_11
+  AM_10_1
   AM_11_12
-  PM_12_1
+  PM_12_13
+  PM_13_14
+  PM_14_15
+  PM_15_16
+  PM_16_17
+  PM_17_18
 }
 
 enum ApplicationStatus {
@@ -50,14 +50,6 @@ enum ApplicationStatus {
   Completed
   Canceled
   Missed
-}
-
-enum Language {
-  English
-  Espanol
-  French
-  German
-  Hindi
 }
 
 model careseekers_ {

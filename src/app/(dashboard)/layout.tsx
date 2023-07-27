@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react'
 import { AiFillHeart } from 'react-icons/ai';
 import { BsPostcardFill, BsFillChatFill } from 'react-icons/bs';
@@ -9,6 +10,8 @@ import { MdFilterListAlt } from 'react-icons/md';
 import { TfiHeadphoneAlt } from 'react-icons/tfi';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
+
     return (
         <main>
             <div className='flex flex-row flex-wrap gap-5 py-5 px-2 md:p-5 bg-teal-500 text-white text-lg items-center md:justify-evenly'>
@@ -39,12 +42,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <p>Post a Job</p>
                     </button>
                 </Link>
-                <button className='flex flex-col items-center md:hidden' onClick={() => {
+                <button className={`flex flex-col items-center md:hidden ${pathname !== "/dashboard" && "hidden"}`} onClick={() => {
                     document.getElementById("filters")?.classList.toggle("-translate-x-full");
                     document.getElementById("filters")?.classList.toggle("translate-x-0");
                 }}>
-                    <MdFilterListAlt className='text-xl text-white' />
-                    <p>Filters</p>
+                    <MdFilterListAlt className='text-xl text-white pointer-events-none' />
+                    <p className='pointer-events-none'>Filters</p>
                 </button>
             </div>
             {children}

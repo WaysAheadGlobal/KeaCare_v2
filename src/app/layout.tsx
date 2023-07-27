@@ -6,6 +6,7 @@ import Client from './client'
 import { Metadata } from 'next'
 import Script from 'next/script'
 
+
 const inter = Inter({ subsets: ['latin'] })
 const rubic = Rubik({ subsets: ['latin'] })
 

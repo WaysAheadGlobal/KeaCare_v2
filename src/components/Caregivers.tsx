@@ -62,10 +62,12 @@ export default function Caregivers({ filters }: { filters: any }) {
             <div className='w-full'>
                 <h1 className='text-3xl font-semibold text-teal-500'>Recommended for you</h1>
                 <p className='text-gray-400 mt-2'>{caregivers?.length} People in your locality have already appointed these caregivers.</p>
-                <div className='flex flex-row flex-wrap gap-5 mt-5'>
+                <div className='flex flex-row justify-evenly flex-wrap gap-5 mt-5'>
                     {
                         caregivers.map((caregiver: any) => {
-                            return <RecommendedCard key={caregiver?.id} caregiver={caregiver} />
+                            if (caregiver?.fname) {
+                                return <RecommendedCard key={caregiver?.id} caregiver={caregiver} />
+                            }
                         })
                     }
                 </div>

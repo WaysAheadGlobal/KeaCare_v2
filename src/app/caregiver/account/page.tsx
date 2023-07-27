@@ -338,7 +338,8 @@ export default function Account() {
                             { label: "French", value: "French" },
                             { label: "German", value: "German" },
                             { label: "Spanish", value: "Spanish" },
-                            { label: "Hindi", value: "Hindi" }
+                            { label: "Hindi", value: "Hindi" },
+                            { label: "Vietnamese", value: "Vietnamese" }
                         ]}
                         onChange={(e) => {
                             setLanguages(e);

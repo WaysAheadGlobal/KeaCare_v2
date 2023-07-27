@@ -8,7 +8,7 @@ import UserTypeContext from '@/context/UserType';
 import React, { useMemo, useState, useEffect } from 'react'
 
 export default function Client({ children }: { children: React.ReactNode }) {
-    const [userType, setUserType] = useState<"careseeker" | "caregiver" | string>();
+    const [userType, setUserType] = useState<string>();
     const values = useMemo(() => ({ userType, setUserType }), [userType]);
     useEffect(() => {
         const val = sessionStorage.getItem("userType");

@@ -231,7 +231,8 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                         { label: "French", value: "French" },
                         { label: "German", value: "German" },
                         { label: "Spanish", value: "Spanish" },
-                        { label: "Hindi", value: "Hindi" }
+                        { label: "Hindi", value: "Hindi" },
+                        { label: "Vietnamese", value: "Vietnamese" }
                     ]}
                     onChange={(values) => {
                         setFilters({

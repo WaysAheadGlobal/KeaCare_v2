@@ -15,7 +15,7 @@ export default function Navbar() {
     const pathname = usePathname();
     const router = useRouter();
     const [otp, setOtp] = useState<string | null>(null);
-
+    
     useEffect(() => {
         setOtp(sessionStorage.getItem("otp"));
     }, [pathname, userType])
@@ -117,7 +117,11 @@ export default function Navbar() {
                                         sessionStorage.removeItem("email");
                                         sessionStorage.removeItem("userType");
                                         sessionStorage.removeItem("planType");
-                                        router.push("/");
+                                        if (pathname === "/") {
+                                            window.location.reload();
+                                        } else {
+                                            router.push("/");
+                                        }                                        
                                         setUserType("careseeker")
                                     }}>Log out</div>
                                 </Menu.Item>

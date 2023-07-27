@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { IoClose } from 'react-icons/io5'
 import { ImFacebook2 } from 'react-icons/im'
 import { FcGoogle } from 'react-icons/fc'
@@ -8,14 +8,22 @@ import UserTypeContext from '@/context/UserType'
 import LoginResponse from '@/interface/LoginResponse'
 import { useRouter } from 'next/navigation'
 import Otp from '@/interface/Otp'
+import Alert from './Alert'
 
 export default function Login() {
     const { userType } = useContext(UserTypeContext);
     const router = useRouter();
+    const [alert, setAlert] = useState<{ type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
+        type: "info",
+        message: "",
+        translate_: "-translate-y-96",
+        key: 0
+    });
 
     return (
-        <dialog id="login" className='rounded-lg backdrop:bg-black backdrop:bg-opacity-70'>
-            <div className='flex flex-col gap-3'>
+        <dialog id="login" className='rounded-lg backdrop:bg-black backdrop:bg-opacity-70 p-0'>
+            <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
+            <div className='flex flex-col gap-3 p-2'>
                 <IoClose className='self-end text-2xl relative z-10' onClick={() => {
                     (document.getElementById("login") as HTMLDialogElement).close();
                 }} />
@@ -74,45 +82,81 @@ export default function Login() {
                     }}>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Email</span>
-                            <input id="email_login" type='email' placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' required />
+                            <input id="email_login" type='email' placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none focus:invalid:border-red-500' required />
                         </div>
                         <p className='text-lg text-teal-500 self-center'>OR</p>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Phone Number</span>
-                            <input id="phoneNo_login" type='text' pattern='[0-9]{10}' placeholder='Enter your phone number' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' />
+                            <input id="phoneNo_login" type='text' pattern='[0-9]{10}' placeholder='Enter your phone number' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' maxLength={10} minLength={10} />
                         </div>
-                        <button type="button" className='py-4 px-8 bg-teal-500 rounded-lg mt-5 text-white self-center' onClick={async (e) => {
+                        <button type="button" className='py-4 px-8 bg-teal-500 rounded-lg mt-5 text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500' onClick={async (e) => {
                             e.preventDefault();
 
                             const email = document.getElementById("email_login") as HTMLInputElement;
                             /* const phoneno = document.getElementById("phoneno") as HTMLInputElement; */
 
-                            const bodyContent = JSON.stringify({
-                                "email": email.value
+                            if (!email.validity.valid) {
+                                email.focus();
+                                setAlert({
+                                    type: "warn",
+                                    message: "Please enter a valid email address.",
+                                    translate_: "translate-y-0",
+                                    key: alert.key + 1
+                                });
+                                return;
+                            }
+
+                            setAlert({
+                                type: "info",
+                                message: "Sending OTP. Please Wait.",
+                                translate_: "translate-y-0",
+                                key: alert.key + 1
                             });
 
-                            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/login/otp`, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: bodyContent
-                            });
 
-                            const data: Otp = await response.json();
+                            try {
+                                const bodyContent = JSON.stringify({
+                                    "email": email.value
+                                });
+    
+                                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/login/otp`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: bodyContent
+                                });
+    
+                                const data: Otp = await response.json();
+                                if (data.otp) {
+                                    setAlert({
+                                        type: "success",
+                                        message: "OTP sent please check your mail.",
+                                        translate_: "translate-y-0",
+                                        key: alert.key + 1
+                                    });
+                                    sessionStorage.setItem("otp", data?.otp.toString());
+                                }
+                            } catch (error) {
+                                setAlert({
+                                    type: "danger",
+                                    message: "Couldn't send OTP please check your mail or try after some time.",
+                                    translate_: "translate-y-0",
+                                    key: alert.key + 1
+                                });                          
+                            }
 
-                            sessionStorage.setItem("otp", data?.otp.toString());
                         }}>Send OTP</button>
                     </form>
                     <div className='flex flex-col gap-3 items-center justify-center mt-3'>
                         <input id="otp_login" type='text' placeholder='Enter OTP' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none self-stretch' />
-                        <button type="submit" className='py-[15px] px-8 bg-teal-500 rounded-lg text-white self-center' onClick={() => {
+                        <button type="submit" className='py-[15px] px-8 bg-teal-500 rounded-lg text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500' onClick={() => {
                             const form = document.querySelector("#loginForm") as HTMLFormElement;
                             form?.requestSubmit();
                         }}>Log In</button>
                     </div>
                 </div>
             </div>
-        </dialog >
+        </dialog>
     )
 }

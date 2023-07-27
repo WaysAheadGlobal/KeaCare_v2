@@ -57,7 +57,7 @@ export default function Details() {
                 </Link>
                 <div className='flex flex-col lg:flex-row gap-[2rem] lg:gap-[5rem] w-full'>
                     <div className='flex flex-col gap-5'>
-                        <Image src={caregiver?.imageUrl} alt='caregiver' width={caregiverPerson.width} height={caregiverPerson.height} className='w-[35rem] rounded-lg' />
+                        <Image src={caregiver?.imageUrl} alt='caregiver' width={caregiverPerson.width} height={caregiverPerson.height} className='w-[35rem] h-[30rem] rounded-lg object-cover object-center' />
                         <div className='flex flex-col gap-3 md:flex-row justify-between'>
                             <div>
                                 <div className='flex flex-row items-center justify-start gap-3 font-semibold'>
@@ -96,13 +96,13 @@ export default function Details() {
                                 <p className='text-red-500 text-2xl font-bold'>${caregiver?.rate} <span className='text-sm font-light text-black'>(per hour)</span></p>
                             </div>
                         </div>
-                        <p className='text-sm'>{speciality[caregiver?.speciality]}</p>
+                        <p className=''>{caregiver?.bio}</p>
                         <p className='font-semibold'>Other Information</p>
                         <div className='flex flex-row gap-[5rem]'>
                             <div className='flex flex-col gap-2 p-2'>
                                 <div className='flex flex-row gap-3 items-center justify-start'>
                                     <Image src={specialityIcon.src} alt='experience' width={specialityIcon.width} height={specialityIcon.height} className='w-[1.3rem]' />
-                                    <p>Experience: {caregiver?.experience} Years</p>
+                                    <p>Speciality: {speciality[caregiver?.speciality]}</p>
                                 </div>
                                 <div className='flex flex-row gap-3 items-center justify-start'>
                                     <Image src={experienceIcon.src} alt='experience' width={experienceIcon.width} height={experienceIcon.height} className='w-[1.3rem]' />
@@ -177,7 +177,7 @@ export default function Details() {
                 <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-rows-[auto] gap-5 my-5 px-[1rem]'>
                     {
                         caregivers.map((caregiver: any) => {
-                            if (searchParams.get("id") !== caregiver?.id.toString()) {
+                            if (searchParams.get("id") !== caregiver?.id.toString() && caregiver?.fname) {
                                 return <RecommendedCard key={caregiver?.id} caregiver={caregiver} />
                             }
                         })

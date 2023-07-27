@@ -66,7 +66,7 @@ export default function Introduction_New() {
                                 <h1 className='text-white text-4xl font-semibold md:block hidden'>caregivers</h1>
                                 <h2 className='text-white text-xl mt-5 font-light'>For Anyone, Anywhere, at Anytime</h2>
                                 <Link href={"/pricing"}>
-                                    <button className='bg-[#09371f] text-white px-5 py-3 rounded-xl mt-3'>Plans & Pricing</button>
+                                    <button className='bg-white bg-opacity-40 hover:bg-opacity-20 text-white px-5 py-3 rounded-lg mt-3'>Plans & Pricing</button>
                                 </Link>
                             </div>
                         </div>

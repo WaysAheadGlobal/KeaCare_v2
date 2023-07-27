@@ -21,7 +21,7 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
 
     return (
         <div className='flex flex-col p-2 rounded-lg bg-white transition-shadow shadow-lg hover:shadow-2xl gap-3'>
-            <Image src={caregiver?.imageUrl} width={caregiverPerson.width} height={caregiverPerson.height} alt='caregiver' className='flex-grow w-full sm:w-[20rem] rounded-lg' />
+            <Image src={caregiver?.imageUrl} width={caregiverPerson.width} height={caregiverPerson.height} alt='caregiver' className='flex-grow w-full sm:w-[20rem] rounded-lg object-cover object-center' />
             <div className='flex flex-row justify-between px-2 items-center'>
                 <p className='font-semibold'>{caregiver?.fname + " " + caregiver?.lname}</p>
                 <div className='flex flex-row gap-2 items-center justify-center text-red-500'>
@@ -38,7 +38,7 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
                     <ImLocation className='text-xl' />
                     <span>{caregiver?.distance} Kms</span>
                 </div>
-                <div className={`${(caregiver?.languages.split(",").length <= 1) && 'hidden'} flex flex-col items-center justify-center`}>
+                <div className={`${(caregiver?.languages?.split(",").length <= 1) && 'hidden'} flex flex-col items-center justify-center`}>
                     <IoLanguage className='text-xl' />
                     <span>Multilingual</span>
                 </div>
@@ -62,7 +62,7 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
                 </div>
                 <div className='flex flex-row gap-3 items-center justify-start'>
                     <Image src={multitaskIcon.src} alt='experience' width={multitaskIcon.width} height={multitaskIcon.height} className='w-[1.3rem]' />
-                    <p>Can multitask: {(caregiver?.task.split(",").length > 1) ? "Yes" : "No"}</p>
+                    <p>Can multitask: {(caregiver?.task?.split(",").length > 1) ? "Yes" : "No"}</p>
                 </div>
             </div>
             {/* <div className='flex-grow'></div> */}            
