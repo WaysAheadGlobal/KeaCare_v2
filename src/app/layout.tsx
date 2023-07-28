@@ -1,13 +1,12 @@
 import React from 'react'
 import './globals.css'
-import { Inter, Rubik } from 'next/font/google'
+import { Rubik } from 'next/font/google'
 import logo from '../../public/logo.png'
 import Client from './client'
 import { Metadata } from 'next'
 import Script from 'next/script'
 
 
-const inter = Inter({ subsets: ['latin'] })
 const rubic = Rubik({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

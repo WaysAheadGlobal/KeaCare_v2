@@ -21,7 +21,7 @@ export default function Navbar() {
     }, [pathname, userType])
 
     return (
-        <header className={`${pathname === "/" ? 'sticky' : 'relative'} top-0 z-50 bg-white bg-opacity-40 backdrop-blur-md`}>
+        <header className={`${pathname === "/" ? 'sticky' : 'relative'} top-0 z-50 bg-white ${pathname === "/" ? "bg-opacity-40" : "bg-opacity-100"} backdrop-blur-md`}>
             <nav className='shadow-md'>
                 <section className='flex flex-col lg:flex-row items-start lg:items-center gap-5 lg:gap-[3rem] justify-between px-8 pt-5 pb-[2rem] sm:pb-2 h-[7rem] overflow-hidden'>
                     <Link href={"/"}>

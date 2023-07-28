@@ -6,7 +6,6 @@ import leader2 from '../../public/leader2.jpg'
 import leader3 from '../../public/leader3a.png'
 import leader4 from '../../public/leader4.png'
 import Image, { StaticImageData } from 'next/image'
-import { BsInstagram } from 'react-icons/bs'
 import { SiLinkedin } from 'react-icons/si'
 import { ImFacebook2 } from 'react-icons/im'
 import { FaTwitterSquare } from 'react-icons/fa'
@@ -42,32 +41,6 @@ function Card({ image, heading, subHeading, text, delay, socialmedia }: { image:
             animate={animate}
             transition={{ duration: 0.5, delay: delay }}
         >
-            {/* <Image src={image.src} alt={heading} width={image.width} height={image.height} className='w-full h-[20rem] rounded-t-md' />
-            <div className='p-5 flex flex-col gap-3'>
-                <p className='text-2xl font-bold text-white'>{heading}</p>
-                <p className='text-xl font-semibold text-white'>{subHeading}</p>
-                <p className='text-white text-sm'>{text.substring(0, textLength.end)}&nbsp;&nbsp;&nbsp;<span className='text-teal-800 hover:underline' onClick={() => {
-                    if (textLength.end) {
-                        setTextLength({
-                            end: undefined,
-                            suffix: "less"
-                        });
-                    } else {
-                        setTextLength({
-                            end: 100,
-                            suffix: "more"
-                        });
-                    }
-                }}>Read {textLength.suffix}</span></p>
-            </div>
-            <div className='flex-grow'></div>
-            <div className='flex flex-row items-center justify-evenly text-white text-3xl w-full'>
-                <SiLinkedin />
-                <BsInstagram />
-                <ImFacebook2 />
-                <FaTwitterSquare />
-            </div> */}
-
             <div className='flex gap-5 items-center justify-start'>
                 <Image src={image.src} alt={heading} width={image.width} height={image.height} className='w-[6rem] aspect-square rounded-full' />
                 <div>

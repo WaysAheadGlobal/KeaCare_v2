@@ -1,16 +1,13 @@
 "use client"
 
 import React, { useContext } from 'react'
-import AboutUs from '@/components/AboutUs'
-import HowItWorks from '@/components/HowItWorks'
-import Introduction from '@/components/Introduction'
-import Leaders from '@/components/Leaders'
-import Responsive_Compassionate from '@/components/Responsive_Compassionate'
-import ValueProposition from '@/components/ValueProposition'
-import Introduction_New from '@/components/Introduction_New'
-import ValueProposition_New from '@/components/ValueProposition_New'
-import AboutUs_New from '@/components/AboutUs_New'
-import Chat from '@/components/Chat'
+import HowItWorks from '@/app/HowItWorks'
+import Leaders from '@/app/Leaders'
+import Responsive_Compassionate from '@/app/Responsive_Compassionate'
+import Introduction from '@/app/Introduction'
+import ValueProposition from '@/app/ValueProposition'
+import AboutUs from '@/app/AboutUs'
+import Chat from '@/app/Chat'
 import { Menu } from '@mantine/core'
 import UserTypeContext from '@/context/UserType'
 import { BsRobot } from 'react-icons/bs'
@@ -20,12 +17,9 @@ export default function Home() {
     const { setUserType } = useContext(UserTypeContext);
     return (
         <>
-            {/* <Introduction /> */}
-            <Introduction_New />
-            {/* <AboutUs /> */}
-            <AboutUs_New />
-            {/* <ValueProposition /> */}
-            <ValueProposition_New />
+            <Introduction />
+            <AboutUs />
+            <ValueProposition />
             <Leaders />
             <HowItWorks />
             <Responsive_Compassionate />

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Calendar } from '@mantine/dates';
 import dayjs from 'dayjs';
 import { MultiSelect } from '@mantine/core';
-import Alert from '@/components/Alert';
+import Alert from '@/app/Alert';
 import { useRouter } from 'next/navigation';
 
 export default function PostJob() {

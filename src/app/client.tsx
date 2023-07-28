@@ -1,9 +1,9 @@
 "use client"
 
-import Footer from '@/components/Footer';
-import Login from '@/components/Login';
-import Navbar from '@/components/Navbar';
-import Signup from '@/components/Signup';
+import Footer from '@/app/Footer';
+import Login from '@/app/Login';
+import Navbar from '@/app/Navbar';
+import Signup from '@/app/Signup';
 import UserTypeContext from '@/context/UserType';
 import React, { useMemo, useState, useEffect } from 'react'
 

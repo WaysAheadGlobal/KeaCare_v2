@@ -5,7 +5,7 @@ import childCare from '../../public/childCareAboutUs.jpg'
 import seniorCare from '../../public/seniorCareAboutUs.jpg'
 import Image from 'next/image'
 
-export default function AboutUs_New() {
+export default function AboutUs() {
     useEffect(() => {
         setInterval(() => {
             document.getElementById("childCare")?.classList.toggle("opacity-100");

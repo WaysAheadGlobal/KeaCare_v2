@@ -1,6 +1,6 @@
 "use client"
 
-import JobPostings from '@/components/JobPostings'
+import JobPostings from '@/app/(dashboard)/mypostings/JobPostings'
 import React, { useState, useEffect } from 'react'
 
 export default function MyPostings() {

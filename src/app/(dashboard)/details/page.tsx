@@ -12,8 +12,8 @@ import petsIcon from '../../../../public/petsIcon.png'
 import { ImLocation } from 'react-icons/im'
 import { MdOutlineReviews } from 'react-icons/md'
 import { IoChatbubbles, IoLanguage } from 'react-icons/io5'
-import Review from '@/components/Review'
-import RecommendedCard from '@/components/RecommendedCard'
+import Review from '@/app/(dashboard)/details/Review'
+import RecommendedCard from '@/app/(dashboard)/dashboard/RecommendedCard'
 import { useSearchParams } from 'next/navigation'
 
 export default function Details() {

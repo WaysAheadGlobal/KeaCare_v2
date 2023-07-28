@@ -54,7 +54,7 @@ export default function Signup() {
                         <p className='text-lg text-teal-500 self-center mt-3'>OR</p>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Phone Number</span>
-                            <input type='text' id="phoneno" placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' />
+                            <input type='text' id="phoneno" placeholder='Enter your phone number' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' />
                         </div>
                         <div className='flex flex-col md:flex-row gap-3 mt-3 items-center justify-start'>
                             <div className='flex flex-col gap-1'>
@@ -101,7 +101,7 @@ export default function Signup() {
 
                                         const data: Otp = await response.json();
 
-                                        if (data.otp) {
+                                        if (data?.otp) {
                                             setAlert({
                                                 type: "success",
                                                 message: "OTP sent please check your mail.",

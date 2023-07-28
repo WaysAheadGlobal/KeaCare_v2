@@ -5,16 +5,13 @@ import { CgDanger } from 'react-icons/cg'
 import { IoClose } from 'react-icons/io5'
 import { FaCircleCheck } from 'react-icons/fa6'
 
-export default function Alert({ type, message, translate_, _key }: { type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0" | "-translate-x-96" | "translate-x-0" | "-translate-x-96", _key: number }) {
-    const [translate, setTranslate] = useState<"-translate-y-96" | "translate-y-0" | "-translate-x-96" | "translate-x-0" | "-translate-x-96">("-translate-y-96");
+export default function Alert({ type, message, translate_, _key }: { type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0" , _key: number }) {
+    const [translate, setTranslate] = useState<"-translate-y-96" | "translate-y-0">("-translate-y-96");
     useEffect(() => {
         let timeout: NodeJS.Timeout;
         if (translate_ === "translate-y-0") {
             setTranslate("translate-y-0");
             timeout = setTimeout(() => setTranslate("-translate-y-96"), 2500);
-        } else if (translate_ === "translate-x-0") {
-            setTranslate("translate-x-0");
-            timeout = setTimeout(() => setTranslate("-translate-x-96"), 2500);
         }
         return () => {
             clearInterval(timeout);

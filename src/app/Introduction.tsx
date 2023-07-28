@@ -2,9 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import { Carousel } from '@mantine/carousel';
-import Autoplay from 'embla-carousel-autoplay';
-import Image, { StaticImageData } from 'next/image';
+import { StaticImageData } from 'next/image';
 import childCare1 from '../../public/childCare1.jpg';
 import childCare2 from '../../public/childCare2.jpg';
 import seniorCare1 from '../../public/seniorCare1.jpg';
@@ -12,8 +10,7 @@ import seniorCare2 from '../../public/seniorCare2.jpg';
 import Link from 'next/link';
 
 
-export default function Introduction_New() {
-    const autoplay = useRef(Autoplay({ delay: 5000 }));
+export default function Introduction() {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true });
     const animate = useAnimation();
@@ -66,7 +63,7 @@ export default function Introduction_New() {
                                 <h1 className='text-white text-4xl font-semibold md:block hidden'>caregivers</h1>
                                 <h2 className='text-white text-xl mt-5 font-light'>For Anyone, Anywhere, at Anytime</h2>
                                 <Link href={"/pricing"}>
-                                    <button className='bg-white bg-opacity-40 hover:bg-opacity-20 text-white px-5 py-3 rounded-lg mt-3'>Plans & Pricing</button>
+                                    <button className='bg-white bg-opacity-40 hover:bg-opacity-50 text-white px-5 py-3 rounded-lg mt-3'>Plans & Pricing</button>
                                 </Link>
                             </div>
                         </div>

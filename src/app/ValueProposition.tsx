@@ -1,17 +1,13 @@
 "use client"
 
 import React, { useEffect, useRef } from 'react'
-import { Carousel } from '@mantine/carousel';
-import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import seniorCarePortait from '../../public/seniorCarePortait.jpg';
 import seniorCare from '../../public/seniorCareValued.jpg';
 import childCare from '../../public/childCareValued.jpg';
-import childCarePortait from '../../public/childCarePortait.jpg';
 import { motion, useInView, useAnimation } from 'framer-motion';
 
-export default function ValueProposition_New() {
-    const autoplay = useRef(Autoplay({ delay: 5000 }));
+export default function ValueProposition() {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true });
     const animate = useAnimation();

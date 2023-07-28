@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState } from 'react'
-import Filter from '@/components/Filter'
-import Caregivers from '@/components/Caregivers'
+import Filter from '@/app/(dashboard)/dashboard/Filter'
+import Caregivers from '@/app/(dashboard)/dashboard/Caregivers'
 
 
 export default function Dashboard() {

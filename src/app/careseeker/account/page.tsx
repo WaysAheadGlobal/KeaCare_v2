@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import profilePic from '../../../../public/profilePic.png'
+import Alert from '@/app/Alert';
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
@@ -33,9 +34,19 @@ export default function Account() {
         })
     }
 
+    const [alert, setAlert] = useState<{ type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
+        type: "info",
+        message: "",
+        translate_: "-translate-y-96",
+        key: 0
+    });
+
     return (
         <>
             <div className='p-20 text-3xl font-semibold text-white bg-teal-500 text-center'>Your Account</div>
+            <div className='sticky top-0 bg-transparent h-[1rem]'>
+                <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
+            </div>
             <form className='px-[2rem] md:px-[8rem] py-[2rem] flex flex-col lg:grid lg:grid-cols-[18rem_auto] grid-rows-1 gap-10 justify-center'
                 onChange={(e) => {
                     setUserInfo({
@@ -54,7 +65,25 @@ export default function Account() {
                     })
 
                     const data = await response.json();
-                    setUserInfo(data);
+                    if (data?.success) {
+                        setUserInfo(data);
+                        setAlert({
+                            key: alert.key + 1,
+                            message: "Profile Updated.",
+                            translate_: "translate-y-0",
+                            type: "success"
+                        })
+                    } else {
+                        setUserInfo({
+                            ...userInfo
+                        });
+                        setAlert({
+                            key: alert.key + 1,
+                            message: "Couldn't update your profile.",
+                            translate_: "translate-y-0",
+                            type: "danger"
+                        })
+                    }
                 }}>
                 <div className='flex flex-col gap-[3rem]'>
                     <div className='bg-teal-500 rounded-lg flex flex-col items-center justify-start gap-10 h-[17rem]'>
@@ -70,6 +99,7 @@ export default function Account() {
                                 onChange={async (e) => {
                                     setUserInfo({
                                         ...userInfo,
+                                        imageUrl: e.currentTarget.files ? URL.createObjectURL(e.currentTarget.files[0]) : userInfo?.imageUrl,
                                         image: e.currentTarget.files ? await convertToBase64(e.currentTarget.files[0]) : undefined
                                     })
                                 }} />

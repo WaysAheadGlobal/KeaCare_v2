@@ -23,7 +23,7 @@ export default function Pricing() {
                     <div className='flex flex-col md:flex-row gap-5'>
                         {
                             products.filter((product: any) => product.recurring.interval === "month").map((product: any) => {
-                                return <Card key={product?.id} duration={product.recurring.interval} id={product?.id} price={(product.unit_amount / 100).toLocaleString('en-US', { style: "currency", currency: "CAD" })} heading={product?.nickname} />
+                                return <Card key={product?.id} duration={product.recurring.interval} id={product?.id} price={(product.unit_amount / 100).toLocaleString('en-US', { style: "currency", currency: "USD" })} heading={product?.nickname} />
                             })
                         }
                     </div>
@@ -33,7 +33,7 @@ export default function Pricing() {
                     <div className='flex flex-col md:flex-row gap-5'>
                         {
                             products.filter((product: any) => product.recurring.interval === "year").map((product: any) => {
-                                return <Card key={product?.id} id={product?.id} duration={product.recurring.interval} price={(product.unit_amount / 100).toLocaleString('en-US', { style: "currency", currency: "CAD" })} heading={product?.nickname} />
+                                return <Card key={product?.id} id={product?.id} duration={product.recurring.interval} price={(product.unit_amount / 100).toLocaleString('en-US', { style: "currency", currency: "USD" })} heading={product?.nickname} />
                             })
                         }
                     </div>
