@@ -35,7 +35,9 @@ export default function Details() {
 
     useEffect(() => {
         async function getCaregiverById() {
-            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
+                cache: "no-cache"
+            });
             const data = await response.json();
             setCaregiver(data);
         }

@@ -1,10 +1,13 @@
 const { Router } = require("express");
 const { Login, LoginOTP } = require("./login");
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 const { Register } = require("./registration");
 const getCaregiverInfo = require("./account");
 const { SignupOTP, Signup } = require("./signup");
 const { UpdateAccount } = require("./updateAccount");
+const jobs = require("./jobs");
+const applyJob = require("./applyJob");
+const searchJobs = require("./searchJobs");
 
 
 const CaregiverRouter = Router();
@@ -16,5 +19,8 @@ CaregiverRouter.post("/login", body("email").trim().isEmail(), Login);
 CaregiverRouter.post("/registration", body("email").trim().isEmail(), Register);
 CaregiverRouter.get("/getCaregiverInfo", getCaregiverInfo);
 CaregiverRouter.put("/updateAccount", body("email").trim().isEmail(), UpdateAccount);
+CaregiverRouter.get("/jobs", query("email").trim().isEmail(), jobs);
+CaregiverRouter.post("/applyJob", body("email").trim().isEmail(), applyJob);
+CaregiverRouter.post("/searchJobs", searchJobs);
 
 module.exports = CaregiverRouter;

@@ -1,5 +1,5 @@
 import React from 'react'
-import userReview from '../../public/userReview.jpg'
+import userReview from '../../../../public/userReview.jpg'
 import Image from 'next/image'
 import { BsFillStarFill } from 'react-icons/bs'
 

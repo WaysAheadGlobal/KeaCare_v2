@@ -167,7 +167,8 @@ model appointments_ {
 }
 
 model applicants {
-  id     Int @id @unique @default(autoincrement())
-  jobId  Int
-  userId Int
+  id          Int @id @unique @default(autoincrement())
+  jobId       Int
+  userId      Int
+  applicantId Int
 }

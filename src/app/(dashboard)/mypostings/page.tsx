@@ -17,7 +17,7 @@ export default function MyPostings() {
             }
         }
         getPostings(sessionStorage.getItem("email"));
-    })
+    }, [])
 
     if (posts.length !== 0) {
         return (

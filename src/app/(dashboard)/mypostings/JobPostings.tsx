@@ -33,7 +33,7 @@ export default function JobPostings({ speciality, postedOn, rate, views, status 
             <div className='flex flex-col gap-2 items-center justify-center'>
                 <p>Job Applicants</p>
                 <p className='text-6xl text-teal-500'>{views}</p>
-                <p className='text-teal-500 underline'>view details</p>
+                <p className='text-teal-500 underline'>View Details</p>
             </div>
             <div className='flex flex-col gap-1 xl:w-[20rem] justify-center'>
                 <button className='p-3 border-[1px] border-black rounded-lg'>Edit/View Details</button>
