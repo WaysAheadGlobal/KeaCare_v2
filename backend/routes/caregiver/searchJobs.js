@@ -9,8 +9,8 @@ async function searchJobs(req, res) {
         const jobs = await prisma.jobs_.findMany({
             where: {
                 speciality: speciality ? speciality : undefined,
-                comfortableWithPets: pet ? !!pet : undefined,
-                rating: {
+                comfortableWithPets: pet ? pet : undefined,
+                hourlyRate: {
                     gte: rate ? rate : undefined
                 },
                 experience: {
