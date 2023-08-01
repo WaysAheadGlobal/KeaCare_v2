@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from '@mui/material';
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import RecommendedCard from '../dashboard/RecommendedCard';
@@ -12,7 +11,7 @@ export default function Applications() {
 
     useEffect(() => {
         async function getApplicantsById() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/getapplicants?jobId=${searchParams.get("id")}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getapplicants?jobId=${searchParams.get("id")}`);
 
             const data = await response.json();
 
@@ -24,7 +23,7 @@ export default function Applications() {
     useEffect(() => {
         async function getCaregiverById(id: number) {
             if (id) {
-                const response = await fetch(`http://localhost:3004/keacare/api/caregiver/getCaregiverInfo?id=${id}`, {
+                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${id}`, {
                     next: {
                         revalidate: 10
                     }
@@ -44,7 +43,7 @@ export default function Applications() {
         <section className='flex flex-row flex-wrap gap-[1rem] justify-center p-[2rem]'>
             {
                 applicantsData.map((applicant: any) => {
-                    return <RecommendedCard caregiver={applicant} />
+                    return <RecommendedCard key={applicant?.id} caregiver={applicant} />
                 })
             }
         </section>

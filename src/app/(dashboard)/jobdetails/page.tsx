@@ -9,7 +9,7 @@ export default function JobDetails() {
 
     useEffect(() => {
         async function getJobById() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`);
 
             const data = await response.json();
 
