@@ -77,8 +77,6 @@ export default function PostJob() {
 
                 });
 
-                console.log(bodyContent);
-
                 const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/postjob", {
                     method: "POST",
                     headers: {

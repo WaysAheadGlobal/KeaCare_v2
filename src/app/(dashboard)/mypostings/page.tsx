@@ -27,7 +27,7 @@ export default function MyPostings() {
                 <div className='mt-8 flex flex-row flex-wrap xl:flex-col gap-5 items-center justify-center'>
                     {
                         posts.map(post => {
-                            return <JobPostings key={post?.id} postedOn={post?.createdOn} rate={post?.hourlyRate} speciality={post?.speciality} views={post?.responses} status={post?.status} />
+                            return <JobPostings key={post?.id} id={post?.id} postedOn={post?.createdOn} rate={post?.hourlyRate} speciality={post?.speciality} views={post?.responses} status={post?.status} />
                         })
                     }
                 </div>

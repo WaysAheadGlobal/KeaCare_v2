@@ -15,8 +15,10 @@ import { IoChatbubbles, IoLanguage } from 'react-icons/io5'
 import Review from '@/app/(dashboard)/details/Review'
 import RecommendedCard from '@/app/(dashboard)/dashboard/RecommendedCard'
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export default function Details() {
+    const router = useRouter();
     const [caregivers, setCaregivers] = useState<any>([]);
     const [caregiver, setCaregiver] = useState<any>();
     const searchParams = useSearchParams();
@@ -53,10 +55,12 @@ export default function Details() {
     return (
         <section className='md:flex md:flex-col items-center px-[1rem] lg:px-[5rem]'>
             <section className='flex flex-col gap-3 mt-5 mb-5 lg:mb-0'>
-                <Link href={"/dashboard"} className='self-start text-teal-500 font-semibold flex gap-2 items-center justify-center hover:underline'>
+                <p className='self-start cursor-pointer text-teal-500 font-semibold flex gap-2 items-center justify-center hover:underline' onClick={() => {
+                    router.back();
+                }}>
                     <BsArrowLeft />
-                    Back to Search Results
-                </Link>
+                    Back
+                </p>
                 <div className='flex flex-col lg:flex-row gap-[2rem] lg:gap-[5rem] w-full'>
                     <div className='flex flex-col gap-5'>
                         <Image src={caregiver?.imageUrl} alt='caregiver' width={caregiverPerson.width} height={caregiverPerson.height} className='w-[35rem] h-[30rem] rounded-lg object-cover object-center' />

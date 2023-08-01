@@ -14,6 +14,8 @@ const payment = require("./payment");
 const bodyParser = require("body-parser");
 const webHook = require("./events");
 const setSubscription = require("./setSubscription");
+const getJobById = require("./getJobById");
+const getApplicantsById = require("./getApplicants");
 
 const CareseekerRouter = Router();
 
@@ -32,5 +34,7 @@ CareseekerRouter.get("/getproducts", getProducts);
 CareseekerRouter.post("/payment", payment);
 CareseekerRouter.post("/webhook", bodyParser.raw({ type: 'application/json' }), webHook);
 CareseekerRouter.post("/setSubcription", setSubscription);
+CareseekerRouter.get("/getjob", getJobById);
+CareseekerRouter.get("/getapplicants", getApplicantsById);
 
 module.exports = CareseekerRouter;

@@ -1,6 +1,10 @@
 "use client"
 
+import UserTypeContext from "@/context/UserType";
+import { useContext } from "react";
+
 export default function Card({ price, heading, id, duration }: { price: string, heading: string, id: string, duration: string }) {
+    const { setUserType } = useContext(UserTypeContext);
     return (
         <>
             <div className='rounded-xl w-[20rem] p-5 flex flex-col gap-10 transition-shadow shadow-lg hover:shadow-2xl bg-white'>
@@ -15,6 +19,12 @@ export default function Card({ price, heading, id, duration }: { price: string, 
                 </div>
                 <button className='border-2 hover:border-teal-500 hover:text-teal-500 hover:bg-white border-white bg-teal-500 text-white px-5 py-3 rounded-lg' onClick={async (e) => {
                     e.preventDefault();
+                    if (!sessionStorage.getItem("email")) {
+                        (document.getElementById("login") as HTMLDialogElement).showModal();
+                        setUserType("careseeker");
+                        sessionStorage.setItem("userType", "careseeker");
+                        return;
+                    }
                     sessionStorage.setItem("planType", heading);
 
                     const body = JSON.stringify({
