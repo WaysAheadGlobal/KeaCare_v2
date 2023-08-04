@@ -329,7 +329,7 @@ export default function JobDetails() {
                             Just to let you know that you will not be charged anything to post this job. However, based on your requirements your total cost for this job after finalizing the appropriate caregiver will be approximately <span className='text-red-500 font-normal text-lg'>${rate * selected.length * 1}</span>
                         </p>
                         <p className='text-xs italic leading-[2rem]'>*Costs are calculated based on the values that you provide on hourly basis.</p>
-                        <button className='bg-teal-500 text-white px-5 py-3 rounded-lg'>Update this Job</button>
+                        <button disabled className='bg-teal-500 text-white px-5 py-3 rounded-lg'>Update this Job</button>
                     </section>
                 </form>
             </section>
