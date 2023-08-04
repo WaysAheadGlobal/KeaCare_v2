@@ -48,7 +48,7 @@ export default function JobDetails() {
 
     return (
         <>
-            <div>{JSON.stringify(job)}</div>
+            {/* <div>{JSON.stringify(job)}</div> */}
             <section className='relative'>
                 <div className='sticky top-0 bg-transparent h-[1rem]'>
                     <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
