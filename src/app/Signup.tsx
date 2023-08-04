@@ -19,6 +19,7 @@ export default function Signup() {
         translate_: "-translate-y-96",
         key: 0
     });
+    const [Otp, setOtp] = useState<string>("");
 
     return (
         <dialog id="signup" className='rounded-lg backdrop:bg-black backdrop:bg-opacity-70 p-0'>
@@ -108,7 +109,7 @@ export default function Signup() {
                                                 translate_: "translate-y-0",
                                                 key: alert.key + 1
                                             });
-                                            sessionStorage.setItem("otp", data?.otp.toString());
+                                            setOtp(data?.otp.toString());
                                         }
                                     } catch (error) {
                                         setAlert({
@@ -149,11 +150,19 @@ export default function Signup() {
                                         dialog.close();
                                     });
                                     sessionStorage.setItem("email", email.value);
+                                    sessionStorage.setItem("otp", Otp);
                                     if (userType === 'caregiver') {
                                         router.push("/caregiver/registration");
                                     } else {
                                         router.push("/pricing");
                                     }
+                                } else {
+                                    setAlert({
+                                        type: "danger",
+                                        message: "Invalid OTP. Please try again",
+                                        translate_: "translate-y-0",
+                                        key: alert.key + 1
+                                    });
                                 }
                             }}>Sign Up</button>
                     </div>

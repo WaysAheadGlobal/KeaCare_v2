@@ -19,6 +19,7 @@ export default function Login() {
         translate_: "-translate-y-96",
         key: 0
     });
+    const [Otp, setOtp] = useState<string>("");
 
     return (
         <dialog id="login" className='rounded-lg backdrop:bg-black backdrop:bg-opacity-70 p-0'>
@@ -73,11 +74,19 @@ export default function Login() {
                                 dialog.close();
                             });
                             sessionStorage.setItem("email", data?.email.toString());
+                            sessionStorage.setItem("otp", Otp);
                             if (userType === "careseeker") {
                                 router.push("/dashboard");
                             } else {
                                 router.push("/caregiver/account");
                             }
+                        } else {
+                            setAlert({
+                                type: "danger",
+                                message: "Invalid OTP. Please try again",
+                                translate_: "translate-y-0",
+                                key: alert.key + 1
+                            });
                         }
                     }}>
                         <div className='flex flex-col gap-1'>
@@ -118,7 +127,7 @@ export default function Login() {
                                 const bodyContent = JSON.stringify({
                                     "email": email.value
                                 });
-    
+
                                 const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/login/otp`, {
                                     method: "POST",
                                     headers: {
@@ -126,7 +135,7 @@ export default function Login() {
                                     },
                                     body: bodyContent
                                 });
-    
+
                                 const data: Otp = await response.json();
                                 if (data.otp) {
                                     setAlert({
@@ -135,7 +144,7 @@ export default function Login() {
                                         translate_: "translate-y-0",
                                         key: alert.key + 1
                                     });
-                                    sessionStorage.setItem("otp", data?.otp.toString());
+                                    setOtp(data?.otp.toString());
                                 }
                             } catch (error) {
                                 setAlert({
@@ -143,7 +152,7 @@ export default function Login() {
                                     message: "Couldn't send OTP please check your mail or try after some time.",
                                     translate_: "translate-y-0",
                                     key: alert.key + 1
-                                });                          
+                                });
                             }
 
                         }}>Send OTP</button>

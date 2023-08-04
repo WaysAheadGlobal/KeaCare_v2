@@ -77,19 +77,19 @@ export default function Footer() {
                     <p className='text-3xl font-semibold mb-5'>Social</p>
                     <ul className='flex flex-col gap-3'>
                         <li>
-                            <Link href={'https://www.facebook.com/profile.php?id=100089051234163'} target='_blank' className='flex gap-3 items-center justify-start'>
+                            <Link href={'https://www.facebook.com/KeaCareCanada'} target='_blank' className='flex gap-3 items-center justify-start'>
                                 <ImFacebook2 />
                                 Facebook
                             </Link>
                         </li>
                         <li>
-                            <Link href={'http://twitter.com/'} target='_blank' className='flex gap-3 items-center justify-start'>
+                            <Link href={'#'} target='_blank' className='flex gap-3 items-center justify-start'>
                                 <FaTwitterSquare />
                                 Twitter
                             </Link>
                         </li>
                         <li>
-                            <Link href={'http://instagram.com/'} target='_blank' className='flex gap-3 items-center justify-start'>
+                            <Link href={'https://www.instagram.com/kea.care/'} target='_blank' className='flex gap-3 items-center justify-start'>
                                 <BsInstagram />
                                 Instagram
                             </Link>
