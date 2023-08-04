@@ -11,7 +11,7 @@ import multitaskIcon from '../../../../public/multitaskIcon.png'
 import petsIcon from '../../../../public/petsIcon.png'
 import { ImLocation } from 'react-icons/im'
 import { MdOutlineReviews } from 'react-icons/md'
-import { IoChatbubbles, IoLanguage } from 'react-icons/io5'
+import { IoChatbubbles, IoLanguage, IoAdd } from 'react-icons/io5'
 import Review from '@/app/(dashboard)/details/Review'
 import RecommendedCard from '@/app/(dashboard)/dashboard/RecommendedCard'
 import { useSearchParams } from 'next/navigation'
@@ -171,7 +171,11 @@ export default function Details() {
             </section>
             <hr className='h-[2px] bg-gray-300 w-full' />
             <section className='grid grid-cols-1 lg:grid-cols-2 grid-rows-[auto] gap-5 my-5 px-[1rem] max-w-[75rem]'>
-                <h1 className='text-3xl font-bold text-teal-400 lg:col-[1/3]'>Reviews</h1>
+                <h1 className='text-3xl font-bold text-teal-400 lg:col-[1/2]'>Reviews</h1>
+                <h2 className='justify-self-end flex items-center gap-2 text-teal-500 hover:underline focus:underline'>
+                    <IoAdd className='text-xl' />
+                    Write a Review
+                </h2>
                 <Review />
                 <Review />
                 <Review />
