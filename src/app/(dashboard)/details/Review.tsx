@@ -1,26 +1,21 @@
 import React from 'react'
-import userReview from '../../../../public/userReview.jpg'
 import Image from 'next/image'
-import { BsFillStarFill } from 'react-icons/bs'
+import { BsStarFill } from 'react-icons/bs'
 
-export default function Review() {
+export default function Review({ review }: { review: any }) {
     return (
-        <div className='flex flex-col lg:flex-row gap-3 p-3 w-full bg-[#e5e5e5] rounded-lg shadow-lg'>
-            <Image src={userReview.src} width={userReview.width} height={userReview.height} alt="User Review" className='rounded-full aspect-square w-[10rem]' />
-            <div className='flex flex-col gap-2 items-stretch justify-center'>
-                <div className='flex flex-row justify-between items-center'>
-                    <div>
-                        <p>Sam Anderson</p>
-                    </div>
-                    <div>
-                        <BsFillStarFill className='text-red-500' />
-                    </div>
+        <div className='p-[1rem] w-full md:w-[25rem] flex flex-col gap-[1.5rem] bg-teal-500 bg-opacity-50 rounded-lg hover:shadow-lg transition-shadow'>
+            <div className='flex gap-5 items-center justify-start'>
+                <Image src={review.careseekerImageUrl} alt={review.fname + " " + review.lname} width={100} height={100} className='w-[4rem] aspect-square rounded-full object-cover object-top' />
+                <p className='font-bold'>{review.fname + " " + review.lname}</p>
+                <div className='flex-grow'></div>
+                <div className=' flex gap-1 text-red-500 items-center justify-center'>
+                    <p className='text-xl'>{review.rating}</p>
+                    <BsStarFill />
                 </div>
-                <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim laborum nam, suscipit nesciunt quod obcaecati, fugiat dolores a sint in repellendus. Numquam vel itaque placeat
-                </p>
-                <p className='text-teal-500 underline font-semibold'>Learn More</p>
             </div>
+            <p>{review.review?.substring(0, 200)}</p>
+
         </div>
     )
 }

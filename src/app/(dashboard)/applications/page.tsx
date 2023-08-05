@@ -39,13 +39,21 @@ export default function Applications() {
         }
     }, [applicants])
 
-    return (
-        <section className='flex flex-row flex-wrap gap-[1rem] justify-center p-[2rem]'>
-            {
-                applicantsData.map((applicant: any) => {
-                    return <RecommendedCard key={applicant?.id} caregiver={applicant} />
-                })
-            }
-        </section>
-    )
+    if (applicants.length !== 0) {
+        return (
+            <section className='flex flex-row flex-wrap gap-[1rem] justify-center p-[2rem]'>
+                {
+                    applicantsData.map((applicant: any) => {
+                        return <RecommendedCard key={applicant?.id} caregiver={applicant} />
+                    })
+                }
+            </section>
+        )
+    } else {
+        return (
+            <section className='flex items-center justify-center h-[40rem]'>
+                <p className='text-lg text-slate-400'>No Applications Yet.</p>
+            </section>
+        )
+    }
 }

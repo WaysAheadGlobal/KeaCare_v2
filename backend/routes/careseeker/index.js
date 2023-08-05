@@ -16,6 +16,7 @@ const webHook = require("./events");
 const setSubscription = require("./setSubscription");
 const getJobById = require("./getJobById");
 const getApplicantsById = require("./getApplicants");
+const { postReview, getReviews, updateReview } = require("./review");
 
 const CareseekerRouter = Router();
 
@@ -36,5 +37,8 @@ CareseekerRouter.post("/webhook", bodyParser.raw({ type: 'application/json' }), 
 CareseekerRouter.post("/setSubcription", setSubscription);
 CareseekerRouter.get("/getjob", getJobById);
 CareseekerRouter.get("/getapplicants", getApplicantsById);
+CareseekerRouter.post("/review", body("email").trim().isEmail(), postReview);
+CareseekerRouter.put("/review", body("email").trim().isEmail(), updateReview);
+CareseekerRouter.get("/review", getReviews);
 
 module.exports = CareseekerRouter;

@@ -126,7 +126,7 @@ model caregivers_ {
 model jobs_ {
   id                  Int      @id @unique @default(autoincrement())
   userId              Int
-  imageUrl            String?
+  imageUrl            String?  @db.VarChar(500)
   additionalService   String   @db.VarChar(100)
   age                 String   @db.VarChar(100)
   availability        Int
@@ -172,4 +172,15 @@ model applicants {
   jobId       Int
   userId      Int
   applicantId Int
+}
+
+model reviews {
+  id                 Int    @id @unique @default(autoincrement())
+  careseekerId       Int
+  fname              String
+  lname              String
+  careseekerImageUrl String @db.VarChar(500)
+  caregiverId        Int
+  review             String @db.VarChar(10000)
+  rating             String
 }
