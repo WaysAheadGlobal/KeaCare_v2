@@ -277,7 +277,7 @@ export default function Details() {
                 }
                 <div className='col-[1/3] space-y-2'>
                     <h4 className='font-semibold text-xl'>Other Reviews and Ratings</h4>
-                    <div className='flex gap-[1rem]'>
+                    <div className='flex flex-col md:flex-row gap-[1rem]'>
                         {
                             reviews.otherReviews.length !== 0 ? reviews.otherReviews?.map((review: any) => <Review key={review.id} review={review} />) : <p className='text-lg text-slate-400'>No Reviews Yet.</p>
                         }
