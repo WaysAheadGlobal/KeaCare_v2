@@ -1,4 +1,3 @@
-const { FUNCTIONS_CONFIG_MANIFEST } = require("next/dist/shared/lib/constants");
 const nodemailer = require("nodemailer");
 
 /* const transporter = nodemailer.createTransport({
