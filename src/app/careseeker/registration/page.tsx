@@ -12,7 +12,7 @@ export default function Registration() {
     useEffect(() => {
         setEmail(sessionStorage.getItem("email")?.toString());
     }, []);
-    useEffect(() => {
+    /* useEffect(() => {
         const planType = sessionStorage.getItem("planType");
         async function setSubscription() {
             if (searchParams.get("completed") === "true") {
@@ -34,7 +34,7 @@ export default function Registration() {
         if (planType) {
             setSubscription();
         }
-    }, [])
+    }, []) */
 
     return (
         <form className='pb-20' onSubmit={async (e) => {

@@ -42,9 +42,6 @@ export default function JobDetails() {
         getJobById();
     }, [])
 
-    useEffect(() => {
-        console.log(job);
-    }, [job])
 
     return (
         <>

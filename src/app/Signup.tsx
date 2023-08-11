@@ -124,7 +124,7 @@ export default function Signup() {
                         </div>
                     </form>
                     <div className='flex flex-col gap-3 items-center justify-start mt-3'>
-                        <input type='text' placeholder='Enter OTP' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none self-stretch' />
+                        <input type='text' placeholder='Enter OTP' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none self-stretch' autoComplete='off' />
                         <button className='py-[0.8rem] px-8 bg-teal-500 rounded-lg text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500'
                             onClick={async (e) => {
                                 const email = document.getElementById("email") as HTMLInputElement;

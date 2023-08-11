@@ -83,12 +83,6 @@ export default function Footer() {
                             </Link>
                         </li>
                         <li>
-                            <Link href={'#'} target='_blank' className='flex gap-3 items-center justify-start'>
-                                <FaTwitterSquare />
-                                Twitter
-                            </Link>
-                        </li>
-                        <li>
                             <Link href={'https://www.instagram.com/kea.care/'} target='_blank' className='flex gap-3 items-center justify-start'>
                                 <BsInstagram />
                                 Instagram

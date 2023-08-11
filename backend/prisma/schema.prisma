@@ -148,23 +148,15 @@ model jobs_ {
 }
 
 model appointments_ {
-  id                Int               @id @unique @default(autoincrement())
-  userId            Int
-  careGiverId       Int
-  name              String            @db.VarChar(500)
-  careGiverImageUrl String            @db.VarChar(500)
-  pricePerHour      Int
-  rating            Int
-  reviews           Int
-  speciality        String            @db.VarChar(100)
-  totalPrice        Int
-  jobDateStart      String            @db.VarChar(100)
-  jobDateEnd        String            @db.VarChar(500)
-  time              Time
-  status            ApplicationStatus
-  created_on        DateTime          @default(now())
-  modified_on       DateTime          @updatedAt
-  cancelReason      String            @db.VarChar(500)
+  id           Int               @id @unique @default(autoincrement())
+  careseekerId Int
+  caregiverId  Int
+  totalPrice   Float
+  date         String            @db.VarChar(100)
+  time         String
+  status       ApplicationStatus
+  created_on   DateTime          @default(now())
+  modified_on  DateTime          @updatedAt
 }
 
 model applicants {
@@ -175,12 +167,12 @@ model applicants {
 }
 
 model reviews {
-  id                 Int    @id @unique @default(autoincrement())
+  id                 Int     @id @unique @default(autoincrement())
   careseekerId       Int
-  fname              String
-  lname              String
-  careseekerImageUrl String @db.VarChar(500)
+  //fname              String
+  //lname              String
+  //careseekerImageUrl String? @db.VarChar(500)
   caregiverId        Int
-  review             String @db.VarChar(10000)
+  review             String  @db.VarChar(10000)
   rating             String
 }

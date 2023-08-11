@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import caregiverPerson from '../../../../public/caregiverPerson.jpg'
-import { BsCalendarCheck, BsCalendar2Week, BsCalendar3Week, BsArrowLeft, BsStarFill, BsStar } from 'react-icons/bs'
+import { BsCalendarCheck, BsCalendar2Week, BsCalendar3Week, BsArrowLeft, BsStarFill } from 'react-icons/bs'
 import specialityIcon from '../../../../public/specialityIcon.png'
 import experienceIcon from '../../../../public/experienceIcon.png'
 import multitaskIcon from '../../../../public/multitaskIcon.png'
@@ -16,6 +16,8 @@ import Review from '@/app/(dashboard)/details/Review'
 import RecommendedCard from '@/app/(dashboard)/dashboard/RecommendedCard'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Alert from '@/app/Alert'
+import Appointment from './Appointment'
+import { Divider, Rating } from '@mui/material'
 
 export default function Details() {
     const router = useRouter();
@@ -121,14 +123,10 @@ export default function Details() {
                         }}>
                         <div>
                             <p>Rate this Caregiver.</p>
-                            <div className="rating">
-                                <input type="radio" name="" className="hidden mask mask-star-2 bg-yellow-400" />
-                                <input type="radio" name="rating" value="1" className="mask mask-star-2 bg-yellow-400" defaultChecked />
-                                <input type="radio" name="rating" value="2" className="mask mask-star-2 bg-yellow-400" />
-                                <input type="radio" name="rating" value="3" className="mask mask-star-2 bg-yellow-400" />
-                                <input type="radio" name="rating" value="4" className="mask mask-star-2 bg-yellow-400" />
-                                <input type="radio" name="rating" value="5" className="mask mask-star-2 bg-yellow-400" />
-                            </div>
+                            <Rating
+                                name="rating"
+                                value={0}
+                            />
                         </div>
                         <div className='space-y-1 w-full h-full'>
                             <p>Write a Review.</p>
@@ -186,7 +184,7 @@ export default function Details() {
                                 <p className='text-red-500 text-2xl font-bold'>${caregiver?.rate} <span className='text-sm font-light text-black'>(per hour)</span></p>
                             </div>
                         </div>
-                        <p className=''>{caregiver?.bio}</p>
+                        <p>{caregiver?.bio}</p>
                         <p className='font-semibold'>Other Information</p>
                         <div className='flex flex-row gap-[5rem]'>
                             <div className='flex flex-col gap-2 p-2'>
@@ -241,7 +239,19 @@ export default function Details() {
                             </div>
                         </div>
                         <div className='flex flex-col md:flex-row gap-3 justify-between w-full'>
-                            <button className='border-[1px] rounded-lg border-black px-5 py-3 flex items-center justify-center gap-3'>
+                            <button className='bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-all duration-300 px-5 py-3 flex items-center justify-center gap-3' onClick={() => {
+                                if (document.getElementById("appointments")?.classList.contains("h-0")) {
+                                    document.getElementById("appointments")?.classList.toggle("relative");
+                                    document.getElementById("appointments")?.classList.toggle("-z-50");
+                                    document.getElementById("appointments")?.classList.toggle("h-0");
+                                    setTimeout(() => document.getElementById("appointments")?.classList.toggle("opacity-0"), 200);
+                                } else {
+                                    document.getElementById("appointments")?.classList.toggle("opacity-0");
+                                    document.getElementById("appointments")?.classList.toggle("relative");
+                                    document.getElementById("appointments")?.classList.toggle("-z-50");
+                                    setTimeout(() => document.getElementById("appointments")?.classList.toggle("h-0"), 200);
+                                }
+                            }}>
                                 <BsCalendar3Week className="text-xl" />
                                 Book an Appointment
                             </button>
@@ -253,7 +263,11 @@ export default function Details() {
                     </div>
                 </div>
             </section>
-            <hr className='h-[2px] bg-gray-300 w-full' />
+            <section id="appointments" className="opacity-0 h-0 relative -z-50 transition-all duration-300 self-start w-full">
+                <Divider />
+                <Appointment price={caregiver?.rate} id={Number(searchParams.get("id"))} />
+            </section>
+            <hr className='h-[1.5px] bg-gray-300 w-full' />
             <section className='grid grid-cols-1 lg:grid-cols-2 grid-rows-[auto] gap-5 my-5 px-[1rem] w-full'>
                 <div className='lg:col-[1/3] flex justify-between'>
                     <h1 className='text-3xl font-semibold text-teal-400'>Reviews</h1>

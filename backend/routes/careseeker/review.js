@@ -1,38 +1,28 @@
 const { validationResult } = require('express-validator');
-const { PrismaClient } = require("@prisma/client");
+const connection = require("../../db/connection");
 
-const prisma = new PrismaClient();
-
-async function postReview(req, res) {
+function postReview(req, res) {
     const errors = validationResult(req);
     try {
         if (!errors.isEmpty() && errors.errors[0].path === 'email') {
             res.status(400).send('Invalid email address. Please try again.');
         } else {
             const { email, rating, review, caregiverId } = req.body;
-            const careseeker = await prisma.careseekers_.findUnique({
-                where: {
-                    email: email,
+
+            connection.query(`SELECT id FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
+                if (error) throw error;
+
+                if (results.length === 0) {
+                    res.status(401).send("Invalid Credentials");
+                } else {
+                    const careseeker = results[0];
+
+                    connection.query(`INSERT INTO reviews (careseekerId, caregiverId, review, rating) VALUES (${careseeker.id}, ${caregiverId}, '${review}', '${rating}')`, (err, results_) => {
+                        if (err) throw err;
+                        res.status(200).send({ success: true });
+                    });
                 }
             });
-
-            if (careseeker) {
-                const _review = await prisma.reviews.create({
-                    data: {
-                        fname: careseeker.fname,
-                        lname: careseeker.lname,
-                        careseekerId: careseeker.id,
-                        careseekerImageUrl: careseeker.imageUrl,
-                        review: review,
-                        rating: rating,
-                        caregiverId: parseInt(caregiverId)
-                    }
-                })
-                res.status(200).json({ success: true });
-            }
-            else {
-                res.status(401).send({ "error": "Invalid Credentials" });
-            }
         }
     } catch (error) {
         console.log(error);
@@ -43,28 +33,25 @@ async function postReview(req, res) {
 async function getReviews(req, res) {
     const { caregiverId, email } = req.query;
 
-    const careseeker = await prisma.careseekers_.findUnique({
-        where: {
-            email: email,
+    connection.query(`SELECT id FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
+        if (error) throw error;
+
+        if (results.length === 0) {
+            res.status(401).send("Invalid Credentials");
+        } else {
+            const careseeker = results[0];
+
+            connection.query(`SELECT careseekers_.fname, careseekers_.lname, careseekers_.imageUrl, reviews.* FROM reviews INNER JOIN careseekers_ WHERE reviews.caregiverId = ${caregiverId}`, (err, results_) => {
+                if (err) throw err;
+                res.status(200).json({
+                    userReview: {
+                        ...results_.filter(review => review.careseekerId === careseeker.id)[0]
+                    },
+                    otherReviews: results_.filter(review => review.careseekerId !== careseeker.id)
+                });
+            });
         }
     });
-
-    if (caregiverId) {
-        const reviews = await prisma.reviews.findMany({
-            where: {
-                caregiverId: parseInt(caregiverId)
-            }
-        });
-
-        res.status(200).json({
-            userReview: {
-                ...reviews.filter(review => review.careseekerId === careseeker.id)[0]
-            },
-            otherReviews: reviews.filter(review => review.careseekerId !== careseeker.id)
-        });
-    } else {
-        res.status(401).send({ "error": "Invalid Credentials" });
-    }
 }
 
 async function updateReview(req, res) {
@@ -74,28 +61,25 @@ async function updateReview(req, res) {
             res.status(400).send('Invalid email address. Please try again.');
         } else {
             const { email, rating, review, caregiverId } = req.body;
-            const careseeker = await prisma.careseekers_.findUnique({
-                where: {
-                    email: email,
+
+            connection.query(`SELECT id FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
+                if (error) throw error;
+
+                if (results.length === 0) {
+                    res.status(401).send("Invalid Credentials");
+                } else {
+                    const careseeker = results[0];
+
+                    connection.query(`UPDATE reviews
+                                        SET review = '${review}',
+                                        rating = '${rating}'
+                                        WHERE careseekerId = ${careseeker.id} AND caregiverId = ${caregiverId}`,
+                        (err, results_) => {
+                            if (err) throw err;
+                            res.status(200).json({ success: true });
+                        });
                 }
             });
-
-            if (careseeker) {
-                const _review = await prisma.reviews.updateMany({
-                    where: {
-                        careseekerId: careseeker.id,
-                        caregiverId: parseInt(caregiverId)
-                    },
-                    data: {
-                        review: review,
-                        rating: rating,
-                    }
-                })
-                res.status(200).json({ success: true });
-            }
-            else {
-                res.status(401).send({ "error": "Invalid Credentials" });
-            }
         }
     } catch (error) {
         console.log(error);

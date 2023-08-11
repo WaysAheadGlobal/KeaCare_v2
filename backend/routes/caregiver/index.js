@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router, json } = require("express");
 const { Login, LoginOTP } = require("./login");
 const { body, query } = require("express-validator");
 const { Register } = require("./registration");
@@ -11,6 +11,8 @@ const searchJobs = require("./searchJobs");
 
 
 const CaregiverRouter = Router();
+
+CaregiverRouter.use(json({ limit: "5MB" }));
 
 CaregiverRouter.post("/signup/otp", body("email").trim().isEmail(), SignupOTP);
 CaregiverRouter.post("/signup", body("email").trim().isEmail(), Signup);
