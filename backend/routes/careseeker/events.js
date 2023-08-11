@@ -12,7 +12,7 @@ async function webHook(req, res) {
     let event;
 
     try {
-        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_ENDPOINT_SECRET);
+        event = stripe.webhooks.constructEvent(JSON.stringify(req.body), sig, process.env.STRIPE_ENDPOINT_SECRET);
     } catch (err) {
         console.log(`Error message: ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);

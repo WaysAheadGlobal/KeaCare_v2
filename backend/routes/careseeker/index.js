@@ -28,6 +28,8 @@ CareseekerRouter.use((req, res, next) => {
     }
 });
 
+/* CareseekerRouter.post("/webhook", raw({ type: 'application/json' }), webHook); */
+
 CareseekerRouter.post("/webhook", webHook);
 
 /* CareseekerRouter.use(json({ limit: "5MB" })); */
