@@ -80,7 +80,7 @@ export default function Details() {
             <div className='sticky top-0 bg-transparent w-full h-[1rem]'>
                 <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
             </div>
-            <dialog key={searchParams.get("id")} id="reviewDialogBox" className='p-1 rounded-lg w-full md:max-w-[35rem]'>
+            <dialog key={searchParams.get("id") + "dialog"} id="reviewDialogBox" className='p-1 rounded-lg w-full md:max-w-[35rem]'>
                 <div className='flex flex-col w-full'>
                     <button className="p-2 self-end text-lg rounded-full hover:bg-black hover:bg-opacity-10" onClick={() => {
                         (document.getElementById("reviewDialogBox") as HTMLDialogElement).close();
@@ -112,6 +112,7 @@ export default function Details() {
                             const data = await response.json();
                             if (data?.success) {
                                 setReview({});
+                                (document.getElementById("review") as HTMLTextAreaElement).value = "";
                                 (document.getElementById("reviewDialogBox") as HTMLDialogElement).close();
                                 setAlert({
                                     type: "success",
@@ -125,12 +126,12 @@ export default function Details() {
                             <p>Rate this Caregiver.</p>
                             <Rating
                                 name="rating"
-                                value={0}
+                                value={review?.rating ? parseInt(review.rating) : 0}
                             />
                         </div>
                         <div className='space-y-1 w-full h-full'>
                             <p>Write a Review.</p>
-                            <textarea name="review" rows={10} className="border-2 p-[0.75rem] border-teal-500 hover:ring-2 hover:ring-teal-300 focus:ring-2 focus:ring-teal-300 outline-none rounded-lg w-full h-[10rem]" placeholder="Write a Review" required></textarea>
+                            <textarea name="review" id="review" rows={10} className="border-2 p-[0.75rem] border-teal-500 hover:ring-2 hover:ring-teal-300 focus:ring-2 focus:ring-teal-300 outline-none rounded-lg w-full h-[10rem]" placeholder="Write a Review" required></textarea>
                         </div>
                         <button className='bg-teal-500 text-white px-5 py-2 rounded-lg outline-none hover:bg-white hover:text-teal-500 hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline-teal-500'>Post Review</button>
                     </form>
