@@ -7,7 +7,7 @@ export default function Loading() {
             marginY: 5
         }}>
             <section className='flex flex-col gap-10'>
-                <div className='flex flex-row items-center justify-center gap-5 shadow-lg p-[1rem]'>
+                <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
                     <Skeleton variant="rounded" animation="wave" width={300} height={300} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />
@@ -29,7 +29,7 @@ export default function Loading() {
                         }} />
                     </div>
                 </div>
-                <div className='flex flex-row items-center justify-center gap-5 shadow-lg p-[1rem]'>
+                <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
                     <Skeleton variant="rounded" animation="wave" width={300} height={300} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />
@@ -51,7 +51,7 @@ export default function Loading() {
                         }} />
                     </div>
                 </div>
-                <div className='flex flex-row items-center justify-center gap-5 shadow-lg p-[1rem]'>
+                <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
                     <Skeleton variant="rounded" animation="wave" width={300} height={300} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />
@@ -73,7 +73,7 @@ export default function Loading() {
                         }} />
                     </div>
                 </div>
-                <div className='flex flex-row items-center justify-center gap-5 shadow-lg p-[1rem]'>
+                <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
                     <Skeleton variant="rounded" animation="wave" width={300} height={300} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />

@@ -56,7 +56,12 @@ export default function Appointment({ price, id }: { price: number, id: number |
                 </div>
                 <div>
                     <p className='font-bold text-xl'>Select Time</p>
-                    <FormGroup key={date} className='!grid !grid-cols-2 !gap-x-[1rem] md:!gap-x-[3rem] !gap-y-[1rem] !mt-[1rem]'
+                    <FormGroup key={date}
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr",
+                            gridTemplateRows: "auto"
+                        }}
                         onChange={(e) => {
                             if (date) {
                                 if ((e.target as any).checked) {
@@ -83,7 +88,7 @@ export default function Appointment({ price, id }: { price: number, id: number |
                         <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_17_18"} />} label="5 pm to 6 pm" />
                     </FormGroup>
                 </div>
-                <div className='flex flex-col w-full md:max-w-[30rem]'>
+                <div className='flex flex-col w-full md:max-w-[25rem]'>
                     <div className='font-bold text-xl flex justify-between'>
                         <p>Appointment Details</p>
                         <p>Hours</p>
@@ -110,7 +115,13 @@ export default function Appointment({ price, id }: { price: number, id: number |
                         <p>Total Fees: ${price * Time.length}</p>
                     </div>
                     <div className='flex justify-between mt-[1rem]'>
-                        <Button variant='contained' size='large' className='!bg-teal-500 hover:!bg-teal-600' disabled={Time.length === 0}
+                        <Button variant='contained' size='large' disabled={Time.length === 0}
+                            sx={{
+                                backgroundColor: teal[500],
+                                ":hover": {
+                                    backgroundColor: teal[600]
+                                }
+                            }}
                             onClick={async () => {
                                 const body = JSON.stringify({
                                     careseekerEmail: sessionStorage.getItem("email"),

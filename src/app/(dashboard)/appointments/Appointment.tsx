@@ -7,8 +7,8 @@ export default function Appointment({ appointment }: { appointment: any }) {
         "senior_care": "Senior Care"
     };
     return (
-        <div className='flex md:flex-row flex-col gap-5 items-center justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
-            <Image src={appointment?.imageUrl} alt={'appointment'} width={300} height={300} className='rounded-lg' />
+        <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
+            <Image src={appointment?.imageUrl} alt={'appointment'} width={300} height={300} className='rounded-lg w-full md:w-[300px]' />
             <div className='flex-grow space-y-1'>
                 <p className='font-semibold text-lg'>{appointment?.fname + " " + appointment?.lname}</p>
                 <p className='font-bold text-xl mt-[1rem]'>Appointment Details</p>
@@ -16,7 +16,7 @@ export default function Appointment({ appointment }: { appointment: any }) {
                 {
                     appointment.time.split(",").map((t: any) => {
                         const time_ = t.split("_");
-                        return (Number(time_[1]) <= 12) ? <p key={t}>{time_[1]} to {time_[2]} {time_[0]}</p> : <p key={t}>{12 - Number(time_[1])} to {12 - Number(time_[2])} {time_[0]}</p>
+                        return (Number(time_[1]) <= 12) ? <p key={t}>{time_[1]} to {time_[2]} {time_[0]}</p> : <p key={t}>{Number(time_[1]) - 12} to {Number(time_[2]) - 12} {time_[0]}</p>
                     })
                 }
                 <p className='text-xl text-teal-500 font-semibold mt-[2rem]'>Status: {appointment.status}</p>
