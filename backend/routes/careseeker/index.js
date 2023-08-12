@@ -20,19 +20,19 @@ const { appointmentFees, getAppointments } = require("./appointments");
 
 const CareseekerRouter = Router();
 
-CareseekerRouter.use((req, res, next) => {
+/* CareseekerRouter.use((req, res, next) => {
     if (req.originalUrl === '/webhook') {
         next(); // Do nothing with the body because I need it in a raw state.
     } else {
         json({ limit: "5MB" })(req, res, next);  // ONLY do express.json() if the received request is NOT a WebHook from Stripe.
     }
-});
+}); */
 
-/* CareseekerRouter.post("/webhook", raw({ type: 'application/json' }), webHook); */
+CareseekerRouter.post("/webhook", raw({ type: 'application/json' }), webHook);
 
-CareseekerRouter.post("/webhook", webHook);
+/* CareseekerRouter.post("/webhook", webHook); */
 
-/* CareseekerRouter.use(json({ limit: "5MB" })); */
+CareseekerRouter.use(json({ limit: "5MB" }));
 
 CareseekerRouter.post("/signup/otp", body("email").trim().isEmail(), SignupOTP);
 CareseekerRouter.post("/signup", body("email").trim().isEmail(), Signup);
