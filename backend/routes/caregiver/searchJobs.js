@@ -11,7 +11,7 @@ async function searchJobs(req, res) {
                 speciality: speciality ? speciality : undefined,
                 comfortableWithPets: pet ? pet : undefined,
                 hourlyRate: {
-                    gte: rate ? rate : undefined
+                    lte: rate ? rate : undefined
                 },
                 experience: {
                     gte: experience ? experience : undefined

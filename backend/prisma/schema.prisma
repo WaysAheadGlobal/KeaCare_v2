@@ -126,7 +126,6 @@ model caregivers_ {
 model jobs_ {
   id                  Int      @id @unique @default(autoincrement())
   userId              Int
-  imageUrl            String?  @db.VarChar(500)
   additionalService   String   @db.VarChar(100)
   age                 String   @db.VarChar(100)
   availability        Int
