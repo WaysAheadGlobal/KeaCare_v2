@@ -9,14 +9,14 @@ async function searchJobs(req, res) {
 
     connection.query(`
         SELECT jobs_.*, careseekers_.imageUrl, careseekers_.fname, careseekers_.lname FROM jobs_ INNER JOIN careseekers_ WHERE 
-        ${speciality ? `jobs_.speciality = '${speciality}'` : ''} 
-        ${pet ? `AND jobs_.comfortableWithPets = 1` : ''} 
-        ${rate ? `AND jobs_.hourlyRate <= ${rate}` : ''}
-        ${age ? `AND jobs_.age <= ${age}` : ''}
-        ${experience ? `AND jobs_.experience >= ${experience}` : ''}
-        ${languages ? `AND LOCATE('${languages}', jobs_.language) != 0` : ''}
-        ${addservices ? `AND LOCATE('${addservices}', jobs_.additionalService) != 0` : ''}
-        ${rating ? `AND jobs_.rating >= ${rating}` : ''}
+        ${speciality ? `jobs_.speciality = '${speciality} AND '` : ''} 
+        ${pet ? `jobs_.comfortableWithPets = 1 AND ` : ''} 
+        ${rate ? `jobs_.hourlyRate <= ${rate} AND ` : ''}
+        ${age ? `jobs_.age <= ${age} AND ` : ''}
+        ${experience ? `jobs_.experience >= ${experience} AND ` : ''}
+        ${languages ? `LOCATE('${languages}', jobs_.language) != 0 AND ` : ''}
+        ${addservices ? `LOCATE('${addservices}', jobs_.additionalService) != 0 AND ` : ''}
+        ${rating ? `jobs_.rating >= ${rating}` : ''}
         AND careseekers_.id = jobs_.userId
         AND jobs_.status = 'active'
     `, (error, results) => {
