@@ -23,7 +23,6 @@ async function PostJob(req, res) {
                 const newJob = await prisma.jobs_.create({
                     data: {
                         userId: careseeker.id,
-                        imageUrl: careseeker?.imageUrl,
                         additionalService: additionalService,
                         age: age,
                         availability: parseInt(availability),
