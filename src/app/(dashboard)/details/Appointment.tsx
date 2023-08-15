@@ -1,15 +1,17 @@
 "use client"
 
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { teal } from '@mui/material/colors'
-import { Checkbox, FormControlLabel, FormGroup, Button, Divider } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Button, Divider, Alert } from '@mui/material';
 import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
+import AlertContext from './AlertContext'
 
 export default function Appointment({ price, id }: { price: number, id: number | null }) {
     const router = useRouter();
+    const { alert, setAlert } = useContext(AlertContext);
     const [appointment, setAppointment] = useState<{ [key: string]: string[] }>({});
     const [date, setDate] = useState<string>("");
     const [Time, setTime] = useState<string[]>([]);
@@ -129,7 +131,7 @@ export default function Appointment({ price, id }: { price: number, id: number |
                                     price: price * Time.length,
                                     appointment: appointment,
                                 });
-                                const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments", {
+                                const response = await fetch("http://localhost:3004/keacare/api/careseeker/appointments", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
@@ -137,7 +139,14 @@ export default function Appointment({ price, id }: { price: number, id: number |
                                     body: body
                                 });
                                 const data = await response.json();
-                                router.push(data);
+                                if (data?.error) {
+                                    setAlert({
+                                        type: "danger",
+                                        message: data.error,
+                                        translate_: "translate-y-0",
+                                        key: alert.key + 1
+                                    });
+                                } else router.push(data);
                             }}
                         >Confirm</Button>
                         <Button variant='contained' size='large' className='!bg-red-500 hover:!bg-red-600'>Cancel</Button>

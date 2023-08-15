@@ -1,6 +1,6 @@
 const { Stripe } = require('stripe');
 const { sendReceipt, sendAppointment } = require('../../mail/MailService');
-/** const connection = require('../../db/connection'); */
+const connection = require('../../db/connection');
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
@@ -30,7 +30,36 @@ async function webHook(req, res) {
 
         if (type === "appointment") {
             const { appointment, careseekerEmail, caregiverId, price } = event.data.object.metadata;
-            const careseeker = await prisma.careseekers_.findUnique({
+            
+            connection.query(`SELECT id, fname, lname FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
+                if (error) throw error;
+
+                const careseeker = results[0];
+                if (careseeker) {
+                    connection.query(`SELECT id, fname, lname FROM caregivers_ WHERE id = ${caregiverId}`, (err, results_) => {
+                        if (err) throw err;
+
+                        const caregiver = results_[0];
+                        if (caregiver) {
+                            const _appointment = JSON.parse(appointment);
+
+                            for (const key in _appointment) {
+                                connection.query(`INSERT INTO appointments_(totalPrice, time, status, modified_on, careseekerId, caregiverId, date) VALUES (${price}, '${_appointment[key].toString()}', 'Upcoming', NOW(), ${careseeker.id}, ${caregiverId}, '${key}')`, (err_) => {
+                                    if (err_) throw err_;
+                                })
+                            }
+                            sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname);
+                            sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname);
+                            res.status(200).json({ success: true });
+                        } else {
+                            res.status(401).json({ success: false, error: "Invalid Credentials" });
+                        }
+                    })
+                } else {
+                    res.status(401).json({ success: false, error: "Invalid Credentials" });
+                }
+            })
+            /* const careseeker = await prisma.careseekers_.findUnique({
                 select: {
                     id: true,
                     fname: true,
@@ -65,25 +94,7 @@ async function webHook(req, res) {
             } catch (err) {
                 console.log(err);
                 res.status(500).send("Internal Server Error");
-            }
-
-            /** connection.query(`SELECT id FROM careseekers_ WHERE email = '${careseekerEmail}'`, (error, result, fields) => {
-                if (error) throw error;
-                console.log(result[0].id);
-                const _appointment = JSON.parse(appointment);
-                try {
-                    for (const key in _appointment) {
-                        connection.query(`INSERT INTO appointments_ (totalPrice, time, status, created_on, modified_on, careseekerId, date, caregiverId) VALUES (${price}, '${_appointment[key].toString()}', 'Upcoming', NOW(), NOW(), ${result[0].id}, '${key}', ${caregiverId})`, (err) => {
-                            if (err) throw err;
-                        });
-                    }
-
-                    res.status(200).json({ success: true });
-                } catch (err) {
-                    console.error(err);
-                    res.status(500).send("Internal Server Error");
-                }
-            }); */
+            } */
         } else if (type === "subscription") {
             const { planType, planDuration, planPrice, email } = event.data.object.metadata;
 

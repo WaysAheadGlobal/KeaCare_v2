@@ -18,6 +18,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import Alert from '@/app/Alert'
 import Appointment from './Appointment'
 import { Divider, Rating, Container } from '@mui/material'
+import AlertContext from './AlertContext'
 
 export default function Details() {
     const router = useRouter();
@@ -76,7 +77,7 @@ export default function Details() {
     };
 
     return (
-        <>
+        <AlertContext.Provider value={{ alert, setAlert }}>
             <div className='sticky top-0 bg-transparent w-full h-[1rem]'>
                 <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
             </div>
@@ -318,6 +319,6 @@ export default function Details() {
                     </section>
                 </section>
             </Container>
-        </>
+        </AlertContext.Provider>
     )
 }
