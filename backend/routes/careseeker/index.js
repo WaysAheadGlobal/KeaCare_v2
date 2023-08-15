@@ -16,21 +16,11 @@ const setSubscription = require("./setSubscription");
 const getJobById = require("./getJobById");
 const getApplicantsById = require("./getApplicants");
 const { postReview, getReviews, updateReview } = require("./review");
-const { appointmentFees, getAppointments } = require("./appointments");
+const { appointmentFees, getAppointments, checkDuplicateAppointments } = require("./appointments");
 
 const CareseekerRouter = Router();
 
-/* CareseekerRouter.use((req, res, next) => {
-    if (req.originalUrl === '/webhook') {
-        next(); // Do nothing with the body because I need it in a raw state.
-    } else {
-        json({ limit: "5MB" })(req, res, next);  // ONLY do express.json() if the received request is NOT a WebHook from Stripe.
-    }
-}); */
-
 CareseekerRouter.post("/webhook", raw({ type: 'application/json' }), webHook);
-
-/* CareseekerRouter.post("/webhook", webHook); */
 
 CareseekerRouter.use(json({ limit: "5MB" }));
 
@@ -55,5 +45,6 @@ CareseekerRouter.put("/review", body("email").trim().isEmail(), updateReview);
 CareseekerRouter.get("/review", getReviews);
 CareseekerRouter.post("/appointments", appointmentFees);
 CareseekerRouter.get("/appointments", getAppointments);
+CareseekerRouter.post("/appointments/checkAppointments", checkDuplicateAppointments);
 
 module.exports = CareseekerRouter;

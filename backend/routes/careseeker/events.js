@@ -31,7 +31,7 @@ async function webHook(req, res) {
         if (type === "appointment") {
             const { appointment, careseekerEmail, caregiverId, price } = event.data.object.metadata;
             
-            connection.query(`SELECT id, fname, lname FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
+            /* connection.query(`SELECT id, fname, lname FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
                 if (error) throw error;
 
                 const careseeker = results[0];
@@ -58,8 +58,8 @@ async function webHook(req, res) {
                 } else {
                     res.status(401).json({ success: false, error: "Invalid Credentials" });
                 }
-            })
-            /* const careseeker = await prisma.careseekers_.findUnique({
+            }) */
+            const careseeker = await prisma.careseekers_.findUnique({
                 select: {
                     id: true,
                     fname: true,
@@ -94,7 +94,7 @@ async function webHook(req, res) {
             } catch (err) {
                 console.log(err);
                 res.status(500).send("Internal Server Error");
-            } */
+            }
         } else if (type === "subscription") {
             const { planType, planDuration, planPrice, email } = event.data.object.metadata;
 

@@ -125,28 +125,39 @@ export default function Appointment({ price, id }: { price: number, id: number |
                                 }
                             }}
                             onClick={async () => {
+                                console.log("first");
                                 const body = JSON.stringify({
                                     careseekerEmail: sessionStorage.getItem("email"),
                                     caregiverId: id,
                                     price: price * Time.length,
                                     appointment: appointment,
                                 });
-                                const response = await fetch("http://localhost:3004/keacare/api/careseeker/appointments", {
+                                const response1 = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments/checkAppointments", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
                                     },
                                     body: body
                                 });
-                                const data = await response.json();
-                                if (data?.error) {
+                                const check = await response1.json();
+                                if (check?.success) {
+                                    const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: body
+                                    });
+                                    const data = await response.json();
+                                    router.push(data);
+                                } else {
                                     setAlert({
                                         type: "danger",
-                                        message: data.error,
+                                        message: check?.error,
                                         translate_: "translate-y-0",
                                         key: alert.key + 1
                                     });
-                                } else router.push(data);
+                                }
                             }}
                         >Confirm</Button>
                         <Button variant='contained' size='large' className='!bg-red-500 hover:!bg-red-600'>Cancel</Button>

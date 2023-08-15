@@ -1,56 +1,67 @@
 const { Stripe } = require("stripe");
 const connection = require("../../db/connection");
 
+function checkDuplicateAppointments(req, res) {
+    const { careseekerEmail, appointment } = req.body;
+
+    let counter = 0;
+
+    for (const key in appointment) {
+        appointment[key].forEach(time => {
+            connection.query(`SELECT appointments_.* FROM appointments_ INNER JOIN careseekers_ WHERE appointments_.careseekerId = careseekers_.id AND appointments_.date = '${key}' AND appointments_.time = '${time}' AND careseekers_.email = '${careseekerEmail}'`, (error, results) => {
+                if (error) throw error;
+
+                if (results.length !== 0) {
+                    counter = -999;
+                    res.status(403).json({ error: "Appointment already exists" });
+                } else if (Object.keys(appointment).length === counter) {
+                    res.status(200).json({ success: true });
+                }
+            })
+            if (counter === -999) {
+                return;
+            }
+        })
+        if (counter === -999) {
+            return;
+        }
+        counter++;
+    }
+}
+
 async function appointmentFees(req, res) {
     const stripe = new Stripe(process.env.STRIPE_API_KEY);
 
     const { careseekerEmail, caregiverId, price, appointment } = req.body;
 
-    var flag = 0;
-
-    for (const key in appointment) {
-        connection.query(`SELECT appointments_.* FROM appointments_ INNER JOIN careseekers_ WHERE appointments_.careseekerId = careseekers_.id AND appointments_.date = '${key}' AND appointments_.time = '${appointment[key].toString()}' AND careseekers_.email = '${careseekerEmail}'`, (error, results) => {
-            if (error) throw error;
-
-            if (results.length !== 0) {
-                flag = 1;
-                return;
-            }            
-        })
-    }
-    console.log(flag);
-    if (flag === 0) {
-        const session = await stripe.checkout.sessions.create({
-            billing_address_collection: "auto",
-            metadata: {
-                type: "appointment",
-                caregiverId: caregiverId,
-                careseekerEmail: careseekerEmail,
-                appointment: JSON.stringify(appointment),
-                price: price
-            },
-            line_items: [
-                {
-                    price_data: {
-                        unit_amount: price * 100,
-                        currency: "cad",
-                        product_data: {
-                            name: "Appointment Fees",
-                            description: "Appointment Fees",
-                        },
+    const session = await stripe.checkout.sessions.create({
+        billing_address_collection: "auto",
+        metadata: {
+            type: "appointment",
+            caregiverId: caregiverId,
+            careseekerEmail: careseekerEmail,
+            appointment: JSON.stringify(appointment),
+            price: price
+        },
+        line_items: [
+            {
+                price_data: {
+                    unit_amount: price * 100,
+                    currency: "cad",
+                    product_data: {
+                        name: "Appointment Fees",
+                        description: "Appointment Fees",
                     },
-                    quantity: 1,
-                }
-            ],
-            mode: 'payment',
-            success_url: 'http://localhost:3000/success',
-            cancel_url: 'http://localhost:3000/dashboard'
-        });
-    
-        res.status(200).json(session.url);
-    } else {
-        res.status(403).json({ error: "Appointment already exists" });
-    }
+                },
+                quantity: 1,
+            }
+        ],
+        mode: 'payment',
+        success_url: 'https://keacare.waysdatalabs.com/success',
+        cancel_url: 'https://keacare.waysdatalabs.com/dashboard'
+    });
+
+    res.status(200).json(session.url);
 }
 
 async function getAppointments(req, res) {
@@ -64,4 +75,4 @@ async function getAppointments(req, res) {
     });
 }
 
-module.exports = { appointmentFees, getAppointments };
+module.exports = { appointmentFees, getAppointments, checkDuplicateAppointments };
