@@ -126,7 +126,7 @@ export default function Account() {
                     <div className='flex flex-col'>
                         <span>Gender</span>
                         <select disabled value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'>
-                            <option value={"select"} disabled>Select</option>
+                            <option value={""} disabled>Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
@@ -134,7 +134,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Phone Number</span>
-                        <input required type="text" name='mobile' defaultValue={userInfo?.mobile} className='border-[1px] border-black p-3 rounded-lg' />
+                        <input required type="text" pattern='^[0-9]{10}$' name='mobile' defaultValue={userInfo?.mobile} className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Email</span>
@@ -152,7 +152,7 @@ export default function Account() {
                                 province: e.currentTarget.value
                             })}
                         >
-                            <option value="Select">Select</option>
+                            <option value="">Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
                             <option value="Manitoba" >Manitoba</option>
@@ -174,7 +174,9 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Zip Code</span>
-                        <input required type="text" name='zipcode' defaultValue={userInfo?.zipcode} className='border-[1px] border-black p-3 rounded-lg' />
+                        <input required type="text"
+                            pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
+                            name='zipcode' defaultValue={userInfo?.zipcode} className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='col-[1/3] flex flex-row justify-between'>
                         <button type='submit' className='bg-teal-500 text-white font-semibold px-[3rem] py-[1rem] rounded-xl'>Update</button>

@@ -60,7 +60,9 @@ export default function Signup() {
                         <div className='flex flex-col md:flex-row gap-3 mt-3 items-center justify-start'>
                             <div className='flex flex-col gap-1'>
                                 <span className='text-teal-500'>Zip Code</span>
-                                <input type='text' placeholder='Enter your zip code' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none flex-grow' />
+                                <input type='text' placeholder='Enter your zip code'
+                                    pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
+                                    className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none flex-grow' />
                             </div>
                             <button className='py-[0.8rem] px-8 bg-teal-500 rounded-lg mt-0 md:mt-7 text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500'
                                 onClick={async (e) => {
@@ -129,6 +131,16 @@ export default function Signup() {
                             onClick={async (e) => {
                                 const email = document.getElementById("email") as HTMLInputElement;
                                 const otp_element = e.currentTarget.previousElementSibling as HTMLInputElement;
+
+                                if (!Otp) {
+                                    setAlert({
+                                        type: "danger",
+                                        message: "Invalid OTP. Please try again",
+                                        translate_: "translate-y-0",
+                                        key: alert.key + 1
+                                    });
+                                    return;
+                                }
 
                                 const bodyContent = JSON.stringify({
                                     "email": email.value,

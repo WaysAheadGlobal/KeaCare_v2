@@ -125,7 +125,7 @@ export default function Registration() {
                     <p className='col-[1/3] font-semibold text-2xl self-center md:self-end'>Your Personal Information</p>
                     <div className='flex flex-col items-center justify-center gap-3 col-[1/3] row-[2/3] place-self-center'>
                         <Image src={imageURL} width={defaultUser.width} height={defaultUser.height} alt='Profile Photo' className='rounded-full aspect-square w-[15rem] border-2 border-black' />
-                        <input id="profilePhoto" type="file" accept='image/png, image/jpg, image/jpeg' className='file:bg-teal-500 file:text-white file:border-0 file:px-[1.5rem] file:py-[0.5rem] file:rounded-lg text-opacity-100' onChange={async (e) => {
+                        <input required id="profilePhoto" type="file" accept='image/png, image/jpg, image/jpeg' className='file:bg-teal-500 file:text-white file:border-0 file:px-[1.5rem] file:py-[0.5rem] file:rounded-lg text-opacity-100' onChange={async (e) => {
                             const files = e.currentTarget.files;
                             if (files) {
                                 setImageURL(URL.createObjectURL(files[0]));
@@ -146,7 +146,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender</span>
-                        <select id="gender" className='p-3 border-[1px] border-black  rounded-lg'>
+                        <select id="gender" required className='p-3 border-[1px] border-black  rounded-lg'>
+                            <option value="">Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
@@ -154,7 +155,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Phone Number</span>
-                        <input id="mobile" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
+                        <input id="mobile" required type="text" pattern='^[0-9]{10}$' className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Email</span>
@@ -166,8 +167,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Province</span>
-                        <select id="province" className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="province" required className="border-[1px] p-3 border-black   rounded-lg" >
+                            <option value="">Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
                             <option value="Manitoba">Manitoba</option>
@@ -203,16 +204,16 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Comfortable With Pets</span>
-                        <select id="comfortableWithPets" className='p-3 border-[1px] border-black rounded-lg'>
-                            <option value="Select">Select</option>
+                        <select id="comfortableWithPets" required className='p-3 border-[1px] border-black rounded-lg'>
+                            <option value="">Select</option>
                             <option value="yes">Yes</option>
                             <option value="no">No</option>
                         </select>
                     </div>
                     <div className='flex flex-col'>
                         <span>Type of Care</span>
-                        <select id="speciality" className='p-3 border-[1px] border-black rounded-lg'>
-                            <option value="Select">Select</option>
+                        <select id="speciality" required className='p-3 border-[1px] border-black rounded-lg'>
+                            <option value="">Select</option>
                             <option value="child_care">Child Care</option>
                             <option value="senior_care">Senior Care</option>
                             <option value="child_senior_care">Both</option>
@@ -242,8 +243,8 @@ export default function Registration() {
                     />
                     <div className='flex flex-col'>
                         <span>How far you can travel from your locality.</span>
-                        <select id="distance" className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="distance" required className="border-[1px] p-3 border-black   rounded-lg" >
+                            <option value="">Select</option>
                             <option value="1">Within 1 km</option>
                             <option value="2">Within 2 km</option>
                             <option value="3">Within 3 km</option>
@@ -258,8 +259,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Experience (in years)</span>
-                        <select id="experience" className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="experience" required className="border-[1px] p-3 border-black   rounded-lg" >
+                            <option value="">Select</option>
                             <option value="1">1+</option>
                             <option value="2">2+</option>
                             <option value="3">3+</option>
@@ -272,8 +273,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Education Qualification</span>
-                        <select id="education" className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="education" required className="border-[1px] p-3 border-black   rounded-lg" >
+                            <option value="">Select</option>
                             <option value="Under Graduate">Under Graduate</option>
                             <option value="Graduate">Graduate</option>
                             <option value="Post Graduate">Post Graduate</option>
@@ -281,8 +282,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Certifications (Degree/Diploma)</span>
-                        <select id="certifications" className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="certifications" required className="border-[1px] p-3 border-black   rounded-lg" >
+                            <option value="">Select</option>
                             <option
                                 value="A Child Development Assistant (formerly Level 1)">
                                 A Child Development Assistant (formerly Level 1)
@@ -362,8 +363,8 @@ export default function Registration() {
                     />
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Days)</span>
-                        <select id="daysAWeek" className="border-[1px] p-3 border-black rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="daysAWeek" required className="border-[1px] p-3 border-black rounded-lg" >
+                            <option value="">Select</option>
                             <option value="1">1 Day a week</option>
                             <option value="2">2 Days a week</option>
                             <option value="3">3 Days a week</option>
@@ -375,8 +376,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Hours)</span>
-                        <select id="workingHrs" className="border-[1px] p-3 border-black rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="workingHrs" required className="border-[1px] p-3 border-black rounded-lg" >
+                            <option value="">Select</option>
                             <option value="1">1 Hour a day</option>
                             <option value="2">2 Hours a day</option>
                             <option value="3">3 Hours a day</option>
@@ -395,7 +396,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Phone Number</span>
-                        <input id="ref1Phone" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
+                        <input id="ref1Phone" required pattern='^[0-9]{10}$' type="text" className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col'>
                         <span>Email</span>
@@ -403,8 +404,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Relation</span>
-                        <select id="ref1Relation" className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="ref1Relation" required className="border-[1px] p-3 border-black   rounded-lg" >
+                            <option value="">Select</option>
                             <option value="Sibling">Sibling</option>
                             <option value="Colleague">Colleague</option>
                             <option value="Friend">Friend</option>
@@ -418,7 +419,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Phone Number</span>
-                        <input id="ref2Phone" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
+                        <input id="ref2Phone" pattern='^[0-9]{10}$' required type="text" className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col'>
                         <span>Email</span>
@@ -426,8 +427,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Relation</span>
-                        <select id="ref2Relation" className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id="ref2Relation" required className="border-[1px] p-3 border-black   rounded-lg" >
+                            <option value="">Select</option>
                             <option value="Sibling">Sibling</option>
                             <option value="Colleague">Colleague</option>
                             <option value="Friend">Friend</option>

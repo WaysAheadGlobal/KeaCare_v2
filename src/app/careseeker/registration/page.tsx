@@ -12,29 +12,6 @@ export default function Registration() {
     useEffect(() => {
         setEmail(sessionStorage.getItem("email")?.toString());
     }, []);
-    /* useEffect(() => {
-        const planType = sessionStorage.getItem("planType");
-        async function setSubscription() {
-            if (searchParams.get("completed") === "true") {
-                const body = JSON.stringify({
-                    planType: planType,
-                    planDuration: planType?.toLowerCase()?.includes("month") ? "month" : "year",
-                    planPrice: planType?.toLowerCase()?.includes("month") ? "30" : "100",
-                    email: sessionStorage.getItem("email")
-                })
-                await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/setSubcription", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: body
-                });
-            }
-        }
-        if (planType) {
-            setSubscription();
-        }
-    }, []) */
 
     return (
         <form className='pb-20' onSubmit={async (e) => {
@@ -99,7 +76,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender</span>
-                        <select id='gender' className='p-3 border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none rounded-lg'>
+                        <select id='gender' required className='p-3 border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none rounded-lg'>
+                            <option value="">Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
@@ -107,7 +85,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Phone Number</span>
-                        <input id='mobile' required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
+                        <input id='mobile' required type="text" pattern='^[0-9]{10}$' className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Email</span>
@@ -119,8 +97,8 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Province</span>
-                        <select id='province' className="border-2 p-3 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none rounded-lg" >
-                            <option value="Select">Select</option>
+                        <select id='province' required className="border-2 p-3 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none rounded-lg" >
+                            <option value="">Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
                             <option value="Manitoba">Manitoba</option>

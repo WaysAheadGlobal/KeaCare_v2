@@ -136,7 +136,7 @@ export default function Account() {
                                 gender: e.currentTarget.value
                             })}
                         >
-                            <option value={"select"} disabled>Select</option>
+                            <option value={""} disabled>Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
@@ -144,7 +144,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Phone Number</span>
-                        <input required type="text" name='mobile' defaultValue={userInfo?.mobile} className='border-[1px] border-black   p-3 rounded-lg' />
+                        <input required type="text" pattern='^[0-9]{10}$' name='mobile' defaultValue={userInfo?.mobile} className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Email</span>
@@ -184,7 +184,9 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Zip Code</span>
-                        <input required type="text" name="zipcode" defaultValue={userInfo?.zipcode} className='border-[1px] border-black p-3 rounded-lg' />
+                        <input required type="text"
+                            pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
+                            name="zipcode" defaultValue={userInfo?.zipcode} className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
                         <span>Price per Hour</span>

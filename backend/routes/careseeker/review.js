@@ -41,7 +41,7 @@ async function getReviews(req, res) {
         } else {
             const careseeker = results[0];
 
-            connection.query(`SELECT careseekers_.fname, careseekers_.lname, careseekers_.imageUrl, reviews.* FROM reviews INNER JOIN careseekers_ WHERE reviews.caregiverId = ${caregiverId}`, (err, results_) => {
+            connection.query(`SELECT careseekers_.fname, careseekers_.lname, careseekers_.imageUrl, reviews.* FROM reviews INNER JOIN careseekers_ WHERE reviews.caregiverId = ${caregiverId} AND careseekers_.id = reviews.careseekerId`, (err, results_) => {
                 if (err) throw err;
                 res.status(200).json({
                     userReview: {
