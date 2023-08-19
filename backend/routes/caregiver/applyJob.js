@@ -15,15 +15,10 @@ async function applyJob(req, res) {
                 }
             });
             if (caregiver) {
-                const job = await prisma.jobs_.update({
+                const job = await prisma.jobs_.findUnique({
                     where: {
                         id: req.body.jobId,
                         status: "active"
-                    },
-                    data: {
-                        responses: {
-                            increment: 1
-                        }
                     }
                 });
 
@@ -35,6 +30,17 @@ async function applyJob(req, res) {
                 });
 
                 if (!applicant) {
+                    const job = await prisma.jobs_.update({
+                        where: {
+                            id: req.body.jobId,
+                            status: "active"
+                        },
+                        data: {
+                            responses: {
+                                increment: 1
+                            }
+                        }
+                    });
                     const application = await prisma.applicants.create({
                         data: {
                             userId: job.userId,

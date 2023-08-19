@@ -132,14 +132,13 @@ model jobs_ {
   comfortableWithPets Boolean
   experience          Int
   hourlyRate          Int
-  jobDateStart        DateTime
-  jobDateEnd          DateTime
+  date                String
   jobDescription      String   @db.VarChar(1000)
-  language            String?
+  language            String
   location            String   @db.VarChar(100)
   rating              Float
   speciality          String   @db.VarChar(100)
-  time                Time
+  time                String
   status              Status   @default(active)
   createdOn           DateTime @default(now())
   modifiedOn          DateTime @updatedAt
@@ -166,12 +165,9 @@ model applicants {
 }
 
 model reviews {
-  id                 Int     @id @unique @default(autoincrement())
-  careseekerId       Int
-  //fname              String
-  //lname              String
-  //careseekerImageUrl String? @db.VarChar(500)
-  caregiverId        Int
-  review             String  @db.VarChar(10000)
-  rating             String
+  id           Int    @id @unique @default(autoincrement())
+  careseekerId Int
+  caregiverId  Int
+  review       String @db.VarChar(10000)
+  rating       String
 }

@@ -45,9 +45,8 @@ export default function Appointment({ price, id }: { price: number, id: number |
                 <div>
                     <p className='font-bold text-xl'>Select Date</p>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateCalendar className='bg-teal-500 bg-opacity-50 rounded-lg mt-[1rem]'
+                        <DateCalendar disablePast className='bg-teal-500 bg-opacity-50 rounded-lg mt-[1rem]'
                             onChange={(newValue: any) => {
-
                                 setAppointment({
                                     ...appointment,
                                     [dayjs(newValue).format("DD/MM/YYYY")]: []
@@ -125,7 +124,6 @@ export default function Appointment({ price, id }: { price: number, id: number |
                                 }
                             }}
                             onClick={async () => {
-                                console.log("first");
                                 const body = JSON.stringify({
                                     careseekerEmail: sessionStorage.getItem("email"),
                                     caregiverId: id,

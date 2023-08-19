@@ -4,29 +4,29 @@ const connection = require("../../db/connection");
 function checkDuplicateAppointments(req, res) {
     const { careseekerEmail, appointment } = req.body;
 
-    let counter = 0;
+    let sqlQuery = "SELECT DISTINCT appointments_.* FROM appointments_ INNER JOIN careseekers_ WHERE appointments_.careseekerId = careseekers_.id"
 
     for (const key in appointment) {
-        appointment[key].forEach(time => {
-            connection.query(`SELECT appointments_.* FROM appointments_ INNER JOIN careseekers_ WHERE appointments_.careseekerId = careseekers_.id AND appointments_.date = '${key}' AND appointments_.time = '${time}' AND careseekers_.email = '${careseekerEmail}'`, (error, results) => {
-                if (error) throw error;
-
-                if (results.length !== 0) {
-                    counter = -999;
-                    res.status(403).json({ error: "Appointment already exists" });
-                } else if (Object.keys(appointment).length === counter) {
-                    res.status(200).json({ success: true });
-                }
-            })
-            if (counter === -999) {
-                return;
+        for (let i = 0; i < appointment[key].length; i++) {
+            const time = appointment[key][i];
+            if (i === 0) {
+                sqlQuery += ` AND (appointments_.date = '${key}' AND LOCATE('${time}', appointments_.time))`;
+            } else {
+                sqlQuery += ` OR (appointments_.date = '${key}' AND LOCATE('${time}', appointments_.time))`;
             }
-        })
-        if (counter === -999) {
-            return;
         }
-        counter++;
     }
+    sqlQuery += ` AND careseekers_.email = '${careseekerEmail}'`;
+
+    connection.query(sqlQuery, (error, results) => {
+        if (error) throw error;
+
+        if (results.length !== 0) {
+            res.status(403).json({ error: "Appointment already exists" });
+        } else {
+            res.status(200).json({ success: true });
+        }
+    })
 }
 
 async function appointmentFees(req, res) {

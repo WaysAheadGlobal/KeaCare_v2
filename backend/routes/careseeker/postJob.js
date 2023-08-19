@@ -1,8 +1,5 @@
 const { validationResult } = require('express-validator');
-const { PrismaClient } = require("@prisma/client");
-const dayjs = require('dayjs');
-
-const prisma = new PrismaClient();
+const connection = require("../../db/connection");
 
 async function PostJob(req, res) {
     const errors = validationResult(req);
@@ -10,39 +7,22 @@ async function PostJob(req, res) {
         if (!errors.isEmpty() && errors.errors[0].path === 'email') {
             res.status(400).send('Invalid email address. Please try again.');
         } else {
-            const { email } = req.body;
-            const careseeker = await prisma.careseekers_.findUnique({
-                where: {
-                    email: email
-                }
-            });
+            const { job: { speciality, time, additionalService, languages, hourlyRate, experience, age, location, comfortableWithPets, rating, availability, jobDescription }, email } = req.body;
+            connection.query(`SELECT id FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
+                if (error) throw error;
 
-            if (careseeker) {
-                const { additionalService, age, availability, comfortableWithPets, experience, hourlyRate, jobDateStart, jobDateEnd, jobDescription, language, location, rating, speciality, time } = req.body;
-
-                const newJob = await prisma.jobs_.create({
-                    data: {
-                        userId: careseeker.id,
-                        additionalService: additionalService,
-                        age: age,
-                        availability: parseInt(availability),
-                        comfortableWithPets: comfortableWithPets,
-                        experience: parseInt(experience),
-                        hourlyRate: parseInt(hourlyRate),
-                        jobDateStart: jobDateStart,
-                        jobDateEnd: jobDateEnd,
-                        jobDescription: jobDescription,
-                        language: language,
-                        location: location,
-                        rating: parseFloat(rating),
-                        speciality: speciality,
-                        time: time,
+                if (results[0].id) {
+                    let sqlQuery = `INSERT INTO jobs_ (userId, additionalService, age, availability, comfortableWithPets, experience, hourlyRate, date, jobDescription, language, location, rating, speciality, time, status, modifiedOn, responses) VALUES `;
+                    for (const key in time) {
+                        sqlQuery += `(${results[0].id}, '${additionalService}', '${age}', ${availability}, ${comfortableWithPets === "yes" ? 1 : 0}, ${experience}, ${hourlyRate}, '${key}', '${jobDescription}', '${languages}', '${location}', ${rating}, '${speciality}', '${time[key].toString()}', 'active', NOW(), 0), `
                     }
-                })
-                res.status(200).json({ "success": true, ...newJob });
-            } else {
-                res.status(401).json({ "error": "Invalid Credentials" });
-            }
+                    sqlQuery = sqlQuery.substring(0, sqlQuery.length - 2);
+                    connection.query(sqlQuery, (err) => {
+                        if (err) throw err;
+                        res.status(200).send({ success: true });
+                    })
+                }
+            })
         }
     } catch (err) {
         console.log(err);
