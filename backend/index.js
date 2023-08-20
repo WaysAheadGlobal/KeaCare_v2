@@ -5,6 +5,8 @@ const CaregiverRouter = require('./routes/caregiver');
 const CareseekerRouter = require('./routes/careseeker');
 const connection = require('./db/connection');
 
+const Expiry = require('./routes/careseeker/expiry');
+
 const app = express();
 app.use(cors());
 
@@ -20,6 +22,7 @@ app.listen(3004, () => {
             }
             console.log('connected as id ' + connection.threadId);
         });
+        setInterval(Expiry, 3600000);
     }
     console.log("Server Started on Port 3004");
 })

@@ -11,11 +11,21 @@ async function getAppointments(email: string | null) {
 
 export default async function LoadAppointments({ email }: { email: string | null }) {
     const appointments = await getAppointments(email);
-    return (
-        <section className="flex flex-col gap-10 mt-[2rem]">
-            {
-                appointments?.map((appointment: any) => <Appointment key={appointment.id} appointment={appointment} />)
-            }
-        </section>
-    )
+    if (appointments?.length === 0) {
+        return (
+            <section className='py-10 px-[3rem] lg:px-[7rem]'>
+                <div className='text-gray-500 flex items-center justify-center h-[30rem] text-lg'>
+                    <p>No appointments yet.</p>
+                </div>
+            </section>
+        )
+    } else {
+        return (
+            <section className="flex flex-col gap-10 mt-[2rem]">
+                {
+                    appointments?.map((appointment: any) => <Appointment key={appointment.id} appointment={appointment} />)
+                }
+            </section>
+        )
+    }
 }

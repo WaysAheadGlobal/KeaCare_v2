@@ -112,6 +112,13 @@ export default function Signup() {
                                                 key: alert.key + 1
                                             });
                                             setOtp(data?.otp.toString());
+                                        } else if (data?.error) {
+                                            setAlert({
+                                                type: "danger",
+                                                message: data?.error,
+                                                translate_: "translate-y-0",
+                                                key: alert.key + 1
+                                            });
                                         }
                                     } catch (error) {
                                         setAlert({
@@ -156,7 +163,6 @@ export default function Signup() {
                                 })
 
                                 const data: SignupResponse = await response.json();
-
                                 if (data?.success) {
                                     document.querySelectorAll("dialog").forEach(dialog => {
                                         dialog.close();
@@ -168,10 +174,10 @@ export default function Signup() {
                                     } else {
                                         router.push("/pricing");
                                     }
-                                } else {
+                                } else if (data?.error) {
                                     setAlert({
                                         type: "danger",
-                                        message: "Invalid OTP. Please try again",
+                                        message: data?.error,
                                         translate_: "translate-y-0",
                                         key: alert.key + 1
                                     });

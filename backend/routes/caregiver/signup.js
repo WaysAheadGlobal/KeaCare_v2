@@ -1,9 +1,7 @@
-const { Router } = require("express");
-const { body, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 const { PrismaClient } = require("@prisma/client");
 const { sendOTP } = require("../../mail/MailService.js");
 
-const caregiverSignupRouter = Router();
 const prisma = new PrismaClient();
 
 async function SignupOTP(req, res) {
@@ -13,8 +11,17 @@ async function SignupOTP(req, res) {
         if (!errors.isEmpty() && errors.errors[0].path === 'email') {
             res.status(400).send('Invalid email address. Please try again.')
         } else {
-            await sendOTP(req.body.email, otp, "Signing up");
-            res.status(200).json({ "otp": otp });
+            const caregiver = await prisma.caregivers_.findUnique({
+                where: {
+                    email: req.body.email
+                }
+            })
+            if (caregiver) {
+                res.status(402).json({ error: "User already exists. Please try logging in." });
+            } else {
+                await sendOTP(req.body.email, otp, "Signing up");
+                res.status(200).json({ "otp": otp });
+            }
         }
     } catch (err) {
         console.error(err);
@@ -29,20 +36,28 @@ async function Signup(req, res) {
         } else {
             const { email, token } = req.body;
             try {
-                const user = await prisma.caregivers_.create({
-                    data: {
-                        email: email,
-                        token: token
+                const caregiver = await prisma.caregivers_.findUnique({
+                    where: {
+                        email: req.body.email
                     }
-                });
-                res.status(200).json({
-                    "success": true,
-                    ...user
-                });
-            } catch ({ meta: { target } }) {
-                if (target === "email") {
-                    res.status(403).json({ "error": "Email already in use." });
+                })
+                if (caregiver) {
+                    res.status(402).json({ error: "User already exists. Please try logging in." });
+                } else {
+                    const user = await prisma.caregivers_.create({
+                        data: {
+                            email: email,
+                            token: token
+                        }
+                    });
+                    res.status(200).json({
+                        "success": true,
+                        ...user
+                    });
                 }
+            } catch (error) {
+                console.log(err);
+                res.status(403).send(err);
             }
         }
     } catch (err) {
@@ -50,9 +65,4 @@ async function Signup(req, res) {
     }
 }
 
-caregiverSignupRouter.get("/all", async (req, res) => {
-    const careseekers = await prisma.caregivers_.findMany();
-    res.status(200).json(careseekers);
-})
-
-module.exports = { caregiverSignupRouter, SignupOTP, Signup };
+module.exports = { SignupOTP, Signup };

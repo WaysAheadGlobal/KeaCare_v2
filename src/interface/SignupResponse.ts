@@ -3,5 +3,6 @@ export default interface SignupResponse {
     id: number,
     fname?: string,
     lname?: string,
-    email: string
+    email: string,
+    error?: string
 }

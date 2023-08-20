@@ -6,20 +6,20 @@ import Alert from '@/app/Alert';
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
+    const [refreshData, setRefreshData] = useState<number>(0);
 
     useEffect(() => {
-        async function getUserInfo(email?: string) {
+        async function getUserInfo(email: string) {
             if (email) {
                 const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/account?email=${email}`);
                 const data = await response.json();
                 setUserInfo(data);
-            } else {
-                Promise.reject("Invalid Credentials");
             }
         }
         const email = sessionStorage.getItem("email");
-        getUserInfo(email ? email : "");
-    }, [])
+        getUserInfo(email ?? "");
+        (document.getElementById("careseeker_update_form") as HTMLFormElement).reset();
+    }, [refreshData]);
 
     const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
         return new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ export default function Account() {
             <div className='sticky top-0 bg-transparent h-[1rem]'>
                 <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
             </div>
-            <form className='px-[2rem] md:px-[8rem] py-[2rem] flex flex-col lg:grid lg:grid-cols-[18rem_auto] grid-rows-1 gap-10 justify-center'
+            <form id="careseeker_update_form" className='px-[2rem] md:px-[8rem] py-[2rem] flex flex-col lg:grid lg:grid-cols-[18rem_auto] grid-rows-1 gap-10 justify-center'
                 onChange={(e) => {
                     setUserInfo({
                         ...userInfo,
@@ -93,8 +93,8 @@ export default function Account() {
                             }}></div>
                         </div>
                         <p className='text-white font-semibold'>{userInfo?.fname + " " + userInfo?.lname}</p>
-                        <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold'>
-                            <label htmlFor='updatePhoto' className=''>Update Profile Photo</label>
+                        <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
+                            <label htmlFor='updatePhoto' className='cursor-pointer'>Update Profile Photo</label>
                             <input type="file" name="updatePhoto" id="updatePhoto" className='invisible w-0'
                                 onChange={async (e) => {
                                     setUserInfo({
@@ -105,8 +105,8 @@ export default function Account() {
                                 }} />
                         </div>
                     </div>
-                    <button className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
-                    <button className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Delete My Account</button>
+                    <button disabled className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
+                    <button disabled className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Delete My Account</button>
                 </div>
 
                 <div className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
@@ -125,8 +125,8 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender</span>
-                        <select disabled value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'>
-                            <option value={""} disabled>Select</option>
+                        <select required disabled value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'>
+                            <option value="" disabled>Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
@@ -146,13 +146,13 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Province</span>
-                        <select value={userInfo?.province} name='province' className="border-[1px] p-3 border-black rounded-lg"
+                        <select required value={userInfo?.province} name='province' className="border-[1px] p-3 border-black rounded-lg"
                             onChange={(e) => setUserInfo({
                                 ...userInfo,
                                 province: e.currentTarget.value
                             })}
                         >
-                            <option value="">Select</option>
+                            <option value="" disabled>Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
                             <option value="Manitoba" >Manitoba</option>
@@ -180,7 +180,10 @@ export default function Account() {
                     </div>
                     <div className='col-[1/3] flex flex-row justify-between'>
                         <button type='submit' className='bg-teal-500 text-white font-semibold px-[3rem] py-[1rem] rounded-xl'>Update</button>
-                        <button type='reset' className='text-teal-500 font-semibold'>Disgard</button>
+                        <button className='text-teal-500 font-semibold hover:bg-gray-200 focus:bg-gray-200  px-[3rem] py-[1rem] rounded-xl' onClick={(e) => {
+                            e.preventDefault();
+                            setRefreshData(refreshData => refreshData += 1);
+                        }}>Disgard</button>
                     </div>
                 </div>
             </form>

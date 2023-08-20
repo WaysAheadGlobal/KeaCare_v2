@@ -11,8 +11,17 @@ async function SignupOTP(req, res) {
         if (!errors.isEmpty() && errors.errors[0].path === 'email') {
             res.status(400).send('Invalid email address. Please try again.')
         } else {
-            await sendOTP(req.body.email, otp, "Signing up");
-            res.status(200).json({ "otp": otp });
+            const careseeker = await prisma.careseekers_.findUnique({
+                where: {
+                    email: req.body.email
+                }
+            })
+            if (careseeker) {
+                res.status(402).json({ error: "User already exists. Please try logging in." });
+            } else {
+                await sendOTP(req.body.email, otp, "Signing up");
+                res.status(200).json({ "otp": otp });
+            }
         }
     } catch (err) {
         console.error(err);
@@ -27,17 +36,25 @@ async function Signup(req, res) {
         } else {
             const { email, token } = req.body;
             try {
-                const user = await prisma.careseekers_.create({
-                    data: {
-                        email: email,
-                        token: token,
-
+                const careseeker = await prisma.careseekers_.findUnique({
+                    where: {
+                        email: req.body.email
                     }
-                });
-                res.status(200).json({
-                    "success": true,
-                    ...user
-                });
+                })
+                if (careseeker) {
+                    res.status(403).json({ error: "User already exists. Please try logging in." });
+                } else {
+                    const user = await prisma.careseekers_.create({
+                        data: {
+                            email: email,
+                            token: token,
+                        }
+                    });
+                    res.status(200).json({
+                        "success": true,
+                        ...user
+                    });
+                }
             } catch (err) {
                 console.log(err);
                 res.status(403).send(err);
@@ -47,10 +64,5 @@ async function Signup(req, res) {
         console.error(err);
     }
 }
-
-/* careseekerSignupRouter.get("/all", async (req, res) => {
-    const careseekers = await prisma.careseekers_.findMany();
-    res.status(200).json(careseekers);
-}) */
 
 module.exports = { SignupOTP, Signup };

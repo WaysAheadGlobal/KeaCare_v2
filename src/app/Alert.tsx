@@ -11,7 +11,7 @@ export default function Alert({ type, message, translate_, _key }: { type: "info
         let timeout: NodeJS.Timeout;
         if (translate_ === "translate-y-0") {
             setTranslate("translate-y-0");
-            timeout = setTimeout(() => setTranslate("-translate-y-96"), 2500);
+            timeout = setTimeout(() => setTranslate("-translate-y-96"), 4000);
         }
         return () => {
             clearInterval(timeout);

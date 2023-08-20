@@ -31,18 +31,6 @@ enum Status {
 enum Speciality {
   child_care
   senior_care
-  child_senior_care
-}
-
-enum Time {
-  AM_10_11
-  AM_11_12
-  PM_12_13
-  PM_13_14
-  PM_14_15
-  PM_15_16
-  PM_16_17
-  PM_17_18
 }
 
 enum ApplicationStatus {
@@ -53,29 +41,30 @@ enum ApplicationStatus {
 }
 
 model careseekers_ {
-  id           Int      @id @unique @default(autoincrement())
+  id           Int       @id @unique @default(autoincrement())
   fname        String?
   lname        String?
-  email        String   @unique
+  email        String    @unique
   mobile       String?
-  dob          String?  @db.VarChar(500)
+  dob          String?   @db.VarChar(500)
   gender       Gender?
-  address      String?  @db.VarChar(1000)
+  address      String?   @db.VarChar(1000)
   city         String?
   province     String?
   zipcode      String?
-  device_type  Device   @default(web)
+  device_type  Device    @default(web)
   android_id   Int?
   ios_id       Int?
-  token        String   @db.VarChar(1000)
-  status       Status   @default(active)
+  token        String    @db.VarChar(1000)
+  status       Status    @default(active)
   password     String?
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-  imageUrl     String?  @db.VarChar(500)
-  planType     String?  @db.VarChar(100)
-  planDuration String?  @db.VarChar(100)
-  planPrice    String?  @db.VarChar(100)
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  imageUrl     String?   @db.VarChar(500)
+  planType     String?   @db.VarChar(100)
+  planDuration String?   @db.VarChar(100)
+  planPrice    String?   @db.VarChar(100)
+  expiryDate   DateTime?
 }
 
 model caregivers_ {
@@ -107,8 +96,8 @@ model caregivers_ {
   comfortableWithPets Boolean?
   task                String?
   rate                Float?
-  daysAWeek           Int?
-  workingHrs          Int?
+  daysAWeek           String?     @db.VarChar(500)
+  workingHrs          String?     @db.VarChar(500)
   bio                 String?     @db.VarChar(500)
   certifications      String?     @db.VarChar(500)
   distance            String?     @db.VarChar(500)

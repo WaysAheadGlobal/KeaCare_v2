@@ -3,24 +3,26 @@
 import React, { useState, useEffect } from 'react'
 import { MultiSelect } from '@mantine/core';
 import Alert from '@/app/Alert';
+import { MenuItem, OutlinedInput, Select } from '@mui/material';
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
     const [task, setTask] = useState<string[]>([]);
     const [languages, setLanguages] = useState<string[]>([]);
+    const [refreshData, setRefreshData] = useState<number>(0);
+
     useEffect(() => {
-        async function getUserInfo(email?: string) {
+        async function getUserInfo(email: string) {
             if (email) {
                 const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
                 const data = await response.json();
                 setUserInfo(data);
-            } else {
-                Promise.reject("Invalid Credentials");
             }
         }
         const email = sessionStorage.getItem("email");
-        getUserInfo(email ? email : "");
-    }, [])
+        getUserInfo(email ?? "");
+        (document.getElementById("caregiver_form_update") as HTMLFormElement).reset();
+    }, [refreshData])
 
     useEffect(() => {
         setTask(userInfo?.task.split(","));
@@ -54,7 +56,7 @@ export default function Account() {
             <div className='sticky top-0 bg-transparent h-[1rem]'>
                 <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
             </div>
-            <form className='px-[2rem] md:px-[8rem] py-[2rem] flex flex-col lg:grid lg:grid-cols-[18rem_1fr] grid-rows-1 gap-10'
+            <form id="caregiver_form_update" className='px-[2rem] md:px-[8rem] py-[2rem] flex flex-col lg:grid lg:grid-cols-[18rem_1fr] grid-rows-1 gap-10'
                 onChange={(e) => {
                     setUserInfo({
                         ...userInfo,
@@ -98,9 +100,9 @@ export default function Account() {
                         <div className='rounded-full aspect-square w-[7rem] bg-cover bg-no-repeat bg-center relative top-[1rem]' style={{
                             backgroundImage: `url(${userInfo?.imageUrl})`
                         }}></div>
-                        <p className='text-white font-semibold'>{userInfo?.fname + " " + userInfo?.lname}</p>
-                        <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold'>
-                            <label htmlFor="image">Update Profile Photo</label>
+                        <p className='text-white font-semibold'>{(userInfo?.fname ?? "Loading...") + " " + (userInfo?.lname ?? "")}</p>
+                        <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
+                            <label htmlFor="image" className='cursor-pointer'>Update Profile Photo</label>
                             <input type="file" id="image" className='w-0' onChange={async (e) => {
                                 setUserInfo({
                                     ...userInfo,
@@ -110,8 +112,8 @@ export default function Account() {
                             }} />
                         </div>
                     </div>
-                    <button className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
-                    <button className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Delete My Account</button>
+                    <button type='button' disabled className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
+                    <button type='button' disabled className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Delete My Account</button>
                 </div>
 
                 <div className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
@@ -130,7 +132,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender</span>
-                        <select disabled value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'
+                        <select required disabled value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'
                             onChange={(e) => setUserInfo({
                                 ...userInfo,
                                 gender: e.currentTarget.value
@@ -156,13 +158,13 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Province</span>
-                        <select value={userInfo?.province} name="province" className="border-[1px] p-3 border-black rounded-lg"
+                        <select required value={userInfo?.province} name="province" className="border-[1px] p-3 border-black rounded-lg"
                             onChange={(e) => setUserInfo({
                                 ...userInfo,
                                 province: e.currentTarget.value
                             })}
                         >
-                            <option value="Select">Select</option>
+                            <option value="">Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
                             <option value="Manitoba" >Manitoba</option>
@@ -200,8 +202,8 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Type of Care</span>
-                        <select value={userInfo?.speciality} name="speciality" id="careType" className='p-3 border-[1px] border-black rounded-lg'>
-                            <option value="select">Select</option>
+                        <select required value={userInfo?.speciality} name="speciality" id="careType" className='p-3 border-[1px] border-black rounded-lg'>
+                            <option value="">Select</option>
                             <option value="child_care">Child Care</option>
                             <option value="senior_care">Senior Care</option>
                             <option value="child_senior_care">Both</option>
@@ -237,13 +239,8 @@ export default function Account() {
                     />
                     <div className='flex flex-col'>
                         <span>How far you can travel from your locality.</span>
-                        <select value={userInfo?.distance} name="distance" id="distance" className="border-[1px] p-3 border-black rounded-lg"
-                        /* onChange={(e) => setUserInfo({
-                            ...userInfo,
-                            distance: e.currentTarget.value
-                        })} */
-                        >
-                            <option value="Select" disabled>Select</option>
+                        <select required value={userInfo?.distance} name="distance" id="distance" className="border-[1px] p-3 border-black rounded-lg">
+                            <option value="" disabled>Select</option>
                             <option value="1">Within 1 km</option>
                             <option value="2">Within 2 km</option>
                             <option value="3">Within 3 km</option>
@@ -258,13 +255,8 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Experience (in years)</span>
-                        <select value={userInfo?.experience} name="experience" className="border-[1px] p-3 border-black rounded-lg"
-                        /* onChange={(e) => setUserInfo({
-                            ...userInfo,
-                            experience: e.currentTarget.value
-                        })} */
-                        >
-                            <option value="Select" disabled>Select</option>
+                        <select required value={userInfo?.experience} name="experience" className="border-[1px] p-3 border-black rounded-lg">
+                            <option value="" disabled>Select</option>
                             <option value="1">1+</option>
                             <option value="2">2+</option>
                             <option value="3">3+</option>
@@ -277,13 +269,8 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Education Qualification</span>
-                        <select value={userInfo?.education} name="education" className="border-[1px] p-3 border-black rounded-lg"
-                        /* onChange={(e) => setUserInfo({
-                            ...userInfo,
-                            education: e.currentTarget.value
-                        })} */
-                        >
-                            <option value="Select" disabled>Select</option>
+                        <select required value={userInfo?.education} name="education" className="border-[1px] p-3 border-black rounded-lg">
+                            <option value="" disabled>Select</option>
                             <option value="Under Graduate">Under Graduate</option>
                             <option value="Graduate">Graduate</option>
                             <option value="Post Graduate">Post Graduate</option>
@@ -291,13 +278,8 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Certifications (Degree/Diploma)</span>
-                        <select value={userInfo?.certifications} name="certifications" className="border-[1px] p-3 border-black rounded-lg"
-                        /* onChange={(e) => setUserInfo({
-                            ...userInfo,
-                            certifications: e.currentTarget.value
-                        })} */
-                        >
-                            <option value="Select" disabled>Select</option>
+                        <select required value={userInfo?.certifications} name="certifications" className="border-[1px] p-3 border-black rounded-lg">
+                            <option value="" disabled>Select</option>
                             <option
                                 value="A Child Development Assistant (formerly Level 1)">
                                 A Child Development Assistant (formerly Level 1)
@@ -383,43 +365,57 @@ export default function Account() {
                     />
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Days)</span>
-                        <select value={userInfo?.daysAWeek?.toString()} className="border-[1px] p-3 border-black rounded-lg"
-                            onChange={(e) => setUserInfo({
-                                ...userInfo,
-                                daysAWeek: Number(e.currentTarget.value)
-                            })}>
-                            <option value="Select" disabled>Select</option>
-                            <option value="1">1 Day a week</option>
-                            <option value="2">2 Days a week</option>
-                            <option value="3">3 Days a week</option>
-                            <option value="4">4 Days a week</option>
-                            <option value="5">5 Days a week</option>
-                            <option value="6">6 Days a week</option>
-                            <option value="7">7 Days a week</option>
-                        </select>
+                        <Select required multiple fullWidth id="daysAWeek"
+                            sx={{ height: "3rem" }}
+                            value={userInfo?.daysAWeek?.split(",") ?? []}
+                            onChange={(e) => {
+                                setUserInfo({
+                                    ...userInfo,
+                                    daysAWeek: e.target.value.toString()
+                                });
+                            }}
+                            input={<OutlinedInput color='success' />} >
+                            <MenuItem value={"Monday"}>Monday</MenuItem>
+                            <MenuItem value={"Tuesday"}>Tuesday</MenuItem>
+                            <MenuItem value={"Wednesday"}>Wednesday</MenuItem>
+                            <MenuItem value={"Thursday"}>Thursday</MenuItem>
+                            <MenuItem value={"Friday"}>Friday</MenuItem>
+                            <MenuItem value={"Saturday"}>Saturday</MenuItem>
+                            <MenuItem value={"Sunday"}>Sunday</MenuItem>
+                        </Select>
                     </div>
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Hours)</span>
-                        <select value={userInfo?.workingHrs?.toString()} className="border-[1px] p-3 border-black rounded-lg"
-                            onChange={(e) => setUserInfo({
-                                ...userInfo,
-                                workingHrs: Number(e.currentTarget.value)
-                            })}
-                        >
-                            <option value="Select" disabled>Select</option>
-                            <option value="1">1 Hour a day</option>
-                            <option value="2">2 Hours a day</option>
-                            <option value="3">3 Hours a day</option>
-                            <option value="4">4 Hours a day</option>
-                            <option value="5">5 Hours a day</option>
-                            <option value="6">6 Hours a day</option>
-                            <option value="7">7 Hours a day</option>
-                            <option value="7">8 Hours a day</option>
-                        </select>
+                        <Select required multiple id="workingHrs"
+                            sx={{ height: "3rem" }}
+                            value={userInfo?.workingHrs?.split(",") ?? []}
+                            onChange={(e) => {
+                                setUserInfo({
+                                    ...userInfo,
+                                    workingHrs: e.target.value.toString()
+                                });
+                            }}
+                            input={<OutlinedInput color='success' />} >
+                            <MenuItem value={"9 AM to 10 AM"}>9 AM to 10 AM</MenuItem>
+                            <MenuItem value={"10 AM to 11 AM"}>10 AM to 11 AM</MenuItem>
+                            <MenuItem value={"11 AM to 12 Noon"}>11 AM to 12 Noon</MenuItem>
+                            <MenuItem value={"12 Noon to 1 PM"}>12 Noon to 1 PM</MenuItem>
+                            <MenuItem value={"1 PM to 2 PM"}>1 PM to 2 PM</MenuItem>
+                            <MenuItem value={"2 PM to 3 PM"}>2 PM to 3 PM</MenuItem>
+                            <MenuItem value={"3 PM to 4 PM"}>3 PM to 4 PM</MenuItem>
+                            <MenuItem value={"4 PM to 5 PM"}>4 PM to 5 PM</MenuItem>
+                            <MenuItem value={"5 PM to 6 PM"}>5 PM to 6 PM</MenuItem>
+                            <MenuItem value={"6 PM to 7 PM"}>6 PM to 7 PM</MenuItem>
+                            <MenuItem value={"7 PM to 8 PM"}>7 PM to 8 PM</MenuItem>
+                            <MenuItem value={"8 PM to 9 PM"}>8 PM to 9 PM</MenuItem>
+                        </Select>
                     </div>
                     <div className='col-[1/3] flex flex-row justify-between'>
                         <button type='submit' className='bg-teal-500 text-white font-semibold px-[3rem] py-[1rem] rounded-xl'>Update</button>
-                        <button type="reset" className='text-teal-500 font-semibold'>Disgard</button>
+                        <button type='button' className='text-teal-500 font-semibold hover:bg-gray-200 focus:bg-gray-200  px-[3rem] py-[1rem] rounded-xl' onClick={(e) => {
+                            e.preventDefault();
+                            setRefreshData(refreshData => refreshData++);
+                        }}>Disgard</button>
                     </div>
                 </div>
             </form>

@@ -80,6 +80,13 @@ export default function Login() {
                             } else {
                                 router.push("/caregiver/account");
                             }
+                        } else if (data?.error) {
+                            setAlert({
+                                type: "danger",
+                                message: data.error,
+                                translate_: "translate-y-0",
+                                key: alert.key + 1
+                            });
                         } else {
                             setAlert({
                                 type: "danger",
@@ -145,6 +152,13 @@ export default function Login() {
                                         key: alert.key + 1
                                     });
                                     setOtp(data?.otp.toString());
+                                } else if (data.error) {
+                                    setAlert({
+                                        type: "danger",
+                                        message: data.error,
+                                        translate_: "translate-y-0",
+                                        key: alert.key + 1
+                                    });
                                 }
                             } catch (error) {
                                 setAlert({

@@ -30,7 +30,7 @@ async function webHook(req, res) {
 
         if (type === "appointment") {
             const { appointment, careseekerEmail, caregiverId, price } = event.data.object.metadata;
-            
+
             /* connection.query(`SELECT id, fname, lname FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
                 if (error) throw error;
 
@@ -98,16 +98,7 @@ async function webHook(req, res) {
         } else if (type === "subscription") {
             const { planType, planDuration, planPrice, email } = event.data.object.metadata;
 
-            const updatedCareseeker = await prisma.careseekers_.update({
-                where: {
-                    email: email
-                },
-                data: {
-                    planDuration: planDuration,
-                    planType: planType,
-                    planPrice: planPrice
-                }
-            });
+            connection.query(`UPDATE careseekers_ SET planDuration = '${planDuration}', planType = '${planType}', planPrice = '${planPrice}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${planDuration.toUpperCase()}) WHERE email = ${email}`, (err) => { throw err; });
 
             res.status(200).json({ "success": true });
         }

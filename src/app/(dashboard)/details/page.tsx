@@ -36,6 +36,7 @@ export default function Details() {
         key: 0
     });
     const searchParams = useSearchParams();
+    const [workHrs, setWorkHrs] = useState<string>("");
 
     useEffect(() => {
         async function getCaregivers() {
@@ -58,6 +59,30 @@ export default function Details() {
             getReviews();
         }
     }, [searchParams, review])
+
+    useEffect(() => {
+        let temp = "";
+        let flag = 0;
+        if (caregiver?.workingHrs) {
+            const t = caregiver.workingHrs.split(",");
+            console.log(t);
+            for (let i = 0; i < t.length - 1; i++) {
+                const element = t[i].split(" ");
+                const next = t[i + 1].split(" ");
+                if (i === 0 || flag === 1) {
+                    temp += element[0] + " " + element[1] + " to ";
+                    flag = 0;
+                } else if (element[element.length - 2] !== next[0]) {
+                    temp += element[element.length - 2] + " " + element[element.length - 1] + ", ";
+                    flag = 1;
+                } else if (i + 1 === t.length - 1) {
+                    temp += next[next.length - 2] + " " + next[next.length - 1];
+                }
+            }
+        }
+        console.log(temp);
+        setWorkHrs(temp);
+    }, [caregiver]);
 
     useEffect(() => {
         async function getCaregiverById() {
@@ -156,14 +181,15 @@ export default function Details() {
                                     <div>
                                         <div className='flex flex-row items-center justify-start gap-3 font-semibold'>
                                             <BsCalendarCheck />
-                                            <p>Availability ({caregiver?.daysAWeek} Days a week)</p>
+                                            <p>Availability ({caregiver?.daysAWeek.split(",").length} Days a week)</p>
                                         </div>
                                         {/* left to configure  */}
                                         <ul className='list-disc list-inside mb-[2rem]'>
-                                            <li className='list-item'>Monday</li>
-                                            <li className='list-item'>Tuesday</li>
-                                            <li className='list-item'>Wednesday</li>
-                                            <li className='list-item'>Friday</li>
+                                            {
+                                                caregiver?.daysAWeek.split(",").map((day: any) => {
+                                                    return <li key={day} className='list-item'>{day}</li>
+                                                })
+                                            }
                                         </ul>
                                     </div>
                                     <div>
@@ -172,7 +198,7 @@ export default function Details() {
                                             <BsCalendar2Week />
                                             <p>Working Hours</p>
                                         </div>
-                                        <p>10 am to 5 pm</p>
+                                        <p>{workHrs}</p>
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +297,7 @@ export default function Details() {
                     </section>
                     <section id="appointments" className="opacity-0 h-0 relative -z-50 transition-all duration-300 self-start w-full">
                         <Divider />
-                        <Appointment price={caregiver?.rate} id={Number(searchParams.get("id"))} />
+                        <Appointment price={caregiver?.rate} id={Number(searchParams.get("id"))} workingHrs={caregiver?.workingHrs} />
                     </section>
                     <hr className='h-[1.5px] bg-gray-300 w-full' />
                     <section className='grid grid-cols-1 lg:grid-cols-2 grid-rows-[auto] gap-5 my-5 px-[1rem] w-full'>

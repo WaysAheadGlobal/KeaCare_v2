@@ -5,6 +5,7 @@ import defaultUser from '../../../../public/defaultUser.png'
 import Image from 'next/image';
 import { MultiSelect } from '@mantine/core';
 import { useRouter } from 'next/navigation';
+import { MenuItem, OutlinedInput, Select } from '@mui/material';
 
 export default function Registration() {
     const router = useRouter();
@@ -12,6 +13,8 @@ export default function Registration() {
     const [languages, setLanguages] = useState<string[]>([]);
     const [additionalServices, setAdditionalServices] = useState<string[]>([]);
     const [email, setEmail] = useState<string | null>("");
+    const [daysAWeek, setDaysAWeek] = useState<string>();
+    const [workingHrs, setWorkingHrs] = useState<string>();
 
     useEffect(() => {
         setEmail(sessionStorage.getItem("email"));
@@ -34,97 +37,96 @@ export default function Registration() {
         <>
             <h1 className='py-[3rem] px-[2rem] text-center text-3xl text-white bg-teal-500 font-bold'>Complete your Registration</h1>
             <section className='flex flex-col items-center justify-center p-[2rem] sm:p-[5rem]'>
-                <form className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' onSubmit={async (e) => {
-                    e.preventDefault();
-                    const profilePhoto = ((document.getElementById("profilePhoto") as HTMLInputElement).files as FileList)[0];
-                    const fname = (document.getElementById("fname") as HTMLInputElement).value;
-                    const lname = (document.getElementById("lname") as HTMLInputElement).value;
-                    const email = (document.getElementById("email_regis") as HTMLInputElement).value;
-                    const mobile = (document.getElementById("mobile") as HTMLInputElement).value;
-                    const dob = (document.getElementById("dob") as HTMLInputElement).value;
-                    const gender = (document.getElementById("gender") as HTMLSelectElement).value;
-                    const address = (document.getElementById("address") as HTMLInputElement).value;
-                    const city = (document.getElementById("city") as HTMLInputElement).value;
-                    const province = (document.getElementById("province") as HTMLInputElement).value;
-                    const zipcode = (document.getElementById("zipcode") as HTMLInputElement).value;
-                    const speciality = (document.getElementById("speciality") as HTMLSelectElement).value;
-                    const experience = (document.getElementById("experience") as HTMLSelectElement).value;
-                    const comfortableWithPets = (document.getElementById("comfortableWithPets") as HTMLSelectElement).value;
-                    const rate = (document.getElementById("rate") as HTMLInputElement).value;
-                    const daysAWeek = (document.getElementById("daysAWeek") as HTMLSelectElement).value;
-                    const bio = (document.getElementById("bio") as HTMLTextAreaElement).value;
-                    const certifications = (document.getElementById("certifications") as HTMLSelectElement).value;
-                    const distance = (document.getElementById("distance") as HTMLSelectElement).value;
-                    const education = (document.getElementById("education") as HTMLSelectElement).value;
-                    const workingHrs = (document.getElementById("workingHrs") as HTMLSelectElement).value;
-                    const ref1Email = (document.getElementById("ref1Email") as HTMLInputElement).value;
-                    const ref1Name = (document.getElementById("ref1Name") as HTMLInputElement).value;
-                    const ref1Phone = (document.getElementById("ref1Phone") as HTMLInputElement).value;
-                    const ref1Relation = (document.getElementById("ref1Relation") as HTMLInputElement).value;
-                    const ref2Email = (document.getElementById("ref2Email") as HTMLInputElement).value;
-                    const ref2Name = (document.getElementById("ref2Name") as HTMLInputElement).value;
-                    const ref2Phone = (document.getElementById("ref2Phone") as HTMLInputElement).value;
-                    const ref2Relation = (document.getElementById("ref2Relation") as HTMLInputElement).value;
+                <form className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit'
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        const profilePhoto = ((document.getElementById("profilePhoto") as HTMLInputElement).files as FileList)[0];
+                        const fname = (document.getElementById("fname") as HTMLInputElement).value;
+                        const lname = (document.getElementById("lname") as HTMLInputElement).value;
+                        const email = (document.getElementById("email_regis") as HTMLInputElement).value;
+                        const mobile = (document.getElementById("mobile") as HTMLInputElement).value;
+                        const dob = (document.getElementById("dob") as HTMLInputElement).value;
+                        const gender = (document.getElementById("gender") as HTMLSelectElement).value;
+                        const address = (document.getElementById("address") as HTMLInputElement).value;
+                        const city = (document.getElementById("city") as HTMLInputElement).value;
+                        const province = (document.getElementById("province") as HTMLInputElement).value;
+                        const zipcode = (document.getElementById("zipcode") as HTMLInputElement).value;
+                        const speciality = (document.getElementById("speciality") as HTMLSelectElement).value;
+                        const experience = (document.getElementById("experience") as HTMLSelectElement).value;
+                        const comfortableWithPets = (document.getElementById("comfortableWithPets") as HTMLSelectElement).value;
+                        const rate = (document.getElementById("rate") as HTMLInputElement).value;
+                        const bio = (document.getElementById("bio") as HTMLTextAreaElement).value;
+                        const certifications = (document.getElementById("certifications") as HTMLSelectElement).value;
+                        const distance = (document.getElementById("distance") as HTMLSelectElement).value;
+                        const education = (document.getElementById("education") as HTMLSelectElement).value;
+                        const ref1Email = (document.getElementById("ref1Email") as HTMLInputElement).value;
+                        const ref1Name = (document.getElementById("ref1Name") as HTMLInputElement).value;
+                        const ref1Phone = (document.getElementById("ref1Phone") as HTMLInputElement).value;
+                        const ref1Relation = (document.getElementById("ref1Relation") as HTMLInputElement).value;
+                        const ref2Email = (document.getElementById("ref2Email") as HTMLInputElement).value;
+                        const ref2Name = (document.getElementById("ref2Name") as HTMLInputElement).value;
+                        const ref2Phone = (document.getElementById("ref2Phone") as HTMLInputElement).value;
+                        const ref2Relation = (document.getElementById("ref2Relation") as HTMLInputElement).value;
 
-                    const bodyContent = JSON.stringify({
-                        image: {
-                            file: await convertToBase64(profilePhoto),
-                            name: profilePhoto.name.split(".")[0]
-                        },
-                        fname: fname,
-                        lname: lname,
-                        email: email,
-                        mobile: mobile,
-                        dob: dob,
-                        gender: gender,
-                        address: address,
-                        city: city,
-                        province: province,
-                        zipcode: zipcode,
-                        device_type: "web",
-                        status: "active",
-                        languages: languages.toString().substring(0, languages.toString().length),
-                        speciality: speciality,
-                        experience: experience,
-                        comfortableWithPets: (comfortableWithPets === "yes") ? true : false,
-                        task: additionalServices.toString().substring(0, additionalServices.toString().length),
-                        rate: rate,
-                        daysAWeek: daysAWeek,
-                        workingHrs: workingHrs,
-                        bio: bio,
-                        certifications: certifications,
-                        distance: distance,
-                        education: education,
-                        ref1Email: ref1Email,
-                        ref1Name: ref1Name,
-                        ref1Phone: ref1Phone,
-                        ref1Relation: ref1Relation,
-                        ref2Email: ref2Email,
-                        ref2Name: ref2Name,
-                        ref2Phone: ref2Phone,
-                        ref2Relation: ref2Relation
-                    });
-
-                    try {
-                        const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/registration", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
+                        const bodyContent = JSON.stringify({
+                            image: {
+                                file: await convertToBase64(profilePhoto),
+                                name: profilePhoto.name.split(".")[0]
                             },
-                            body: bodyContent
+                            fname: fname,
+                            lname: lname,
+                            email: email,
+                            mobile: mobile,
+                            dob: dob,
+                            gender: gender,
+                            address: address,
+                            city: city,
+                            province: province,
+                            zipcode: zipcode,
+                            device_type: "web",
+                            status: "active",
+                            languages: languages.toString().substring(0, languages.toString().length),
+                            speciality: speciality,
+                            experience: experience,
+                            comfortableWithPets: (comfortableWithPets === "yes") ? true : false,
+                            task: additionalServices.toString().substring(0, additionalServices.toString().length),
+                            rate: rate,
+                            daysAWeek: daysAWeek,
+                            workingHrs: workingHrs,
+                            bio: bio,
+                            certifications: certifications,
+                            distance: distance,
+                            education: education,
+                            ref1Email: ref1Email,
+                            ref1Name: ref1Name,
+                            ref1Phone: ref1Phone,
+                            ref1Relation: ref1Relation,
+                            ref2Email: ref2Email,
+                            ref2Name: ref2Name,
+                            ref2Phone: ref2Phone,
+                            ref2Relation: ref2Relation
                         });
 
-                        const data = await response.json();
-                        if (data?.success) {
-                            router.push("/caregiver/account");
+                        try {
+                            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/registration", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: bodyContent
+                            });
+
+                            const data = await response.json();
+                            if (data?.success) {
+                                router.push("/caregiver/account");
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
-                    } catch (error) {
-                        console.log(error);
-                    }
-                }} >
+                    }} >
                     <p className='col-[1/3] font-semibold text-2xl self-center md:self-end'>Your Personal Information</p>
                     <div className='flex flex-col items-center justify-center gap-3 col-[1/3] row-[2/3] place-self-center'>
-                        <Image src={imageURL} width={defaultUser.width} height={defaultUser.height} alt='Profile Photo' className='rounded-full aspect-square w-[15rem] border-2 border-black' />
+                        <Image src={imageURL} width={defaultUser.width} height={defaultUser.height} alt='Profile Photo' className='rounded-full aspect-square w-[15rem] border-2 border-black object-cover object-center' />
                         <input required id="profilePhoto" type="file" accept='image/png, image/jpg, image/jpeg' className='file:bg-teal-500 file:text-white file:border-0 file:px-[1.5rem] file:py-[0.5rem] file:rounded-lg text-opacity-100' onChange={async (e) => {
                             const files = e.currentTarget.files;
                             if (files) {
@@ -216,7 +218,6 @@ export default function Registration() {
                             <option value="">Select</option>
                             <option value="child_care">Child Care</option>
                             <option value="senior_care">Senior Care</option>
-                            <option value="child_senior_care">Both</option>
                         </select>
                     </div>
                     <MultiSelect size='md' radius='md' styles={{
@@ -363,30 +364,40 @@ export default function Registration() {
                     />
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Days)</span>
-                        <select id="daysAWeek" required className="border-[1px] p-3 border-black rounded-lg" >
-                            <option value="">Select</option>
-                            <option value="1">1 Day a week</option>
-                            <option value="2">2 Days a week</option>
-                            <option value="3">3 Days a week</option>
-                            <option value="4">4 Days a week</option>
-                            <option value="5">5 Days a week</option>
-                            <option value="6">6 Days a week</option>
-                            <option value="7">7 Days a week</option>
-                        </select>
+                        <Select multiple fullWidth id="daysAWeek" required
+                            sx={{ height: "3rem" }}
+                            value={daysAWeek?.split(",") ?? []}
+                            onChange={(e) => { setDaysAWeek(e.target.value.toString()) }}
+                            input={<OutlinedInput color='success' />} >
+                            <MenuItem value={"Monday"}>Monday</MenuItem>
+                            <MenuItem value={"Tuesday"}>Tuesday</MenuItem>
+                            <MenuItem value={"Wednesday"}>Wednesday</MenuItem>
+                            <MenuItem value={"Thursday"}>Thursday</MenuItem>
+                            <MenuItem value={"Friday"}>Friday</MenuItem>
+                            <MenuItem value={"Saturday"}>Saturday</MenuItem>
+                            <MenuItem value={"Sunday"}>Sunday</MenuItem>
+                        </Select>
                     </div>
                     <div className='flex flex-col'>
                         <span>Availability (Select Working Hours)</span>
-                        <select id="workingHrs" required className="border-[1px] p-3 border-black rounded-lg" >
-                            <option value="">Select</option>
-                            <option value="1">1 Hour a day</option>
-                            <option value="2">2 Hours a day</option>
-                            <option value="3">3 Hours a day</option>
-                            <option value="4">4 Hours a day</option>
-                            <option value="5">5 Hours a day</option>
-                            <option value="6">6 Hours a day</option>
-                            <option value="7">7 Hours a day</option>
-                            <option value="8">8 Hours a day</option>
-                        </select>
+                        <Select multiple id="workingHrs" required
+                            sx={{ height: "3rem" }}
+                            value={workingHrs?.split(",") ?? []}
+                            onChange={(e) => { setWorkingHrs(e.target.value.toString()) }}
+                            input={<OutlinedInput color='success' />} >
+                            <MenuItem value={"9 AM to 10 AM"}>9 AM to 10 AM</MenuItem>
+                            <MenuItem value={"10 AM to 11 AM"}>10 AM to 11 AM</MenuItem>
+                            <MenuItem value={"11 AM to 12 Noon"}>11 AM to 12 Noon</MenuItem>
+                            <MenuItem value={"12 Noon to 1 PM"}>12 Noon to 1 PM</MenuItem>
+                            <MenuItem value={"1 PM to 2 PM"}>1 PM to 2 PM</MenuItem>
+                            <MenuItem value={"2 PM to 3 PM"}>2 PM to 3 PM</MenuItem>
+                            <MenuItem value={"3 PM to 4 PM"}>3 PM to 4 PM</MenuItem>
+                            <MenuItem value={"4 PM to 5 PM"}>4 PM to 5 PM</MenuItem>
+                            <MenuItem value={"5 PM to 6 PM"}>5 PM to 6 PM</MenuItem>
+                            <MenuItem value={"6 PM to 7 PM"}>6 PM to 7 PM</MenuItem>
+                            <MenuItem value={"7 PM to 8 PM"}>7 PM to 8 PM</MenuItem>
+                            <MenuItem value={"8 PM to 9 PM"}>8 PM to 9 PM</MenuItem>
+                        </Select>
                     </div>
                     <p className='row-[18/19] col-[1/3] place-self-center font-semibold text-xl'>Add Professional References</p>
                     <p className='col-[1/3] place-self-center font-semibold'>Reference 1</p>

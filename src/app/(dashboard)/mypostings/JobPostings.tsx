@@ -11,7 +11,7 @@ export default function JobPostings({ id, speciality, postedOn, rate, views, sta
         child_senior_care: "Child and Senior Care"
     };
     return (
-        <div className='flex flex-col gap-5 xl:flex-row bg-white shadow-lg rounded-lg p-5 xl:w-full w-fit justify-between'>
+        <div className={`flex flex-col gap-5 xl:flex-row ${status === "inactive" && "grayscale"} transition-shadow shadow-md hover:shadow-xl rounded-lg p-5 xl:w-full w-fit justify-between select-none`}>
             <div className='bg-teal-500 text-white rounded-lg w-[16rem] p-[20px] flex flex-col justify-center gap-5'>
                 <p className='text-center text-lg'>Service Type</p>
                 <hr />

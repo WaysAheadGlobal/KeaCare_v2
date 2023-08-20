@@ -32,17 +32,6 @@ export default function PostJob() {
         },
     }
 
-    const time: { [key: string]: string } = {
-        "AM_10_11": "10 am to 11 am",
-        "AM_11_12": "11 am to 12 pm",
-        "PM_12_13": "12 pm to 1 pm",
-        "PM_13_14": "1 pm to 2 pm",
-        "PM_14_15": "2 pm to 3 pm",
-        "PM_15_16": "3 pm to 4 pm",
-        "PM_16_17": "4 pm to 5 pm",
-        "PM_17_18": "5 pm to 6 pm"
-    }
-
     useEffect(() => {
         let _time: string[] = [];
         for (const key in appointment) {
@@ -241,7 +230,6 @@ export default function PostJob() {
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DateCalendar disablePast className='bg-teal-500 bg-opacity-50 rounded-lg mt-[1rem]'
                                         onChange={(newValue: any) => {
-
                                             setAppointment({
                                                 ...appointment,
                                                 [dayjs(newValue).format("DD/MM/YYYY")]: []
@@ -276,14 +264,18 @@ export default function PostJob() {
                                         }
                                     }}
                                 >
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"AM_10_11"} />} label="10 am to 11 am" />
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"AM_11_12"} />} label="11 am to 12 pm" />
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_12_13"} />} label="12 pm to 1 pm" />
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_13_14"} />} label="1 pm to 2 pm" />
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_14_15"} />} label="2 pm to 3 pm" />
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_15_16"} />} label="3 pm to 4 pm" />
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_16_17"} />} label="4 pm to 5 pm" />
-                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_17_18"} />} label="5 pm to 6 pm" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"9 AM to 10 AM"} />} label="9 AM to 10 AM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"10 AM to 11 AM"} />} label="10 AM to 11 AM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"11 AM to 12 Noon"} />} label="11 AM to 12 Noon" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"12 Noon to 1 PM"} />} label="12 Noon to 1 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"1 PM to 2 PM"} />} label="1 PM to 2 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"2 PM to 3 PM"} />} label="2 PM to 3 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"3 PM to 4 PM"} />} label="3 PM to 4 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"4 PM to 5 PM"} />} label="4 PM to 5 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"5 PM to 6 PM"} />} label="5 PM to 6 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"6 PM to 7 PM"} />} label="6 PM to 7 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"7 PM to 8 PM"} />} label="7 PM to 8 PM" />
+                                    <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"8 PM to 9 PM"} />} label="8 PM to 9 PM" />
                                 </FormGroup>
                             </div>
                         </div>
@@ -300,7 +292,7 @@ export default function PostJob() {
                                                 <p>{key}</p>
                                                 <div className='flex justify-end flex-wrap gap-1 max-w-[16rem]'>
                                                     {
-                                                        appointment[key].map(e => <span className='bg-teal-300 p-2 rounded-md' key={e}>{time[e]} </span>)
+                                                        appointment[key].map(e => <span className='bg-teal-300 p-2 rounded-md' key={e}>{e} </span>)
                                                     }
                                                 </div>
                                             </div>

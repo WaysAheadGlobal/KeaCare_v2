@@ -1,3 +1,4 @@
 export default interface Otp {
-    otp: number
+    otp: number,
+    error?: string
 }

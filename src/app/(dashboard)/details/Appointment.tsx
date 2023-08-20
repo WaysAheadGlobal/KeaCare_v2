@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
 import AlertContext from './AlertContext'
 
-export default function Appointment({ price, id }: { price: number, id: number | null }) {
+export default function Appointment({ price, id, workingHrs }: { price: number, id: number | null, workingHrs: string }) {
     const router = useRouter();
     const { alert, setAlert } = useContext(AlertContext);
     const [appointment, setAppointment] = useState<{ [key: string]: string[] }>({});
@@ -19,16 +19,6 @@ export default function Appointment({ price, id }: { price: number, id: number |
         '&.Mui-checked': {
             color: teal[500],
         },
-    }
-    const time: { [key: string]: string } = {
-        "AM_10_11": "10 am to 11 am",
-        "AM_11_12": "11 am to 12 pm",
-        "PM_12_13": "12 pm to 1 pm",
-        "PM_13_14": "1 pm to 2 pm",
-        "PM_14_15": "2 pm to 3 pm",
-        "PM_15_16": "3 pm to 4 pm",
-        "PM_16_17": "4 pm to 5 pm",
-        "PM_17_18": "5 pm to 6 pm"
     }
     useEffect(() => {
         let _time: string[] = [];
@@ -79,14 +69,9 @@ export default function Appointment({ price, id }: { price: number, id: number |
                             }
                         }}
                     >
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"AM_10_11"} />} label="10 am to 11 am" />
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"AM_11_12"} />} label="11 am to 12 pm" />
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_12_13"} />} label="12 pm to 1 pm" />
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_13_14"} />} label="1 pm to 2 pm" />
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_14_15"} />} label="2 pm to 3 pm" />
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_15_16"} />} label="3 pm to 4 pm" />
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_16_17"} />} label="4 pm to 5 pm" />
-                        <FormControlLabel control={<Checkbox sx={checkBoxStyle} name="time" value={"PM_17_18"} />} label="5 pm to 6 pm" />
+                        {
+                            workingHrs?.split(",").map(hr => <FormControlLabel key={hr} control={<Checkbox sx={checkBoxStyle} name="time" value={hr} />} label={hr} />)
+                        }
                     </FormGroup>
                 </div>
                 <div className='flex flex-col w-full md:max-w-[25rem]'>
@@ -102,7 +87,7 @@ export default function Appointment({ price, id }: { price: number, id: number |
                                         <p>{key}</p>
                                         <div className='flex justify-end flex-wrap gap-1 max-w-[16rem]'>
                                             {
-                                                appointment[key].map(e => <span className='bg-teal-300 p-2 rounded-md' key={e}>{time[e]} </span>)
+                                                appointment[key].map(e => <span className='bg-teal-300 p-2 rounded-md' key={e}>{e} </span>)
                                             }
                                         </div>
                                     </div>
