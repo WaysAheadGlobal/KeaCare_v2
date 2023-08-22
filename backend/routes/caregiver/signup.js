@@ -19,7 +19,7 @@ async function SignupOTP(req, res) {
             if (caregiver) {
                 res.status(402).json({ error: "User already exists. Please try logging in." });
             } else {
-                await sendOTP(req.body.email, otp, "Signing up");
+                await sendOTP(req.body.email, otp, "Sign up");
                 res.status(200).json({ "otp": otp });
             }
         }

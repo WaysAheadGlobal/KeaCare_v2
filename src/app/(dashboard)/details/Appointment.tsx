@@ -4,10 +4,11 @@ import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import React, { useState, useEffect, useContext } from 'react'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { teal } from '@mui/material/colors'
-import { Checkbox, FormControlLabel, FormGroup, Button, Divider, Alert } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Button, Divider } from '@mui/material';
 import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
 import AlertContext from './AlertContext'
+import { ObjectToString } from '@/Hooks/useObjectToString'
 
 export default function Appointment({ price, id, workingHrs }: { price: number, id: number | null, workingHrs: string }) {
     const router = useRouter();
@@ -113,8 +114,9 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                     careseekerEmail: sessionStorage.getItem("email"),
                                     caregiverId: id,
                                     price: price * Time.length,
-                                    appointment: appointment,
+                                    appointment: ObjectToString(appointment),
                                 });
+                                console.log(ObjectToString(appointment));
                                 const response1 = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments/checkAppointments", {
                                     method: "POST",
                                     headers: {

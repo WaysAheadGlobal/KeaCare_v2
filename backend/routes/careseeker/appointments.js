@@ -4,18 +4,23 @@ const connection = require("../../db/connection");
 function checkDuplicateAppointments(req, res) {
     const { careseekerEmail, appointment } = req.body;
 
-    let sqlQuery = "SELECT DISTINCT appointments_.* FROM appointments_ INNER JOIN careseekers_ WHERE appointments_.careseekerId = careseekers_.id"
+    let sqlQuery = "SELECT DISTINCT appointments_.* FROM appointments_ INNER JOIN careseekers_ WHERE appointments_.careseekerId = careseekers_.id";
 
-    for (const key in appointment) {
-        for (let i = 0; i < appointment[key].length; i++) {
-            const time = appointment[key][i];
+    const dates = appointment.date.split(";");
+    const time = appointment.time.split(";"); // time w.r.t dates
+
+    for (let i = 0; i < dates.length; i++) {
+        const date = dates[i];
+        const times = time[i].split(",");
+        for (let j = 0; j < times.length; j++) {
             if (i === 0) {
-                sqlQuery += ` AND (appointments_.date = '${key}' AND LOCATE('${time}', appointments_.time))`;
+                sqlQuery += ` AND (LOCATE('${date}', appointments_.date) AND LOCATE('${times[j]}', appointments_.time))`;
             } else {
-                sqlQuery += ` OR (appointments_.date = '${key}' AND LOCATE('${time}', appointments_.time))`;
+                sqlQuery += ` OR (LOCATE('${date}', appointments_.date) AND LOCATE('${times[j]}', appointments_.time))`;
             }
         }
     }
+
     sqlQuery += ` AND careseekers_.email = '${careseekerEmail}'`;
 
     connection.query(sqlQuery, (error, results) => {

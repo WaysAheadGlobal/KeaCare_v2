@@ -75,9 +75,10 @@ export default function Details() {
                 } else if (element[element.length - 2] !== next[0]) {
                     temp += element[element.length - 2] + " " + element[element.length - 1] + ", ";
                     flag = 1;
-                } else if (i + 1 === t.length - 1) {
-                    temp += next[next.length - 2] + " " + next[next.length - 1];
                 }
+                if (i + 1 === t.length - 1) {
+                    temp += next[next.length - 2] + " " + next[next.length - 1];
+                } 
             }
         }
         console.log(temp);

@@ -8,15 +8,17 @@ import { FormControlLabel, FormGroup, MenuItem, OutlinedInput, Select, Checkbox,
 import { teal } from "@mui/material/colors"
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { StringtoObject } from '@/Hooks/StringToObject';
+import { ObjectToString } from '@/Hooks/useObjectToString';
 
 export default function JobDetails() {
     const searchParams = useSearchParams();
     const [job, setJob] = useState<any>();
     const router = useRouter();
     const [date, setDate] = useState<string>("");
-    const [Time, setTime] = useState<string[]>([]);
     const [additionalService, setAdditionalService] = useState<string>("");
     const [languages, setLanguages] = useState<string>("");
+    const [datetime, setDateTime] = useState<{ [key: string]: string[] }>({});
 
     const [alert, setAlert] = useState<{ type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
         type: "info",
@@ -36,12 +38,13 @@ export default function JobDetails() {
             const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`);
             const data = await response.json();
             setJob(data);
-            setTime(data?.time.split(","))
+            setDateTime(StringtoObject(data?.date, data?.time));
         }
         getJobById();
     }, [])
 
     useEffect(() => {
+        console.log(job);
         setAdditionalService(job?.additionalService);
         setLanguages(job?.language);
     }, [job])
@@ -49,9 +52,9 @@ export default function JobDetails() {
     useEffect(() => {
         setJob({
             ...job,
-            time: Time.toString()
+            ...ObjectToString(datetime)
         });
-    }, [Time])
+    }, [datetime])
 
 
     return (
@@ -76,7 +79,7 @@ export default function JobDetails() {
                                 translate_: "translate-y-0",
                                 key: alert.key + 1
                             });
-                            
+
                             const bodyContent = JSON.stringify({
                                 email: sessionStorage.getItem("email"),
                                 ...job,
@@ -232,19 +235,18 @@ export default function JobDetails() {
                         <hr className='h-[2.5px] bg-gray-300 my-[1.5rem]' />
                         <section className='space-y-[1rem]'>
                             <p className=''>When would you like to get these services</p>
-                            <div className='grid grid-cols-1 lg:grid-cols-[min-content_auto_auto] grid-rows-[auto] gap-[2rem]'>
+                            <div className='grid grid-cols-1 lg:grid-cols-[min-content_auto_auto] grid-rows-[auto] gap-[4rem]'>
                                 <div className='flex flex-col gap-5'>
                                     <div>
                                         <p className='font-semibold'>Select Date</p>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <DateCalendar disablePast className='bg-teal-500 bg-opacity-50 rounded-lg mt-3'
+                                            <DateCalendar disablePast className='bg-teal-500 bg-opacity-50 rounded-lg mt-[1rem]'
                                                 onChange={(newValue: any) => {
-                                                    setTime([]);
-                                                    setJob({
-                                                        ...job,
-                                                        date: dayjs(newValue).format("DD/MM/YYYY"),
-                                                    });
-                                                    setDate(dayjs(newValue).format("DD/MM/YYYY"));
+                                                    setDateTime({
+                                                        ...datetime,
+                                                        [dayjs(newValue).format("DD/MM/YYYY")]: []
+                                                    })
+                                                    setDate(dayjs(newValue).format("DD/MM/YYYY"))
                                                 }} />
                                         </LocalizationProvider>
                                     </div>
@@ -261,9 +263,15 @@ export default function JobDetails() {
                                             onChange={(e) => {
                                                 if (date) {
                                                     if ((e.target as any).checked) {
-                                                        setTime([...Time, (e.target as any).value]);
+                                                        setDateTime({
+                                                            ...datetime,
+                                                            [date]: [...datetime[date], (e.target as any).value]
+                                                        })
                                                     } else {
-                                                        setTime(Time.filter((t: string) => t !== (e.target as any).value));
+                                                        setDateTime({
+                                                            ...datetime,
+                                                            [date]: [...datetime[date].filter(t => t !== (e.target as any).value)]
+                                                        })
                                                     }
                                                 }
                                             }}
@@ -288,27 +296,33 @@ export default function JobDetails() {
                                         <p>Schedule Information</p>
                                         <p>Hours</p>
                                     </div>
-                                    <div className='flex-grow flex flex-col gap-8 mt-[1rem] h-[20rem] overflow-y-auto'>
-                                        <div className='flex justify-between'>
-                                            <p>{job?.date}</p>
-                                            <div className='flex justify-end flex-wrap gap-1 max-w-[16rem]'>
-                                                {
-                                                    Time.map((e: string) => <span className='bg-teal-300 p-2 rounded-md' key={e}>{e}</span>)
-                                                }
-                                            </div>
-                                        </div>
+                                    <div className='flex-grow flex flex-col gap-4 mt-[1rem] h-[20rem] overflow-auto'>
+                                        {
+                                            Object.keys(datetime).map(key => {
+                                                return (
+                                                    <div key={key} className='flex justify-between'>
+                                                        <p>{key}</p>
+                                                        <div className='flex justify-end flex-wrap gap-1 max-w-[16rem]'>
+                                                            {
+                                                                datetime[key].map(e => <span className='bg-teal-300 p-2 rounded-md' key={e}>{e} </span>)
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                     <hr className='h-[2.5px] bg-gray-300' />
                                     <div className='flex justify-between text-sm'>
-                                        <p>Total Days: 1</p>
-                                        <p>Total Hours: {job?.time.split(",").length}</p>
+                                        <p>Total Days: {Object.keys(datetime).length}</p>
+                                        <p>Total Hours: {job?.time.replaceAll(";", ",").split(",").length}</p>
                                     </div>
                                 </div>
                             </div>
                         </section>
                         <section className='mt-[4rem] flex flex-col gap-[1rem] items-start'>
                             <p className='font-semibold text-sm'>
-                                Just to let you know that you will not be charged anything to post this job. However, based on your requirements your total cost for this job after finalizing the appropriate caregiver will be approximately <span className='text-red-500 font-normal text-lg'>${Number(job?.hourlyRate) * Time.length}</span>
+                                Just to let you know that you will not be charged anything to post this job. However, based on your requirements your total cost for this job after finalizing the appropriate caregiver will be approximately <span className='text-red-500 font-normal text-lg'>${Number(job?.hourlyRate) * job?.time.replaceAll(";", ",").split(",").length}</span>
                             </p>
                             <p className='text-xs italic leading-[2rem]'>*Costs are calculated based on the values that you provide on hourly basis.</p>
                             <button className='bg-teal-500 disabled:bg-opacity-25 text-white px-5 py-3 rounded-lg'>Update this Job</button>

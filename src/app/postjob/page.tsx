@@ -8,6 +8,7 @@ import { OutlinedInput, MenuItem, FormGroup, FormControlLabel, Select, Checkbox 
 import { teal } from '@mui/material/colors';
 import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ObjectToString } from '@/Hooks/useObjectToString';
 
 export default function PostJob() {
     const router = useRouter();
@@ -67,7 +68,7 @@ export default function PostJob() {
                         key: alert.key + 1
                     });
 
-                    const bodyContent = JSON.stringify({ job, email: sessionStorage.getItem("email") });
+                    const bodyContent = JSON.stringify({ job: { ...job, ...ObjectToString(job.time) }, email: sessionStorage.getItem("email") });
 
                     const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/postjob", {
                         method: "POST",

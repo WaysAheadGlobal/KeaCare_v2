@@ -76,18 +76,16 @@ async function webHook(req, res) {
             });
             const _appointment = JSON.parse(appointment);
             try {
-                for (const key in _appointment) {
-                    await prisma.appointments_.create({
-                        data: {
-                            caregiverId: parseInt(caregiverId),
-                            careseekerId: careseeker.id,
-                            date: key,
-                            time: _appointment[key].toString(),
-                            status: "Upcoming",
-                            totalPrice: parseFloat(price),
-                        }
-                    });
-                }
+                await prisma.appointments_.create({
+                    data: {
+                        caregiverId: parseInt(caregiverId),
+                        careseekerId: careseeker.id,
+                        date: _appointment.date,
+                        time: _appointment.time,
+                        status: "Upcoming",
+                        totalPrice: parseFloat(price),
+                    }
+                });
                 sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname);
                 sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname);
                 res.status(200).json({ success: true });
@@ -97,7 +95,7 @@ async function webHook(req, res) {
             }
         } else if (type === "subscription") {
             const { planType, planDuration, planPrice, email } = event.data.object.metadata;
-
+            
             connection.query(`UPDATE careseekers_ SET planDuration = '${planDuration}', planType = '${planType}', planPrice = '${planPrice}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${planDuration.toUpperCase()}) WHERE email = ${email}`, (err) => { throw err; });
 
             res.status(200).json({ "success": true });

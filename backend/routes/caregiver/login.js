@@ -31,7 +31,7 @@ async function LoginOTP(req, res) {
                         token: otp.toString()
                     }
                 });
-                sendOTP(email, otp, "Logging in");
+                sendOTP(email, otp, "Log in");
                 res.status(200).json({ "otp": otp });
             } else {
                 res.status(403).json({ "error": "User not found. Please sign up or try with a different email address" })

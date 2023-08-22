@@ -19,7 +19,7 @@ async function payment(req, res) {
             }
         ],
         mode: 'subscription',
-        success_url: `https://keacare.waysdatalabs.com/careseeker/registration.html`,
+        success_url: 'https://keacare.waysdatalabs.com/careseeker/registration.html',
         cancel_url: 'https://keacare.waysdatalabs.com/pricing.html'
     });
     res.status(200).json(session.url);

@@ -34,11 +34,15 @@ async function sendOTP(email, otp, action) {
             from: 'dev@waysaheadglobal.com',
             to: email,
             subject: "OTP for Signing Up in KeaCare",
-            html: `<p>Hello ${email},</p> 
-            <p>This is your OTP for ${action} in KeaCare</p> 
+            html: `
+            <p>Dear ${email},</p> 
+            <p>You have requested to ${action} into your Keacare account. Please use the following OTP to complete your ${action}:</p>
             <p style="font-size: x-large; font-weight: bold;">${otp}</p>
-            <p style="margin-top: 3rem;">Regards,</p>
-            <p>Team KeaCare.</p>            
+            <p>This OTP is valid for a limited time and can only be used once. Do not share this OTP with anyone, including your Keacare support team.</p>
+            <p>For any assistance, please contact our support team immediately at [support@keacare.com].</p>  
+            <p style="margin-top: 3rem;">Thank you for using Keacare</p>
+            <p>Best regards,  </p>
+            <p>Team KeaCare</p>          
             `,
         })
     } catch (err) {
