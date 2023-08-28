@@ -10,16 +10,16 @@ async function postings(req, res) {
             res.status(400).send('Invalid email address. Please try again.');
         } else {
             const { email } = req.query;
-            const caregiver = await prisma.careseekers_.findUnique({
+            const careseeker = await prisma.careseekers_.findUnique({
                 where: {
                     email: email
                 }
             });
 
-            if (caregiver) {
+            if (careseeker) {
                 const jobs = await prisma.jobs_.findMany({
                     where: {
-                        userId: caregiver.id
+                        userId: careseeker.id
                     }
                 });
 

@@ -1,5 +1,3 @@
-"use client"
-
 import JobPostings from '@/app/(dashboard)/mypostings/JobPostings'
 import React from 'react'
 
@@ -14,6 +12,8 @@ async function getPostings(email: string | null) {
 export default async function MyPostings({ email }: { email: string | null }) {
 
     const posts = await getPostings(email);
+
+    console.log(posts);
 
     if (posts?.length !== 0) {
         return (

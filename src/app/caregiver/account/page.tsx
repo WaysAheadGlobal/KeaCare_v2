@@ -42,7 +42,7 @@ export default function Account() {
         })
     }
 
-    const [alert, setAlert] = useState<{ type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
+    const [alert, setAlert] = useState<{ type: "info" | "warning" | "error" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
         type: "info",
         message: "",
         translate_: "-translate-y-96",
@@ -90,7 +90,7 @@ export default function Account() {
                             key: alert.key + 1,
                             message: "Couldn't update your profile.",
                             translate_: "translate-y-0",
-                            type: "danger"
+                            type: "error"
                         })
                     }
                 }}

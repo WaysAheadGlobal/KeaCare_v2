@@ -17,8 +17,17 @@ function postReview(req, res) {
                 } else {
                     const careseeker = results[0];
 
-                    connection.query(`INSERT INTO reviews (careseekerId, caregiverId, review, rating) VALUES (${careseeker.id}, ${caregiverId}, '${review}', '${rating}')`, (err, results_) => {
+                    connection.query(`INSERT INTO reviews (careseekerId, caregiverId, review, rating) VALUES (${careseeker.id}, ${caregiverId}, '${review}', ${rating})`, (err, results_) => {
                         if (err) throw err;
+
+                        connection.query(`SELECT AVG(reviews.rating) AS rating FROM reviews WHERE caregiverId = ${caregiverId}`, (error, results__) => {
+                            if (error) throw error;
+
+                            const avg = results__[0].rating;
+                            connection.query(`UPDATE caregivers_ SET rating = ${avg} WHERE id = ${caregiverId}`, (e) => {
+                                if (e) throw e;
+                            })
+                        });
                         res.status(200).send({ success: true });
                     });
                 }
@@ -70,14 +79,19 @@ async function updateReview(req, res) {
                 } else {
                     const careseeker = results[0];
 
-                    connection.query(`UPDATE reviews
-                                        SET review = '${review}',
-                                        rating = '${rating}'
-                                        WHERE careseekerId = ${careseeker.id} AND caregiverId = ${caregiverId}`,
-                        (err, results_) => {
-                            if (err) throw err;
-                            res.status(200).json({ success: true });
+                    connection.query(`UPDATE reviews SET review = '${review}', rating = '${rating}' WHERE careseekerId = ${careseeker.id} AND caregiverId = ${caregiverId}`, (err, results_) => {
+                        if (err) throw err;
+
+                        connection.query(`SELECT AVG(reviews.rating) AS rating FROM reviews WHERE caregiverId = ${caregiverId}`, (error, results__) => {
+                            if (error) throw error;
+
+                            const avg = results__[0].rating;
+                            connection.query(`UPDATE caregivers_ SET rating = ${avg} WHERE id = ${caregiverId}`, (e) => {
+                                if (e) throw e;
+                            })
                         });
+                        res.status(200).json({ success: true });
+                    });
                 }
             });
         }

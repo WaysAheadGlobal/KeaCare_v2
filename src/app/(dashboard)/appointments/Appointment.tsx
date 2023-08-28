@@ -6,7 +6,6 @@ export default function Appointment({ appointment }: { appointment: any }) {
         "child_care": "Child Care",
         "senior_care": "Senior Care"
     };
-    React.useEffect(() => { console.log(appointment) }, []);
     return (
         <div className={`flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg ${appointment?.status === "Completed" && "grayscale"}`}>
             <Image src={appointment?.imageUrl} alt={'appointment'} width={300} height={300} className='rounded-lg w-full md:w-[300px] h-[350px] object-center object-cover' />

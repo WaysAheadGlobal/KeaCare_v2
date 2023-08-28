@@ -1,14 +1,14 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import dayjs from 'dayjs';
-import Alert from '@/app/Alert';
 import { useRouter } from 'next/navigation';
 import { OutlinedInput, MenuItem, FormGroup, FormControlLabel, Select, Checkbox } from '@mui/material';
 import { teal } from '@mui/material/colors';
 import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ObjectToString } from '@/Hooks/useObjectToString';
+import AlertContext from '../AlertContext';
 
 export default function PostJob() {
     const router = useRouter();
@@ -19,13 +19,7 @@ export default function PostJob() {
     const [date, setDate] = useState<string>("");
     const [Time, setTime] = useState<string[]>([]);
     const [job, setJob] = useState<any>();
-
-    const [alert, setAlert] = useState<{ type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
-        type: "info",
-        message: "",
-        translate_: "-translate-y-96",
-        key: 0
-    });
+    const { setAlert } = useContext(AlertContext);
 
     const checkBoxStyle = {
         '&.Mui-checked': {
@@ -45,9 +39,6 @@ export default function PostJob() {
 
     return (
         <section className='relative'>
-            <div className='sticky top-0 bg-transparent h-[1rem]'>
-                <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
-            </div>
             <form className='px-[2rem] md:px-[8rem] py-[1rem]'
                 onChange={(e) => {
                     setJob({
@@ -64,8 +55,7 @@ export default function PostJob() {
                     setAlert({
                         type: "info",
                         message: "Posting your job. Please Wait.",
-                        translate_: "translate-y-0",
-                        key: alert.key + 1
+                        open: true
                     });
 
                     const bodyContent = JSON.stringify({ job: { ...job, ...ObjectToString(job.time) }, email: sessionStorage.getItem("email") });
@@ -84,16 +74,14 @@ export default function PostJob() {
                         setAlert({
                             type: "success",
                             message: "Job Posted. Redirecting to my posts",
-                            translate_: "translate-y-0",
-                            key: alert.key + 1
+                            open: true
                         });
                         setTimeout(() => router.push("/mypostings"), 1000);
                     } else {
                         setAlert({
-                            type: "danger",
+                            type: "error",
                             message: "Couldn't post this job. Please try again.",
-                            translate_: "translate-y-0",
-                            key: alert.key + 1
+                            open: true
                         });
                     }
                 }}>
@@ -231,11 +219,23 @@ export default function PostJob() {
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DateCalendar disablePast className='bg-teal-500 bg-opacity-50 rounded-lg mt-[1rem]'
                                         onChange={(newValue: any) => {
-                                            setAppointment({
-                                                ...appointment,
-                                                [dayjs(newValue).format("DD/MM/YYYY")]: []
-                                            })
-                                            setDate(dayjs(newValue).format("DD/MM/YYYY"))
+                                            if (Object.keys(appointment).includes(dayjs(newValue).format("DD/MM/YYYY"))) {
+                                                let obj = {};
+                                                for (const key in appointment) {
+                                                    if (key !== dayjs(newValue).format("DD/MM/YYYY")) {
+                                                        obj = {
+                                                            [key]: appointment[key]
+                                                        }
+                                                    }
+                                                }
+                                                setAppointment({ ...obj });
+                                            } else {
+                                                setAppointment({
+                                                    ...appointment,
+                                                    [dayjs(newValue).format("DD/MM/YYYY")]: []
+                                                })
+                                                setDate(dayjs(newValue).format("DD/MM/YYYY"))
+                                            }
                                         }} />
                                 </LocalizationProvider>
                             </div>

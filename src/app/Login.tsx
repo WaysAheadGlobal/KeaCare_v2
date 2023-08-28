@@ -13,7 +13,7 @@ import Alert from './Alert'
 export default function Login() {
     const { userType } = useContext(UserTypeContext);
     const router = useRouter();
-    const [alert, setAlert] = useState<{ type: "info" | "warn" | "danger" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
+    const [alert, setAlert] = useState<{ type: "info" | "warning" | "error" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
         type: "info",
         message: "",
         translate_: "-translate-y-96",
@@ -82,14 +82,14 @@ export default function Login() {
                             }
                         } else if (data?.error) {
                             setAlert({
-                                type: "danger",
+                                type: "error",
                                 message: data.error,
                                 translate_: "translate-y-0",
                                 key: alert.key + 1
                             });
                         } else {
                             setAlert({
-                                type: "danger",
+                                type: "error",
                                 message: "Invalid OTP. Please try again",
                                 translate_: "translate-y-0",
                                 key: alert.key + 1
@@ -114,7 +114,7 @@ export default function Login() {
                             if (!email.validity.valid) {
                                 email.focus();
                                 setAlert({
-                                    type: "warn",
+                                    type: "warning",
                                     message: "Please enter a valid email address.",
                                     translate_: "translate-y-0",
                                     key: alert.key + 1
@@ -154,7 +154,7 @@ export default function Login() {
                                     setOtp(data?.otp.toString());
                                 } else if (data.error) {
                                     setAlert({
-                                        type: "danger",
+                                        type: "error",
                                         message: data.error,
                                         translate_: "translate-y-0",
                                         key: alert.key + 1
@@ -162,7 +162,7 @@ export default function Login() {
                                 }
                             } catch (error) {
                                 setAlert({
-                                    type: "danger",
+                                    type: "error",
                                     message: "Couldn't send OTP please check your mail or try after some time.",
                                     translate_: "translate-y-0",
                                     key: alert.key + 1

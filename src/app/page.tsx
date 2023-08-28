@@ -1,16 +1,18 @@
 "use client"
 
 import React, { useContext } from 'react'
-import HowItWorks from '@/app/HowItWorks'
-import Leaders from '@/app/Leaders'
-import Responsive_Compassionate from '@/app/Responsive_Compassionate'
-import Introduction from '@/app/Introduction'
-import ValueProposition from '@/app/ValueProposition'
-import AboutUs from '@/app/AboutUs'
-import Chat from '@/app/Chat'
+import dynamic from "next/dynamic"
 import { Menu } from '@mantine/core'
 import UserTypeContext from '@/context/UserType'
 import { BsRobot } from 'react-icons/bs'
+
+const HowItWorks = dynamic(() => import('@/app/HowItWorks'));
+const Leaders = dynamic(() => import('@/app/Leaders'));
+const Responsive_Compassionate = dynamic(() => import('@/app/Responsive_Compassionate'));
+const Introduction = dynamic(() => import('@/app/Introduction'));
+const ValueProposition = dynamic(() => import('@/app/ValueProposition'));
+const AboutUs = dynamic(() => import('@/app/AboutUs'));
+const Chat = dynamic(() => import('@/app/Chat'));
 
 
 export default function Home() {

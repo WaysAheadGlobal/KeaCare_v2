@@ -7,12 +7,12 @@ import { teal } from '@mui/material/colors'
 import { Checkbox, FormControlLabel, FormGroup, Button, Divider } from '@mui/material';
 import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
-import AlertContext from './AlertContext'
+import AlertContext from '../AlertContext'
 import { ObjectToString } from '@/Hooks/useObjectToString'
 
 export default function Appointment({ price, id, workingHrs }: { price: number, id: number | null, workingHrs: string }) {
     const router = useRouter();
-    const { alert, setAlert } = useContext(AlertContext);
+    const { setAlert } = useContext(AlertContext);
     const [appointment, setAppointment] = useState<{ [key: string]: string[] }>({});
     const [date, setDate] = useState<string>("");
     const [Time, setTime] = useState<string[]>([]);
@@ -38,11 +38,23 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DateCalendar disablePast className='bg-teal-500 bg-opacity-50 rounded-lg mt-[1rem]'
                             onChange={(newValue: any) => {
-                                setAppointment({
-                                    ...appointment,
-                                    [dayjs(newValue).format("DD/MM/YYYY")]: []
-                                })
-                                setDate(dayjs(newValue).format("DD/MM/YYYY"))
+                                if (Object.keys(appointment).includes(dayjs(newValue).format("DD/MM/YYYY"))) {
+                                    let obj = {};
+                                    for (const key in appointment) {
+                                        if (key !== dayjs(newValue).format("DD/MM/YYYY")) {
+                                            obj = {
+                                                [key]: appointment[key]
+                                            }
+                                        }
+                                    }
+                                    setAppointment({ ...obj });
+                                } else {
+                                    setAppointment({
+                                        ...appointment,
+                                        [dayjs(newValue).format("DD/MM/YYYY")]: []
+                                    })
+                                    setDate(dayjs(newValue).format("DD/MM/YYYY"))
+                                }
                             }} />
                     </LocalizationProvider>
                 </div>
@@ -116,7 +128,6 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                     price: price * Time.length,
                                     appointment: ObjectToString(appointment),
                                 });
-                                console.log(ObjectToString(appointment));
                                 const response1 = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments/checkAppointments", {
                                     method: "POST",
                                     headers: {
@@ -137,10 +148,9 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                     router.push(data);
                                 } else {
                                     setAlert({
-                                        type: "danger",
+                                        type: "error",
                                         message: check?.error,
-                                        translate_: "translate-y-0",
-                                        key: alert.key + 1
+                                        open: true
                                     });
                                 }
                             }}

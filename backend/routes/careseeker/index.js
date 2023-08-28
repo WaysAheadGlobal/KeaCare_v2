@@ -18,6 +18,7 @@ const getApplicantsById = require("./getApplicants");
 const { postReview, getReviews, updateReview } = require("./review");
 const { appointmentFees, getAppointments, checkDuplicateAppointments } = require("./appointments");
 const UpdateJob = require("./updateJob");
+const { addFavourites, getFavourites, removeFromFavourites, getFavouriteByCareseekerAndCaregiverId } = require("./favourites");
 
 const CareseekerRouter = Router();
 
@@ -48,5 +49,9 @@ CareseekerRouter.get("/review", getReviews);
 CareseekerRouter.post("/appointments", appointmentFees);
 CareseekerRouter.get("/appointments", getAppointments);
 CareseekerRouter.post("/appointments/checkAppointments", checkDuplicateAppointments);
+CareseekerRouter.post("/favourites", body("careseekerEmail").trim().isEmail(), addFavourites);
+CareseekerRouter.get("/favourites", query("careseekerEmail").trim().isEmail(), getFavourites);
+CareseekerRouter.get("/getfavourite", query("careseekerEmail").trim().isEmail(), getFavouriteByCareseekerAndCaregiverId);
+CareseekerRouter.delete("/favourites", body("careseekerEmail").trim().isEmail(), removeFromFavourites);
 
 module.exports = CareseekerRouter;
