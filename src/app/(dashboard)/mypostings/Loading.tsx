@@ -8,7 +8,7 @@ export default function Loading() {
         }}>
             <section className='flex flex-col gap-10'>
                 <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
-                    <Skeleton variant="rounded" animation="wave" width={300} height={300} />
+                    <Skeleton variant="rounded" animation="wave" width={250} height={250} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />
                         <Skeleton variant="rounded" animation="wave" />
@@ -30,7 +30,7 @@ export default function Loading() {
                     </div>
                 </div>
                 <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
-                    <Skeleton variant="rounded" animation="wave" width={300} height={300} />
+                    <Skeleton variant="rounded" animation="wave" width={250} height={250} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />
                         <Skeleton variant="rounded" animation="wave" />
@@ -52,7 +52,7 @@ export default function Loading() {
                     </div>
                 </div>
                 <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
-                    <Skeleton variant="rounded" animation="wave" width={300} height={300} />
+                    <Skeleton variant="rounded" animation="wave" width={250} height={250} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />
                         <Skeleton variant="rounded" animation="wave" />
@@ -74,7 +74,7 @@ export default function Loading() {
                     </div>
                 </div>
                 <div className='flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg'>
-                    <Skeleton variant="rounded" animation="wave" width={300} height={300} />
+                    <Skeleton variant="rounded" animation="wave" width={250} height={250} />
                     <div className='flex-grow space-y-1'>
                         <Skeleton variant="rounded" animation="wave" />
                         <Skeleton variant="rounded" animation="wave" />

@@ -1,16 +1,19 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
+import dynamic from "next/dynamic"
 import { FiSearch } from 'react-icons/fi'
-import RecommendedCard from './RecommendedCard'
+const RecommendedCard = dynamic(() => import('./RecommendedCard'));
 /* import SearchResultCard from './SearchResultCard' */
 
 
 export default function Caregivers({ filters }: { filters: any }) {
     const [caregivers, setCaregivers] = useState<any[]>([]);
-    const [page, setPage] = useState<string>("1");
+    /** const [page, setPage] = useState<string>("1"); */
+    const [search, setSearch] = useState<string>("");
+    const [heading, setHeading] = useState<string>("Recommended for you");
 
-    useEffect(() => {
+    /** useEffect(() => {
         async function getCaregivers() {
             const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getCaregivers?page=${page}`, {
                 next: {
@@ -21,7 +24,7 @@ export default function Caregivers({ filters }: { filters: any }) {
             setCaregivers(data);
         }
         getCaregivers();
-    }, [page])
+    }, [page]); */
 
     useEffect(() => {
         async function filter() {
@@ -35,6 +38,21 @@ export default function Caregivers({ filters }: { filters: any }) {
             Promise.resolve();
         }
     }, [filters]);
+
+    useEffect(() => {
+        async function getCaregiverByName() {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/filterByName?name=${search}`);
+            const data = await response.json();
+            setCaregivers(data);
+        }
+        let timeout: NodeJS.Timeout;
+        timeout = setTimeout(() => {
+            getCaregiverByName();
+        }, 500);
+        return () => {
+            clearTimeout(timeout);
+        }
+    }, [search])
 
     return (
         <div id="contents" className='flex flex-col gap-8 w-full items-start'>
@@ -53,16 +71,23 @@ export default function Caregivers({ filters }: { filters: any }) {
                     <option value="10">Within 10 kms</option>
                 </select>
                 <div className='flex items-center md:flex-grow-[10]'>
-                    <input type="text" className='p-3 bg-inherit border-[1px] border-black rounded-l-lg outline-none w-full hover:ring-4 hover:ring-teal-400 focus:ring-4 focus:ring-teal-400 hover:rounded-r-lg focus:rounded-r-lg hover:border-teal-600 focus:border-teal-600' placeholder='Search Caregivers (type name, speciality, etc.)' />
+                    <input type="text" className='p-3 bg-inherit border-[1px] border-black rounded-l-lg outline-none w-full hover:ring-4 hover:ring-teal-400 focus:ring-4 focus:ring-teal-400 hover:rounded-r-lg focus:rounded-r-lg hover:border-teal-600 focus:border-teal-600' placeholder='Search Caregivers (type name, speciality, etc.)' onChange={(e) => {
+                        if (e.target.value.length === 0) {
+                            setHeading("Recommended for you");
+                        } else {
+                            setHeading("Search Results");
+                        }
+                        setSearch(e.target.value);
+                    }} />
                     <div className='bg-teal-500 p-[14px] rounded-r-lg border-[1px] border-teal-500'>
                         <FiSearch className='text-xl text-white' />
                     </div>
                 </div>
             </div>
             <div className='w-full'>
-                <h1 className='text-3xl font-semibold text-teal-500'>Recommended for you</h1>
+                <h1 className='text-3xl font-semibold text-teal-500'>{heading}</h1>
                 <p className='text-gray-400 mt-2'>{caregivers?.length} People in your locality have already appointed these caregivers.</p>
-                <div className='flex flex-row justify-evenly flex-wrap gap-5 mt-5'>
+                <div className='flex flex-row items-start justify-start flex-wrap gap-5 mt-5'>
                     {
                         caregivers.map((caregiver: any) => {
                             if (caregiver?.fname) {

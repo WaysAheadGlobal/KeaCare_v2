@@ -10,8 +10,10 @@ export default function MyPostingsClient() {
         setEmail(sessionStorage.getItem("email"));
     }, [])
     return (
-        <Suspense fallback={<Loading />}>
-            <MyPostings email={email} />
-        </Suspense>
+        <section className="min-h-[500px]">
+            <Suspense fallback={<Loading />}>
+                <MyPostings email={email} />
+            </Suspense>
+        </section>
     )
 }

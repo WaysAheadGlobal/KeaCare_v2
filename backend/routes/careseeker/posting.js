@@ -20,6 +20,9 @@ async function postings(req, res) {
                 const jobs = await prisma.jobs_.findMany({
                     where: {
                         userId: careseeker.id
+                    },
+                    orderBy: {
+                        createdOn: "desc"
                     }
                 });
 

@@ -7,13 +7,13 @@ async function filters(req, res) {
 
     const caregivers = await prisma.caregivers_.findMany({
         where: {
-            speciality: speciality ? speciality : undefined,
+            speciality: speciality || undefined,
             comfortableWithPets: pet ? !!pet : undefined,
             rate: {
-                gte: rate ? rate : undefined
+                lte: rate ? parseFloat(rate) : undefined
             },
             experience: {
-                gte: experience ? experience : undefined
+                gte: experience || undefined
             },
             daysAWeek: {
                 gte: daysAWeek ? parseInt(daysAWeek) : undefined
@@ -21,13 +21,13 @@ async function filters(req, res) {
             workingHrs: {
                 gte: hrs ? parseInt(hrs) : undefined
             },
-            gender: gender ? gender : undefined,
+            gender: gender || undefined,
             /* age: age, */
             languages: {
-                contains: languages ? languages : undefined
+                contains: languages || undefined
             },
             task: {
-                contains: addservices ? addservices : undefined
+                contains: addservices || undefined
             },
             rating: {
                 gte: rating ? parseFloat(rating) : undefined

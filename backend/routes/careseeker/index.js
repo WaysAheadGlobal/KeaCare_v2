@@ -19,6 +19,7 @@ const { postReview, getReviews, updateReview } = require("./review");
 const { appointmentFees, getAppointments, checkDuplicateAppointments } = require("./appointments");
 const UpdateJob = require("./updateJob");
 const { addFavourites, getFavourites, removeFromFavourites, getFavouriteByCareseekerAndCaregiverId } = require("./favourites");
+const getCaregiversByName = require("./getCaregiversByName");
 
 const CareseekerRouter = Router();
 
@@ -33,6 +34,7 @@ CareseekerRouter.post("/login", body("email").trim().isEmail(), Login);
 CareseekerRouter.post("/registration", body("email").trim().isEmail(), Register);
 CareseekerRouter.get("/getCaregivers", getCaregivers);
 CareseekerRouter.get("/filters", filters);
+CareseekerRouter.get("/filterByName", getCaregiversByName);
 CareseekerRouter.post("/postjob", body("email").trim().isEmail(), PostJob);
 CareseekerRouter.put("/updatejob", body("email").trim().isEmail(), UpdateJob);
 CareseekerRouter.get("/posts", query("email").trim().isEmail(), postings);

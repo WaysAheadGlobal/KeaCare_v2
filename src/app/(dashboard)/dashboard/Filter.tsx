@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { MultiSelect } from '@mantine/core';
+import { Slider } from "@mui/material"
 
 export default function Filter({ filters, setFilters }: { filters: any, setFilters: any }) {
     const [key, setKey] = useState<string>("1");
@@ -64,9 +65,21 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                         <label>Senior Care</label>
                     </div>
                 </div>
-                <div className='font-semibold flex flex-col gap-3 ml-6 text-sm'>
+                <div className='font-semibold flex flex-col gap-3 ml-6 text-sm w-full pr-8'>
                     <p>Hourly Rate</p>
-                    <input type="range" name="hourlyrate" id="hourlyrate" className='outline-none' />
+                    <Slider defaultValue={0} valueLabelDisplay="auto" sx={{ width: "100%" }} onChange={(e) => {
+                        if ((e.target as any).value !== 0) {
+                            setFilters({
+                                ...filters,
+                                rate: (e.target as any).value
+                            });
+                        } else {
+                            setFilters({
+                                ...filters,
+                                rate: ""
+                            });
+                        }
+                    }} max={1000} />
                     <p>Comfortable with pets</p>
                     <div className="flex gap-2 items-center justify-start -ml-6">
                         <input type="checkbox" value="yes" id="pets" className="w-[1rem] h-[1rem]"
