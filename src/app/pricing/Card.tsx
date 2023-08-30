@@ -33,6 +33,7 @@ export default function Card({ price, heading, id, duration }: { price: string, 
                         planType: heading,
                         planDuration: duration,
                         planPrice: price,
+                        redo: sessionStorage.getItem("pricing") === "redo"
                     });
 
                     const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/payment", {
@@ -44,6 +45,8 @@ export default function Card({ price, heading, id, duration }: { price: string, 
                     });
 
                     const data = await response.json();
+
+                    sessionStorage.removeItem("pricing");
 
                     window.location.assign(data);
                 }}>

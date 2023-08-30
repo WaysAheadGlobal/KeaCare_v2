@@ -25,28 +25,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <AlertContext.Provider value={{ alert, setAlert }}>
                 <div className='flex flex-row flex-wrap gap-5 py-5 px-2 md:p-5 bg-teal-500 text-white text-lg items-center md:justify-evenly'>
                     <Link href={"/mypostings"}>
-                        <button className='flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500'>
+                        <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/mypostings" && 'bg-white text-teal-500'}`}>
                             <BsPostcardFill />
                             <p className='text-sm md:text-base'>My Postings</p>
                         </button>
                     </Link>
                     <Link href={"/favourites"}>
-                        <button className='flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500'>
+                        <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/favourites" && 'bg-white text-teal-500'}`}>
                             <AiFillHeart />
                             <p className='text-sm md:text-base'>Favourites</p>
                         </button>
                     </Link>
                     <Link href={"/appointments"}>
-                        <button className='flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500'>
+                        <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/appointments" && 'bg-white text-teal-500'}`}>
                             <IoDocuments />
                             <p className='text-sm md:text-base'>Appointments</p>
                         </button>
                     </Link>
-                    <button className='flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500'>
+                    <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/chats" && 'bg-white text-teal-500'}`}>
                         <BsFillChatFill />
                         <p className='text-sm md:text-base'>Chat/Messages</p>
                     </button>
-                    <button className='flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500'>
+                    <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/help" && 'bg-white text-teal-500'}`}>
                         <TfiHeadphoneAlt />
                         <p className='text-sm md:text-base'>Need Assistance</p>
                     </button>

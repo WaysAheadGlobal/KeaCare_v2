@@ -67,9 +67,18 @@ export default function Login() {
                             body: bodyContent
                         });
 
-                        const data: LoginResponse = await response.json();
+                        const data: any = await response.json();
+                        console.log(data);
 
-                        if (data?.success) {
+                        if (data?.status === "inactive") {
+                            document.querySelectorAll("dialog").forEach(dialog => {
+                                dialog.close();
+                            });
+                            sessionStorage.setItem("email", data?.email.toString());
+                            sessionStorage.setItem("otp", Otp);
+                            sessionStorage.setItem("pricing", "redo");
+                            router.push("/pricing");
+                        } else if (data?.success) {
                             document.querySelectorAll("dialog").forEach(dialog => {
                                 dialog.close();
                             });

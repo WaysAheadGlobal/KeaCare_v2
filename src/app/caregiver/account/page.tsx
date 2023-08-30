@@ -132,7 +132,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender</span>
-                        <select required disabled value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'
+                        <select required disabled={userInfo?.gender} value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'
                             onChange={(e) => setUserInfo({
                                 ...userInfo,
                                 gender: e.currentTarget.value

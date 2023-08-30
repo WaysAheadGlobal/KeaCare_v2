@@ -12,7 +12,7 @@ const UpdateAccount = require("./updateAccount");
 const getProducts = require("./pricing");
 const payment = require("./payment");
 const webHook = require("./events");
-const setSubscription = require("./setSubscription");
+const getSubscription = require("./getSubscription");
 const getJobById = require("./getJobById");
 const getApplicantsById = require("./getApplicants");
 const { postReview, getReviews, updateReview } = require("./review");
@@ -42,7 +42,7 @@ CareseekerRouter.get("/account", query("email").trim().isEmail(), getCareseekerI
 CareseekerRouter.put("/updateAccount", body("email").trim().isEmail(), UpdateAccount);
 CareseekerRouter.get("/getproducts", getProducts);
 CareseekerRouter.post("/payment", payment);
-CareseekerRouter.post("/setSubcription", setSubscription);
+CareseekerRouter.get("/getSubcription", query("email").trim().isEmail(), getSubscription);
 CareseekerRouter.get("/getjob", getJobById);
 CareseekerRouter.get("/getapplicants", getApplicantsById);
 CareseekerRouter.post("/review", body("email").trim().isEmail(), postReview);

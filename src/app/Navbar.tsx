@@ -100,7 +100,7 @@ export default function Navbar() {
                         </Menu>
                         <Menu trigger='click' shadow="lg" width={200}>
                             <Menu.Target>
-                                <div className={`${!otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg cursor-pointer`}>My Account</div>
+                                <button disabled={pathname === "/pricing" || pathname === "/caregiver/registration" || pathname === "/careseeker/registration"} className={`${!otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg cursor-pointer disabled:bg-gray-400`}>My Account</button>
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
                                 <Menu.Item className={`${(userType === 'caregiver') && 'hidden'} font-semibold hover:bg-teal-500 hover:bg-opacity-60`} icon={<MdSpaceDashboard className='text-xl' />}>

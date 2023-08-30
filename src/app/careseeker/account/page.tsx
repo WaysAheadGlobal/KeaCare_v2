@@ -3,10 +3,16 @@
 import React, { useState, useEffect } from 'react'
 import profilePic from '../../../../public/profilePic.png'
 import Alert from '@/app/Alert';
+import Subscription from './Subscription';
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
     const [refreshData, setRefreshData] = useState<number>(0);
+    const [email, setEmail] = useState<string | null>("");
+
+    useEffect(() => {
+        setEmail(sessionStorage.getItem("email"));
+    }, []);
 
     useEffect(() => {
         async function getUserInfo(email: string) {
@@ -85,7 +91,7 @@ export default function Account() {
                         })
                     }
                 }}>
-                <div className='flex flex-col gap-[3rem]'>
+                <div className='flex flex-col gap-[2rem]'>
                     <div className='bg-teal-500 rounded-lg flex flex-col items-center justify-start gap-10 h-[17rem]'>
                         <div className='rounded-full bg-white'>
                             <div className='rounded-full aspect-square w-[7rem] bg-cover bg-no-repeat bg-center' style={{
@@ -105,11 +111,35 @@ export default function Account() {
                                 }} />
                         </div>
                     </div>
-                    <button disabled className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
-                    <button disabled className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Delete My Account</button>
+                    <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const subscription = document.getElementById("subscription") as HTMLDivElement;
+                        const form = document.getElementById("form") as HTMLDivElement;
+                        subscription.classList.remove("flex");
+                        subscription.classList.add("hidden");
+                        form.classList.add("flex");
+                        form.classList.add("md:grid");
+                        form.classList.remove("hidden");
+                    }}
+                    >My Account</button>
+                    <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const subscription = document.getElementById("subscription") as HTMLDivElement;
+                        const form = document.getElementById("form") as HTMLDivElement;
+                        subscription.classList.add("flex");
+                        subscription.classList.remove("hidden");
+                        form.classList.remove("flex");
+                        form.classList.remove("md:grid");
+                        form.classList.add("hidden");
+                    }}
+                    >Subscriptions</button>
+                    <button className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'>Payment History</button>
+                    <button disabled className='p-3 font-semibold rounded-lg border-2 transition-all duration-200 border-red-500 text-red-500 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white'>Delete My Account</button>
                 </div>
-
-                <div className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
+                <Subscription id="subscription" className="md:px-[3rem] md:py-[3rem] hidden flex-col border-2 border-black rounded-lg w-full lg:min-w-[700px]" />
+                <div id="form" className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
                     <h1 className='col-[1/3] font-semibold text-2xl self-start sm:self-end'>Your Personal Information</h1>
                     <div className='flex flex-col col-[1/2]'>
                         <span>First Name</span>
@@ -125,7 +155,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender</span>
-                        <select required disabled value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'>
+                        <select required name="gender" disabled={userInfo?.gender} value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'>
                             <option value="" disabled>Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>

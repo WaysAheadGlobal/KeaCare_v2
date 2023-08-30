@@ -95,8 +95,14 @@ async function webHook(req, res) {
             }
         } else if (type === "subscription") {
             const { planType, planDuration, planPrice, email } = event.data.object.metadata;
-            
-            connection.query(`UPDATE careseekers_ SET planDuration = '${planDuration}', planType = '${planType}', planPrice = '${planPrice}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${planDuration.toUpperCase()}) WHERE email = ${email}`, (err) => { throw err; });
+
+            connection.query(`UPDATE careseekers_ SET status = 'active', planDuration = '${planDuration}', planType = '${planType}', planPrice = '${planPrice}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${planDuration.toUpperCase()}) WHERE email = '${email}'`, (err) => { throw err; });
+
+            connection.query(`SELECT id FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
+                if (error) throw error;
+
+                connection.query(`INSERT INTO subscription (careseekerId, type, price) VALUES (${results[0].id}, '${planType}', ${planPrice})`, (err) => { throw err; })
+            })
 
             res.status(200).json({ "success": true });
         }
