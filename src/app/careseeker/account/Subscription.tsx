@@ -8,7 +8,7 @@ export default function Subscription({ id, className }: { id: string, className:
 
     useEffect(() => {
         async function getSubscription() {
-            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getSubcription?email=${sessionStorage.getItem("email")}`);
+            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/getSubcription?email=${sessionStorage.getItem("email")}`);
             const data = await response.json();
             setSubscriptions(data);
         }

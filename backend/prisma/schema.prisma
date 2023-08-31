@@ -92,7 +92,7 @@ model caregivers_ {
   languages           String?
   isVerified          Boolean     @default(false)
   speciality          Speciality?
-  experience          String?
+  experience          Float?
   comfortableWithPets Boolean?
   task                String?
   rate                Float?
@@ -171,6 +171,14 @@ model subscription {
   id           Int      @id @unique @default(autoincrement())
   careseekerId Int
   type         String
+  price        Float
+  purchasedOn  DateTime @default(now())
+}
+
+model payment_history {
+  id           Int      @id @unique @default(autoincrement())
+  careseekerId Int
+  description  String
   price        Float
   purchasedOn  DateTime @default(now())
 }

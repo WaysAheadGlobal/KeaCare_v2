@@ -3,20 +3,35 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function filters(req, res) {
-    const { speciality, pet, rate, experience, daysAWeek, hrs, gender, age, languages, addservices, rating } = req.query;
+    const { speciality, pet, rateStart, rateEnd, experience, daysAWeek, hrs, gender, age, languages, addservices, rating } = req.query;
+
+    let rate = {};
+
+    if (rateStart) {
+        rate = {
+            ...rate,
+            gte: parseFloat(rateStart)
+        };
+    } 
+    if (rateEnd) {
+        rate = {
+            ...rate,
+            lte: parseFloat(rateEnd)
+        };
+    }
 
     const caregivers = await prisma.caregivers_.findMany({
         where: {
             speciality: speciality || undefined,
             comfortableWithPets: pet ? !!pet : undefined,
             rate: {
-                lte: rate ? parseFloat(rate) : undefined
+                ...rate                
             },
             experience: {
-                gte: experience || undefined
+                gte: experience ? parseFloat(experience) : undefined
             },
             daysAWeek: {
-                gte: daysAWeek ? parseInt(daysAWeek) : undefined
+                contains: daysAWeek || undefined
             },
             workingHrs: {
                 gte: hrs ? parseInt(hrs) : undefined

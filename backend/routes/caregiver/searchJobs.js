@@ -30,38 +30,7 @@ async function searchJobs(req, res) {
         if (error) throw error;
 
         res.status(200).json(results);
-    })
-
-    /* try {
-        const jobs = await prisma.jobs_.findMany({
-            where: {
-                speciality: speciality ? speciality : undefined,
-                comfortableWithPets: pet ? pet : undefined,
-                hourlyRate: {
-                    lte: rate ? rate : undefined
-                },
-                experience: {
-                    gte: experience ? experience : undefined
-                },
-                age: age,
-                language: {
-                    contains: languages ? languages : undefined,
-                },
-                additionalService: {
-                    contains: addservices ? addservices : undefined
-                },
-                rating: {
-                    gte: rating ? parseFloat(rating) : undefined
-                },
-                status: "active"
-            }
-        });
-    
-        res.status(200).json(jobs);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Internal Server Error");        
-    } */
+    });
 }
 
 module.exports = searchJobs;

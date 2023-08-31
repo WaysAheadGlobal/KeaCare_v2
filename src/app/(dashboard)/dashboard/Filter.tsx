@@ -65,9 +65,9 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                         <label>Senior Care</label>
                     </div>
                 </div>
-                <div className='font-semibold flex flex-col gap-3 ml-6 text-sm w-full pr-8'>
-                    <p>Hourly Rate</p>
-                    <Slider defaultValue={0} valueLabelDisplay="auto" sx={{ width: "100%" }} onChange={(e) => {
+                <div className='flex flex-col gap-3 text-sm w-full pr-8'>
+                    <p className='font-semibold'>Hourly Rate</p>
+                    {/* <Slider defaultValue={0} valueLabelDisplay="auto" sx={{ width: "100%" }} onChange={(e) => {
                         if ((e.target as any).value !== 0) {
                             setFilters({
                                 ...filters,
@@ -79,9 +79,26 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                                 rate: ""
                             });
                         }
-                    }} max={1000} />
+                    }} max={1000} /> */}
+                    <div className='grid grid-cols-[125px_10px_125px] gap-3 h-[40px]'>
+                        <input type="text" className='p-2 rounded-md outline-none border-2 border-teal-600 hover:ring-2 hover:ring-teal-500 focus:ring-2 focus:ring-teal-500'
+                            onChange={(e) => {
+                                setFilters({
+                                    ...filters,
+                                    rateStart: e.target.value
+                                });
+                            }} />
+                        <p className='justify-self-center self-center'>to</p>
+                        <input type="text" className='p-2 rounded-md outline-none border-2 border-teal-600 hover:ring-2 hover:ring-teal-500 focus:ring-2 focus:ring-teal-500'
+                            onChange={(e) => {
+                                setFilters({
+                                    ...filters,
+                                    rateEnd: e.target.value
+                                });
+                            }} />
+                    </div>
                     <p>Comfortable with pets</p>
-                    <div className="flex gap-2 items-center justify-start -ml-6">
+                    <div className="flex gap-2 items-center justify-start">
                         <input type="checkbox" value="yes" id="pets" className="w-[1rem] h-[1rem]"
                             onChange={(e) => {
                                 if (e.currentTarget.checked) {

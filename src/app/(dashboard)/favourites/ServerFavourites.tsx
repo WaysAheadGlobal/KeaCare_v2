@@ -3,7 +3,7 @@ import Favourite from './Favourite';
 
 async function getFavourites(email: string) {
     if (email) {
-        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/favourites?careseekerEmail=${email}`);
+        const response = await fetch(`http://localhost:3004/keacare/api/careseeker/favourites?careseekerEmail=${email}`);
         const data = await response.json();
         return data;
     }

@@ -20,6 +20,7 @@ const { appointmentFees, getAppointments, checkDuplicateAppointments } = require
 const UpdateJob = require("./updateJob");
 const { addFavourites, getFavourites, removeFromFavourites, getFavouriteByCareseekerAndCaregiverId } = require("./favourites");
 const getCaregiversByName = require("./getCaregiversByName");
+const PaymentHistory = require("./paymentHistory");
 
 const CareseekerRouter = Router();
 
@@ -55,5 +56,6 @@ CareseekerRouter.post("/favourites", body("careseekerEmail").trim().isEmail(), a
 CareseekerRouter.get("/favourites", query("careseekerEmail").trim().isEmail(), getFavourites);
 CareseekerRouter.get("/getfavourite", query("careseekerEmail").trim().isEmail(), getFavouriteByCareseekerAndCaregiverId);
 CareseekerRouter.delete("/favourites", body("careseekerEmail").trim().isEmail(), removeFromFavourites);
+CareseekerRouter.get("/paymentHistory", query("email").trim().isEmail(), PaymentHistory);
 
 module.exports = CareseekerRouter;

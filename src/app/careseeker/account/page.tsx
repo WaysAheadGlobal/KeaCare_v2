@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import profilePic from '../../../../public/profilePic.png'
 import Alert from '@/app/Alert';
 import Subscription from './Subscription';
+import PaymentHistory from './PaymentHistory';
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
@@ -17,7 +18,7 @@ export default function Account() {
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/account?email=${email}`);
+                const response = await fetch(`http://localhost:3004/keacare/api/careseeker/account?email=${email}`);
                 const data = await response.json();
                 setUserInfo(data);
             }
@@ -62,7 +63,7 @@ export default function Account() {
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/updateAccount", {
+                    const response = await fetch("http://localhost:3004/keacare/api/careseeker/updateAccount", {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -112,33 +113,54 @@ export default function Account() {
                         </div>
                     </div>
                     <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        const subscription = document.getElementById("subscription") as HTMLDivElement;
-                        const form = document.getElementById("form") as HTMLDivElement;
-                        subscription.classList.remove("flex");
-                        subscription.classList.add("hidden");
-                        form.classList.add("flex");
-                        form.classList.add("md:grid");
-                        form.classList.remove("hidden");
-                    }}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const subscription = document.getElementById("subscription") as HTMLDivElement;
+                            const form = document.getElementById("form") as HTMLDivElement;
+                            const paymentHistory = document.getElementById("paymentHistory") as HTMLDivElement;
+                            subscription.classList.remove("flex");
+                            subscription.classList.add("hidden");
+                            paymentHistory.classList.remove("flex");
+                            paymentHistory.classList.add("hidden");
+                            form.classList.add("flex");
+                            form.classList.add("md:grid");
+                            form.classList.remove("hidden");
+                        }}
                     >My Account</button>
                     <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        const subscription = document.getElementById("subscription") as HTMLDivElement;
-                        const form = document.getElementById("form") as HTMLDivElement;
-                        subscription.classList.add("flex");
-                        subscription.classList.remove("hidden");
-                        form.classList.remove("flex");
-                        form.classList.remove("md:grid");
-                        form.classList.add("hidden");
-                    }}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const subscription = document.getElementById("subscription") as HTMLDivElement;
+                            const form = document.getElementById("form") as HTMLDivElement;
+                            const paymentHistory = document.getElementById("paymentHistory") as HTMLDivElement;
+                            subscription.classList.add("flex");
+                            subscription.classList.remove("hidden");
+                            paymentHistory.classList.remove("flex");
+                            paymentHistory.classList.add("hidden");
+                            form.classList.remove("flex");
+                            form.classList.remove("md:grid");
+                            form.classList.add("hidden");
+                        }}
                     >Subscriptions</button>
-                    <button className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'>Payment History</button>
+                    <button className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const subscription = document.getElementById("subscription") as HTMLDivElement;
+                            const form = document.getElementById("form") as HTMLDivElement;
+                            const paymentHistory = document.getElementById("paymentHistory") as HTMLDivElement;
+                            subscription.classList.remove("flex");
+                            subscription.classList.add("hidden");
+                            paymentHistory.classList.add("flex");
+                            paymentHistory.classList.remove("hidden");
+                            form.classList.remove("flex");
+                            form.classList.remove("md:grid");
+                            form.classList.add("hidden");
+                        }}
+                    >Payment History</button>
                     <button disabled className='p-3 font-semibold rounded-lg border-2 transition-all duration-200 border-red-500 text-red-500 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white'>Delete My Account</button>
                 </div>
                 <Subscription id="subscription" className="md:px-[3rem] md:py-[3rem] hidden flex-col border-2 border-black rounded-lg w-full lg:min-w-[700px]" />
+                <PaymentHistory id="paymentHistory" className="md:px-[3rem] md:py-[3rem] hidden flex-col border-2 border-black rounded-lg w-full lg:min-w-[700px]" />
                 <div id="form" className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
                     <h1 className='col-[1/3] font-semibold text-2xl self-start sm:self-end'>Your Personal Information</h1>
                     <div className='flex flex-col col-[1/2]'>

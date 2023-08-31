@@ -1,11 +1,10 @@
 "use client"
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 export default function Registration() {
     const router = useRouter();
-    const searchParams = useSearchParams();
 
     const [Email, setEmail] = useState<string>();
 
@@ -42,7 +41,7 @@ export default function Registration() {
                 device_type: "web"
             });
 
-            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/registration", {
+            const response = await fetch("http://localhost:3004/keacare/api/careseeker/registration", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

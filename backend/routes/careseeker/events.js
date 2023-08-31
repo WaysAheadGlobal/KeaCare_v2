@@ -86,6 +86,9 @@ async function webHook(req, res) {
                         totalPrice: parseFloat(price),
                     }
                 });
+
+                connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${careseeker.id}, 'Appointment - ${caregiver.fname + " " + caregiver.lname}', ${price})`, (err) => { throw err; });
+
                 sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname);
                 sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname);
                 res.status(200).json({ success: true });
@@ -101,7 +104,9 @@ async function webHook(req, res) {
             connection.query(`SELECT id FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
                 if (error) throw error;
 
-                connection.query(`INSERT INTO subscription (careseekerId, type, price) VALUES (${results[0].id}, '${planType}', ${planPrice})`, (err) => { throw err; })
+                connection.query(`INSERT INTO subscription (careseekerId, type, price) VALUES (${results[0].id}, '${planType}', ${planPrice})`, (err) => { throw err; });
+
+                connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${results[0].id}, '${planType}', ${planPrice})`, (err) => { throw err; });
             })
 
             res.status(200).json({ "success": true });

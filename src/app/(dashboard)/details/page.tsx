@@ -30,13 +30,12 @@ export default function Details() {
         otherReviews: []
     });
     const searchParams = useSearchParams();
-    const [workHrs, setWorkHrs] = useState<string>("");
     const [favourite, setFavourite] = useState<boolean>(false);
     const { setAlert } = useContext(AlertContext);
 
     useEffect(() => {
         async function getCaregivers() {
-            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/getCaregivers?page=1");
+            const response = await fetch("http://localhost:3004/keacare/api/careseeker/getCaregivers?page=1");
             const data = await response.json();
             setCaregivers(data);
         }
@@ -45,7 +44,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getReviews() {
-            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/review?caregiverId=${searchParams.get("id")}&email=${sessionStorage.getItem("email")}`, {
+            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/review?caregiverId=${searchParams.get("id")}&email=${sessionStorage.getItem("email")}`, {
                 cache: "no-cache"
             });
             const data = await response.json();
@@ -54,35 +53,11 @@ export default function Details() {
         if (Object.keys(review).length === 0) {
             getReviews();
         }
-    }, [searchParams, review])
-
-    useEffect(() => {
-        let temp = "";
-        let flag = 0;
-        if (caregiver?.workingHrs) {
-            const t = caregiver.workingHrs.split(",");
-            console.log(t);
-            for (let i = 0; i < t.length - 1; i++) {
-                const element = t[i].split(" ");
-                const next = t[i + 1].split(" ");
-                if (i === 0 || flag === 1) {
-                    temp += element[0] + " " + element[1] + " to ";
-                    flag = 0;
-                } else if (element[element.length - 2] !== next[0]) {
-                    temp += element[element.length - 2] + " " + element[element.length - 1] + ", ";
-                    flag = 1;
-                }
-                if (i + 1 === t.length - 1) {
-                    temp += next[next.length - 2] + " " + next[next.length - 1];
-                }
-            }
-        }
-        setWorkHrs(temp);
-    }, [caregiver]);
+    }, [searchParams, review]);
 
     useEffect(() => {
         async function getCaregiverById() {
-            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
+            const response = await fetch(`http://localhost:3004/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
                 cache: "no-cache"
             });
             const data = await response.json();
@@ -93,7 +68,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getFavourite() {
-            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`);
+            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`);
             const data = await response.json();
 
             if (data.length !== 0) {
@@ -113,7 +88,7 @@ export default function Details() {
             careseekerEmail: sessionStorage.getItem("email"),
             caregiverId: searchParams.get("id")
         };
-        const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/favourites", {
+        const response = await fetch("http://localhost:3004/keacare/api/careseeker/favourites", {
             method: favourite ? "DELETE" : "POST",
             body: JSON.stringify(bodyContent),
             headers: {
@@ -166,7 +141,7 @@ export default function Details() {
                                     ...review,
                                     caregiverId: searchParams.get("id")
                                 });
-                                const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/review", {
+                                const response = await fetch("http://localhost:3004/keacare/api/careseeker/review", {
                                     method: Object?.keys(reviews.userReview).length !== 0 ? "PUT" : "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -236,7 +211,7 @@ export default function Details() {
                                         <BsCalendar2Week />
                                         <p>Working Hours</p>
                                     </div>
-                                    <p>{workHrs}</p>
+                                    <p>{caregiver?.workingHrs.split(",").length} Hours per day</p>
                                 </div>
                             </div>
                         </div>
@@ -371,7 +346,7 @@ export default function Details() {
                 <hr className='h-[2px] bg-gray-300 w-full' />
                 <section className='mt-5 w-full'>
                     <p className='text-3xl font-bold text-teal-400'>Recomended for you</p>
-                    <div className='flex flex-wrap gap-[2rem] justify-center md:justify-between'>
+                    <div className='flex flex-wrap gap-[2rem] justify-start'>
                         {
                             caregivers.map((caregiver: any) => {
                                 if (searchParams.get("id") !== caregiver?.id.toString() && caregiver?.fname) {
