@@ -14,7 +14,7 @@ export default function Account() {
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`http://localhost:3004/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
+                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
                 const data = await response.json();
                 setUserInfo(data);
             }
@@ -65,7 +65,7 @@ export default function Account() {
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    const response = await fetch("http://localhost:3004/keacare/api/caregiver/updateAccount", {
+                    const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/updateAccount", {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"

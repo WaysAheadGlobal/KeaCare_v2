@@ -30,7 +30,7 @@ export default function JobDetails() {
 
     useEffect(() => {
         async function getJobById() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`);
             const data = await response.json();
             setJob(data);
             setDateTime(StringtoObject(data?.date, data?.time));
@@ -76,7 +76,7 @@ export default function JobDetails() {
                         languages,
                         id: searchParams.get("id"),
                     });
-                    const response = await fetch("http://localhost:3004/keacare/api/careseeker/updatejob", {
+                    const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/updatejob", {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
