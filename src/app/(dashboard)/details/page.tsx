@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import caregiverPerson from '../../../../public/caregiverPerson.jpg'
 import { BsCalendarCheck, BsCalendar2Week, BsCalendar3Week, BsArrowLeft, BsStarFill } from 'react-icons/bs'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import specialityIcon from '../../../../public/specialityIcon.png'
@@ -190,7 +189,7 @@ export default function Details() {
                                     <AiFillHeart id="heart" className='text-red-500 hidden' />
                                     <AiOutlineHeart id="heartOutline" className='text-red-500' />
                                 </div>
-                                <Image src={caregiver?.imageUrl} alt='caregiver' width={caregiverPerson.width} height={caregiverPerson.height} className='w-[35rem] h-[30rem] rounded-lg object-cover object-center relative -z-30' />
+                                <Image src={caregiver?.imageUrl} alt='caregiver' width={300} height={300} className='w-[35rem] h-[30rem] rounded-lg object-cover object-center relative -z-30' />
                             </div>
                             <div className='flex flex-col gap-3 md:flex-row justify-between'>
                                 <div>

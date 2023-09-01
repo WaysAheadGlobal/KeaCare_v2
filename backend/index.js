@@ -22,7 +22,7 @@ app.listen(3004, () => {
             }
             console.log('connected as id ' + connection.threadId);
         });
-        setInterval(Expiry, 2000);
+        setInterval(Expiry, 3600000);
     }
     console.log("Server Started on Port 3004");
 })

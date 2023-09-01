@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import caregiverPerson from '../../../../public/caregiverPerson.jpg'
 import { FaStar } from 'react-icons/fa'
 import { IoLanguage } from 'react-icons/io5'
 import { ImLocation } from 'react-icons/im'
@@ -21,7 +20,7 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
 
     return (
         <div className='flex flex-col p-2 rounded-lg bg-white transition-shadow shadow-lg hover:shadow-2xl gap-3'>
-            <Image src={caregiver?.imageUrl} width={caregiverPerson.width} height={caregiverPerson.height} alt='caregiver' className='flex-grow w-full sm:w-[300px] h-[300px] rounded-lg object-cover object-center' />
+            <Image src={caregiver?.imageUrl} width={300} height={300} alt='caregiver' className='flex-grow w-full sm:w-[300px] h-[300px] rounded-lg object-cover object-center' />
             <div className='flex flex-row justify-between px-2 items-center'>
                 <p className='font-semibold'>{caregiver?.fname + " " + caregiver?.lname}</p>
                 <div className='flex flex-row gap-2 items-center justify-center text-red-500'>
