@@ -24,7 +24,7 @@ function postReview(req, res) {
                             if (error) throw error;
 
                             const avg = results__[0].rating;
-                            connection.query(`UPDATE caregivers_ SET rating = ${avg} WHERE id = ${caregiverId}`, (e) => {
+                            connection.query(`UPDATE caregivers_ SET rating = ${avg}, reviews = reviews + 1 WHERE id = ${caregiverId}`, (e) => {
                                 if (e) throw e;
                             })
                         });

@@ -31,7 +31,7 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
             <div className='flex flex-row justify-evenly items-center'>
                 <div className='flex flex-col items-center justify-center'>
                     <MdOutlineReviews className='text-xl' />
-                    <span>{caregiver?.rating} Reviews</span>
+                    <span>{caregiver?.reviews} Reviews</span>
                 </div>
                 <div className='flex flex-col items-center justify-center'>
                     <ImLocation className='text-xl' />

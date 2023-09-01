@@ -41,7 +41,7 @@ export default function Registration() {
                 device_type: "web"
             });
 
-            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/registration", {
+            const response = await fetch("http://localhost:3004/keacare/api/careseeker/registration", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

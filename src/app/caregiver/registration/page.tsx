@@ -108,7 +108,7 @@ export default function Registration() {
                         });
 
                         try {
-                            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/registration", {
+                            const response = await fetch("http://localhost:3004/keacare/api/caregiver/registration", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
@@ -367,7 +367,10 @@ export default function Registration() {
                         <Select multiple fullWidth id="daysAWeek" required
                             sx={{ height: "3rem" }}
                             value={daysAWeek?.split(",") ?? []}
-                            onChange={(e) => { setDaysAWeek(e.target.value.toString()) }}
+                            onChange={(e) => {
+                                const value = e.target.value.toString();
+                                setDaysAWeek(value.startsWith(",") ? value.substring(1) : value);
+                            }}
                             input={<OutlinedInput color='success' />} >
                             <MenuItem value={"Monday"}>Monday</MenuItem>
                             <MenuItem value={"Tuesday"}>Tuesday</MenuItem>
@@ -383,7 +386,10 @@ export default function Registration() {
                         <Select multiple id="workingHrs" required
                             sx={{ height: "3rem" }}
                             value={workingHrs?.split(",") ?? []}
-                            onChange={(e) => { setWorkingHrs(e.target.value.toString()) }}
+                            onChange={(e) => {
+                                const value = e.target.value.toString();
+                                setWorkingHrs(value.startsWith(",") ? value.substring(1) : value);
+                            }}
                             input={<OutlinedInput color='success' />} >
                             <MenuItem value={"9 AM to 10 AM"}>9 AM to 10 AM</MenuItem>
                             <MenuItem value={"10 AM to 11 AM"}>10 AM to 11 AM</MenuItem>

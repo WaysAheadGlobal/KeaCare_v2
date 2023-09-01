@@ -8,23 +8,6 @@ function Expiry() {
         if (error) throw error;
     });
 
-    /* connection.query("SELECT id, dob FROM caregivers_", (error, results) => {
-        if (error) throw error;
-
-        for (let i = 0; i < results.length; i++) {
-            let year = results[i].dob.split("-")[0];
-            let month = results[i].dob.split("-")[1];
-
-            let sqlQuery = "";
-            if (Number(today[2]) > Number(year)) {
-                sqlQuery = `UPDATE caregivers_ SET age = ${parseInt(today[2]) - parseInt(year)} WHERE id = ${results[i].id}`;
-            } else if (Number(today[1]) >= Number(month)) {
-                sqlQuery = `UPDATE caregivers_ SET age = ${Number(today[2]) - Number(year)} WHERE id = ${results[i].id}`;
-            }
-            connection.query(sqlQuery, (err) => { throw err; });
-        }
-    }); */
-
     connection.query("SELECT id, date, time FROM jobs_", (error, results) => {
         if (error) throw error;
 

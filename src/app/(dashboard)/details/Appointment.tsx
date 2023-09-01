@@ -128,7 +128,7 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                     price: price * Time.length,
                                     appointment: ObjectToString(appointment),
                                 });
-                                const response1 = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments/checkAppointments", {
+                                const response1 = await fetch("http://localhost:3004/keacare/api/careseeker/appointments/checkAppointments", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
@@ -137,7 +137,7 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                 });
                                 const check = await response1.json();
                                 if (check?.success) {
-                                    const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments", {
+                                    const response = await fetch("http://localhost:3004/keacare/api/careseeker/appointments", {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json",

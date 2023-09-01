@@ -215,7 +215,15 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                 </div>
                 <div className='flex flex-col gap-1 w-full'>
                     <p className='font-semibold'>Age</p>
-                    <select name="availability" id="availability_perDay" className="p-3 bg-inherit border-[1px] border-black rounded-lg outline-none">
+                    <select name="age" id="age" 
+                    className="p-3 bg-inherit border-[1px] border-black rounded-lg outline-none"
+                    onChange={(e) => {
+                        setFilters({
+                            ...filters,
+                            age: e.target.value
+                        })
+                    }}
+                    >
                         <option value="">Select</option>
                         <option value="21-30">21 yrs to 30 yrs</option>
                         <option value="31-40">31 yrs to 40 yrs</option>

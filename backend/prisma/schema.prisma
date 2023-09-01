@@ -90,6 +90,7 @@ model caregivers_ {
   updated_at          DateTime    @updatedAt
   imageUrl            String?     @db.VarChar(500)
   rating              Float?      @default(0.0)
+  reviews             Int         @default(0)
   languages           String?
   isVerified          Boolean     @default(false)
   speciality          Speciality?

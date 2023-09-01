@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const cloudinary = require("cloudinary").v2;
 const { PrismaClient } = require("@prisma/client");
+const dayjs = require("dayjs");
 
 const prisma = new PrismaClient();
 
@@ -40,6 +41,7 @@ async function Register(req, res) {
                             lname: lname,
                             mobile: mobile,
                             dob: dob,
+                            age: dayjs(new Date()).year() - dob?.split("-")[0],
                             gender: gender,
                             address: address,
                             city: city,
@@ -49,7 +51,7 @@ async function Register(req, res) {
                             status: status,
                             languages: languages,
                             speciality: speciality,
-                            experience: experience,
+                            experience: parseFloat(experience),
                             comfortableWithPets: comfortableWithPets,
                             task: task,
                             rate: parseFloat(rate),
