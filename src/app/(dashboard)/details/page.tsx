@@ -35,7 +35,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getCaregivers() {
-            const response = await fetch("http://localhost:3004/keacare/api/careseeker/getCaregivers?page=1");
+            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/getCaregivers?page=1");
             const data = await response.json();
             setCaregivers(data);
         }
@@ -44,7 +44,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getReviews() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/review?caregiverId=${searchParams.get("id")}&email=${sessionStorage.getItem("email")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/review?caregiverId=${searchParams.get("id")}&email=${sessionStorage.getItem("email")}`, {
                 cache: "no-cache"
             });
             const data = await response.json();
@@ -57,7 +57,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getCaregiverById() {
-            const response = await fetch(`http://localhost:3004/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
                 cache: "no-cache"
             });
             const data = await response.json();
@@ -68,7 +68,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getFavourite() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`);
             const data = await response.json();
 
             if (data.length !== 0) {
@@ -88,7 +88,7 @@ export default function Details() {
             careseekerEmail: sessionStorage.getItem("email"),
             caregiverId: searchParams.get("id")
         };
-        const response = await fetch("http://localhost:3004/keacare/api/careseeker/favourites", {
+        const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/favourites", {
             method: favourite ? "DELETE" : "POST",
             body: JSON.stringify(bodyContent),
             headers: {
@@ -141,7 +141,7 @@ export default function Details() {
                                     ...review,
                                     caregiverId: searchParams.get("id")
                                 });
-                                const response = await fetch("http://localhost:3004/keacare/api/careseeker/review", {
+                                const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/review", {
                                     method: Object?.keys(reviews.userReview).length !== 0 ? "PUT" : "POST",
                                     headers: {
                                         "Content-Type": "application/json"

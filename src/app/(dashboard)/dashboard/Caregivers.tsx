@@ -15,7 +15,7 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     /** useEffect(() => {
         async function getCaregivers() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/getCaregivers?page=${page}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getCaregivers?page=${page}`, {
                 next: {
                     revalidate: 10
                 }
@@ -28,7 +28,7 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     useEffect(() => {
         async function filter() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rateStart=${filters?.rateStart}&rateEnd=${filters?.rateEnd}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rateStart=${filters?.rateStart ?? ""}&rateEnd=${filters?.rateEnd ?? ""}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}`);
 
             const data = await response.json();
             setCaregivers(data);
@@ -41,7 +41,7 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     useEffect(() => {
         async function getCaregiverByName() {
-            const response = await fetch(`http://localhost:3004/keacare/api/careseeker/filterByName?name=${search}`);
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/filterByName?name=${search}`);
             const data = await response.json();
             setCaregivers(data);
         }
@@ -71,7 +71,7 @@ export default function Caregivers({ filters }: { filters: any }) {
                     <option value="10">Within 10 kms</option>
                 </select>
                 <div className='flex items-center md:flex-grow-[10]'>
-                    <input type="text" className='p-3 bg-inherit border-[1px] border-black rounded-l-lg outline-none w-full hover:ring-4 hover:ring-teal-400 focus:ring-4 focus:ring-teal-400 hover:rounded-r-lg focus:rounded-r-lg hover:border-teal-600 focus:border-teal-600' placeholder='Search Caregivers (type name, speciality, etc.)' onChange={(e) => {
+                    <input type="text" className='p-3 bg-inherit border-[1px] border-black rounded-l-lg outline-none w-full hover:ring-4 hover:ring-teal-400 focus:ring-4 focus:ring-teal-400 hover:border-teal-600 focus:border-teal-600' placeholder='Search Caregivers by name' onChange={(e) => {
                         if (e.target.value.length === 0) {
                             setHeading("Recommended for you");
                         } else {

@@ -75,6 +75,7 @@ model caregivers_ {
   mobile              String?
   dob                 String?     @db.VarChar(500)
   gender              Gender?
+  age                 Int?
   address             String?     @db.VarChar(1000)
   city                String?
   province            String?

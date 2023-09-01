@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { MultiSelect } from '@mantine/core';
-import { Slider } from "@mui/material"
+import { MenuItem, OutlinedInput, Select } from "@mui/material"
 
 export default function Filter({ filters, setFilters }: { filters: any, setFilters: any }) {
     const [key, setKey] = useState<string>("1");
@@ -67,19 +67,6 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                 </div>
                 <div className='flex flex-col gap-3 text-sm w-full pr-8'>
                     <p className='font-semibold'>Hourly Rate</p>
-                    {/* <Slider defaultValue={0} valueLabelDisplay="auto" sx={{ width: "100%" }} onChange={(e) => {
-                        if ((e.target as any).value !== 0) {
-                            setFilters({
-                                ...filters,
-                                rate: (e.target as any).value
-                            });
-                        } else {
-                            setFilters({
-                                ...filters,
-                                rate: ""
-                            });
-                        }
-                    }} max={1000} /> */}
                     <div className='grid grid-cols-[125px_10px_125px] gap-3 h-[40px]'>
                         <input type="text" className='p-2 rounded-md outline-none border-2 border-teal-600 hover:ring-2 hover:ring-teal-500 focus:ring-2 focus:ring-teal-500'
                             onChange={(e) => {
@@ -97,7 +84,7 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                                 });
                             }} />
                     </div>
-                    <p>Comfortable with pets</p>
+                    <p className='font-semibold'>Comfortable with pets</p>
                     <div className="flex gap-2 items-center justify-start">
                         <input type="checkbox" value="yes" id="pets" className="w-[1rem] h-[1rem]"
                             onChange={(e) => {
@@ -145,51 +132,49 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                 </div>
                 <div className='flex flex-col w-full gap-1'>
                     <p className='font-semibold'>Availability</p>
-                    <select name="availability" id="availability_week" className="p-3 bg-inherit border-[1px] border-black rounded-lg outline-none mb-2" onChange={(e) => {
-                        if (e.currentTarget.value === "select") {
+                    <Select required multiple fullWidth
+                        name="availability"
+                        id="availability_week"
+                        sx={{ height: "3rem", borderRadius: "7px" }}
+                        value={filters?.daysAWeek?.split(",") ?? []}
+                        onChange={(e) => {
                             setFilters({
                                 ...filters,
-                                daysAWeek: ""
+                                daysAWeek: e.target.value.toString()
                             });
-                        } else {
+                        }}
+                        input={<OutlinedInput color='success' />} >
+                        <MenuItem value={"Monday"}>Monday</MenuItem>
+                        <MenuItem value={"Tuesday"}>Tuesday</MenuItem>
+                        <MenuItem value={"Wednesday"}>Wednesday</MenuItem>
+                        <MenuItem value={"Thursday"}>Thursday</MenuItem>
+                        <MenuItem value={"Friday"}>Friday</MenuItem>
+                        <MenuItem value={"Saturday"}>Saturday</MenuItem>
+                        <MenuItem value={"Sunday"}>Sunday</MenuItem>
+                    </Select>
+                    <Select required multiple fullWidth name="availability" id="availability_perDay"
+                        sx={{ height: "3rem", borderRadius: "7px" }}
+                        value={filters?.hrs?.split(",") ?? []}
+                        onChange={(e) => {
                             setFilters({
                                 ...filters,
-                                daysAWeek: e.currentTarget.value
+                                hrs: e.target.value.toString()
                             });
-                        }
-                    }}>
-                        <option value="select">Select</option>
-                        <option value="1">1 Day a week</option>
-                        <option value="2">2 Days a week</option>
-                        <option value="3">3 Days a week</option>
-                        <option value="4">4 Days a week</option>
-                        <option value="5">5 Days a week</option>
-                        <option value="6">6 Days a week</option>
-                        <option value="7">7 Days a week</option>
-                    </select>
-                    <select name="availability" id="availability_perDay" className="p-3 bg-inherit border-[1px] border-black rounded-lg outline-none" onChange={(e) => {
-                        if (e.currentTarget.value === "select") {
-                            setFilters({
-                                ...filters,
-                                hrs: ""
-                            });
-                        } else {
-                            setFilters({
-                                ...filters,
-                                hrs: e.currentTarget.value
-                            });
-                        }
-                    }}>
-                        <option value="select">Select</option>
-                        <option value="1">1 hr per day</option>
-                        <option value="2">2 hrs per day</option>
-                        <option value="3">3 hrs per day</option>
-                        <option value="4">4 hrs per day</option>
-                        <option value="5">5 hrs per day</option>
-                        <option value="6">6 hrs per day</option>
-                        <option value="7">7 hrs per day</option>
-                        <option value="8">8 hrs per day</option>
-                    </select>
+                        }}
+                        input={<OutlinedInput color='success' />} >
+                        <MenuItem value={"9 AM to 10 AM"}>9 AM to 10 AM</MenuItem>
+                        <MenuItem value={"10 AM to 11 AM"}>10 AM to 11 AM</MenuItem>
+                        <MenuItem value={"11 AM to 12 Noon"}>11 AM to 12 Noon</MenuItem>
+                        <MenuItem value={"12 Noon to 1 PM"}>12 Noon to 1 PM</MenuItem>
+                        <MenuItem value={"1 PM to 2 PM"}>1 PM to 2 PM</MenuItem>
+                        <MenuItem value={"2 PM to 3 PM"}>2 PM to 3 PM</MenuItem>
+                        <MenuItem value={"3 PM to 4 PM"}>3 PM to 4 PM</MenuItem>
+                        <MenuItem value={"4 PM to 5 PM"}>4 PM to 5 PM</MenuItem>
+                        <MenuItem value={"5 PM to 6 PM"}>5 PM to 6 PM</MenuItem>
+                        <MenuItem value={"6 PM to 7 PM"}>6 PM to 7 PM</MenuItem>
+                        <MenuItem value={"7 PM to 8 PM"}>7 PM to 8 PM</MenuItem>
+                        <MenuItem value={"8 PM to 9 PM"}>8 PM to 9 PM</MenuItem>
+                    </Select>
                 </div>
                 <div>
                     <p className='font-semibold'>Gender</p>

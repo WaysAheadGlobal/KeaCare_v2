@@ -3,7 +3,7 @@ import React from 'react'
 
 async function getPostings(email: string | null) {
     if (email) {
-        const response = await fetch(`http://localhost:3004/keacare/api/careseeker/posts?email=${email}`);
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/posts?email=${email}`);
         const data = await response.json();
         return data;
     }
