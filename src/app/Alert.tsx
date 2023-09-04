@@ -10,7 +10,9 @@ export default function Alert({ type, message, translate_, _key }: { type: "info
     const [translate, setTranslate] = useState<"-translate-y-96" | "translate-y-0">("-translate-y-96");
     const [open, setOpen] = useState(false);
     useEffect(() => {
-        setOpen(true);
+        if (message) {
+            setOpen(true);
+        }
     }, [_key]);
 
     /* switch (type) {

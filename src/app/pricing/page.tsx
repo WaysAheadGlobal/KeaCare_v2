@@ -29,7 +29,7 @@ export default function Pricing() {
                     </div>
                 </div>
                 <div className='flex flex-col items-center gap-5'>
-                    <h1 className='text-3xl text-teal-500 font-semibold'>Anuual Plans</h1>
+                    <h1 className='text-3xl text-teal-500 font-semibold'>Annual Plans</h1>
                     <div className='flex flex-col md:flex-row gap-5'>
                         {
                             products.filter((product: any) => product.recurring?.interval === "year").map((product: any) => {

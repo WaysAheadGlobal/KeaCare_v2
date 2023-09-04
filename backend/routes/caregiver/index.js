@@ -8,6 +8,7 @@ const { UpdateAccount } = require("./updateAccount");
 const jobs = require("./jobs");
 const applyJob = require("./applyJob");
 const searchJobs = require("./searchJobs");
+const wallet = require("./wallet");
 
 
 const CaregiverRouter = Router();
@@ -23,6 +24,7 @@ CaregiverRouter.get("/getCaregiverInfo", getCaregiverInfo);
 CaregiverRouter.put("/updateAccount", body("email").trim().isEmail(), UpdateAccount);
 CaregiverRouter.get("/jobs", query("email").trim().isEmail(), jobs);
 CaregiverRouter.post("/applyJob", body("email").trim().isEmail(), applyJob);
+CaregiverRouter.get("/wallet", query("email").trim().isEmail(), wallet);
 CaregiverRouter.post("/searchJobs", searchJobs);
 
 module.exports = CaregiverRouter;

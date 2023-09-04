@@ -1,9 +1,11 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { MultiSelect } from '@mantine/core';
 import Alert from '@/app/Alert';
 import { MenuItem, OutlinedInput, Select } from '@mui/material';
+const Wallet = dynamic(() => import("./Wallet"));
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
@@ -112,11 +114,35 @@ export default function Account() {
                             }} />
                         </div>
                     </div>
-                    <button type='button' disabled className='bg-teal-500 p-3 text-white font-semibold rounded-lg'>My Account</button>
-                    <button type='button' disabled className='p-3 font-semibold rounded-lg border-[1px] border-black -mt-3'>Delete My Account</button>
+                    <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg'
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const wallet = document.getElementById("wallet") as HTMLSelectElement;
+                            const form = document.getElementById("form") as HTMLDivElement;
+                            wallet.classList.add("hidden");
+                            wallet.classList.remove("flex");
+                            form.classList.add("flex");
+                            form.classList.add("md:grid");
+                            form.classList.remove("hidden");
+                        }}
+                    >My Account</button>
+                    <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg'
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const wallet = document.getElementById("wallet") as HTMLSelectElement;
+                            const form = document.getElementById("form") as HTMLDivElement;
+                            wallet.classList.remove("hidden");
+                            wallet.classList.add("flex");
+                            form.classList.remove("flex");
+                            form.classList.remove("md:grid");
+                            form.classList.add("hidden");
+                        }}
+                    >Wallet</button>
+                    <button disabled className='p-3 font-semibold rounded-lg border-2 transition-all duration-200 border-red-500 text-red-500 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white'>Delete My Account</button>
                 </div>
 
-                <div className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
+                <Wallet id={"wallet"} className="p-2 text-sm md:text-base md:px-[3rem] md:py-[3rem] hidden flex-col border-2 border-black rounded-lg w-full lg:min-w-[700px]" />
+                <div id="form" className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
                     <h1 className='col-[1/3] font-semibold text-2xl self-start sm:self-end'>Your Personal Information</h1>
                     <div className='flex flex-col col-[1/2]'>
                         <span>First Name</span>
