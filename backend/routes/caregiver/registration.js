@@ -27,7 +27,7 @@ async function Register(req, res) {
 
             if (caregiver) {
                 try {
-                    const { fname, lname, mobile, dob, gender, address, city, province, zipcode, device_type, status, languages, speciality, experience, comfortableWithPets, task, rate, daysAWeek, workingHrs, bio, certifications, distance, education, image: { file }, ref1Email, ref1Name, ref1Phone, ref1Relation, ref2Email, ref2Name, ref2Phone, ref2Relation } = req.body;
+                    const { fname, lname, mobile, dob, gender, address, city, province, zipcode, device_type, languages, speciality, experience, comfortableWithPets, task, rate, daysAWeek, workingHrs, bio, certifications, distance, education, image: { file }, ref1Email, ref1Name, ref1Phone, ref1Relation, ref2Email, ref2Name, ref2Phone, ref2Relation } = req.body;
 
                     const result = await cloudinary.uploader.upload(file, { public_id: caregiver.id, folder: "keacare" });
 
@@ -48,7 +48,7 @@ async function Register(req, res) {
                             province: province,
                             zipcode: zipcode,
                             device_type: device_type,
-                            status: status,
+                            status: "active",
                             languages: languages,
                             speciality: speciality,
                             experience: parseFloat(experience),

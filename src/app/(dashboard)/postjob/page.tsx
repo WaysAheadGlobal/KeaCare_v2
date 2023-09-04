@@ -144,7 +144,9 @@ export default function PostJob() {
                     </div>
                     <div className='w-full'>
                         <p>Location.</p>
-                        <input name="location" id="location" className='w-full py-[0.75rem] border-[1px] border-black rounded-lg bg-inherit px-3 invalid:focus:outline-red-500' required placeholder='Enter Zip Code' />
+                        <input name="location" id="location"
+                            pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
+                            className='w-full py-[0.75rem] border-[1px] border-black rounded-lg bg-inherit px-3 invalid:focus:outline-red-500' required placeholder='Enter Zip Code' />
                     </div>
                     <div className='w-full sm:row-[3/4]'>
                         <p>Rating.</p>

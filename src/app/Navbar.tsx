@@ -65,7 +65,7 @@ export default function Navbar() {
                                 inline: 'center'
                             })
                         }}>How It Works</li>
-                        <li className='cursor-pointer hover:text-red-500' onClick={() => {
+                        <li hidden={userType === "caregiver"} className='cursor-pointer hover:text-red-500' onClick={() => {
                             if (pathname !== "/") {
                                 router.push("/#responsive_compassionate");
                             }

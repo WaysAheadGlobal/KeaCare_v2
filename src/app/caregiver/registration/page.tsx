@@ -84,11 +84,10 @@ export default function Registration() {
                             province: province,
                             zipcode: zipcode,
                             device_type: "web",
-                            status: "active",
                             languages: languages.toString().substring(0, languages.toString().length),
                             speciality: speciality,
                             experience: experience,
-                            comfortableWithPets: (comfortableWithPets === "yes") ? true : false,
+                            comfortableWithPets: comfortableWithPets === "yes",
                             task: additionalServices.toString().substring(0, additionalServices.toString().length),
                             rate: rate,
                             daysAWeek: daysAWeek,
@@ -192,7 +191,9 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Zip Code</span>
-                        <input id="zipcode" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
+                        <input id="zipcode"
+                            pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
+                            required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
                         <span>Price per Hour</span>

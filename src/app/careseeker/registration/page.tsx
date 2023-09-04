@@ -119,7 +119,9 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Zip Code</span>
-                        <input id='zipcode' required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
+                        <input id='zipcode'
+                            pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
+                            required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
                     </div>
                     <button className='px-5 py-4 bg-teal-500 text-white row-[9/10] rounded-lg'>Submit</button>
                     <button className='text-teal-500 text-lg justify-self-end font-semibold row-[9/10] col-[2/3]'>Skip</button>

@@ -68,28 +68,42 @@ export default function Login() {
                         });
 
                         const data: any = await response.json();
-                        console.log(data);
 
-                        if (data?.status === "inactive") {
-                            document.querySelectorAll("dialog").forEach(dialog => {
-                                dialog.close();
-                            });
-                            sessionStorage.setItem("email", data?.email.toString());
-                            sessionStorage.setItem("otp", Otp);
-                            sessionStorage.setItem("pricing", "redo");
-                            router.push("/pricing");
-                        } else if (data?.success) {
-                            document.querySelectorAll("dialog").forEach(dialog => {
-                                dialog.close();
-                            });
-                            sessionStorage.setItem("email", data?.email.toString());
-                            sessionStorage.setItem("otp", Otp);
-                            if (userType === "careseeker") {
-                                router.push("/dashboard");
-                            } else {
-                                router.push("/caregiver/account");
-                            }
-                        } else if (data?.error) {
+                        switch(data?.status) {
+                            case "incomplete":
+                                document.querySelectorAll("dialog").forEach(dialog => {
+                                    dialog.close();
+                                });
+                                sessionStorage.setItem("email", data?.email.toString());
+                                sessionStorage.setItem("otp", Otp);
+                                router.push(`/${userType}/registration`);
+                                break;
+                            
+                            case "inactive":
+                                document.querySelectorAll("dialog").forEach(dialog => {
+                                    dialog.close();
+                                });
+                                sessionStorage.setItem("email", data?.email.toString());
+                                sessionStorage.setItem("otp", Otp);
+                                sessionStorage.setItem("pricing", "redo");
+                                router.push("/pricing");
+                                break;
+                            
+                            case "active":
+                                document.querySelectorAll("dialog").forEach(dialog => {
+                                    dialog.close();
+                                });
+                                sessionStorage.setItem("email", data?.email.toString());
+                                sessionStorage.setItem("otp", Otp);
+                                if (userType === "careseeker") {
+                                    router.push("/dashboard");
+                                } else {
+                                    router.push("/caregiver/account");
+                                }
+                                break;
+
+                        }
+                        if (data?.error) {
                             setAlert({
                                 type: "error",
                                 message: data.error,
