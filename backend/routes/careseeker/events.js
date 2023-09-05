@@ -89,8 +89,8 @@ async function webHook(req, res) {
 
                 connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${careseeker.id}, 'Appointment - ${caregiver.fname + " " + caregiver.lname}', ${price})`, (err) => { if (err) throw err; });
 
-                sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname);
-                sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname);
+                sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname, "careseeker");
+                sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname, "caregiver");
                 res.status(200).json({ success: true });
             } catch (err) {
                 console.log(err);

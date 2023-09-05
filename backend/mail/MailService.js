@@ -33,7 +33,7 @@ async function sendOTP(email, otp, action) {
         await transporter.sendMail({
             from: 'dev@waysaheadglobal.com',
             to: email,
-            subject: "OTP for Signing Up in KeaCare",
+            subject: `OTP for ${action === "Log in" ? "logging In" : "Signing Up"} in KeaCare`,
             html: `
             <p>Dear ${email},</p> 
             <p>You have requested to ${action} into your Keacare account. Please use the following OTP to complete your ${action}:</p>
@@ -69,19 +69,36 @@ async function sendReceipt(email, url) {
     }
 }
 
-async function sendAppointment(email, from, to) {
+async function sendAppointment(email, from, to, type) {
     try {
-        await transporter.sendMail({
-            from: 'dev@waysaheadglobal.com',
-            to: email,
-            subject: "Appointment Scheduled",
-            html: `<p>Hello ${from},</p> 
-            <p>Your appointment with ${to} is scheduled successfully.</p>
-            <p>For more details please log in in KeaCare website.</p>
-            <p style="margin-top: 3rem;">Regards,</p>
-            <p>Team KeaCare.</p>
-            `,
-        })
+        if (type === "careseeker") {
+            await transporter.sendMail({
+                from: 'dev@waysaheadglobal.com',
+                to: email,
+                subject: "Appointment Scheduled",
+                html: `<p>Hello ${from},</p> 
+                <p>Your appointment with ${to} is scheduled successfully.</p>
+                <p>For more details please log in in KeaCare website.</p>
+                <p style="margin-top: 3rem;">Regards,</p>
+                <p>Team KeaCare.</p>
+                `,
+            })
+        } else {
+            await transporter.sendMail({
+                from: 'dev@waysaheadglobal.com',
+                to: email,
+                subject: "Appointment Scheduled",
+                html: `<p>Dear ${from},</p> 
+                <p>We are pleased to inform you that an appointment has been scheduled for your caregiving services. Here are the details:</p>
+                <p>Client's Name: ${to}</p>
+                <p>Please login to your account for more details.</p>
+                <p>Your dedicated care and support are highly valued, and we appreciate your commitment to improving the well-being of our clients. Please ensure you are well-prepared for the appointment and have all the necessary resources and information. If you have any questions or need additional information, please don't hesitate to reach out to connect@keacare.ca Your dedication to providing exceptional care is instrumental in our mission, and we are grateful for your partnership.</p>
+                <p>Thank you for your continued dedication and support.</p>
+                <p style="margin-top: 3rem;">Warm regards,</p>
+                <p>Team KeaCare</p>
+                `,
+            })
+        }
     } catch (err) {
         console.error(err);
     }
