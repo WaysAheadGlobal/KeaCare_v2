@@ -9,21 +9,17 @@ import { useRouter } from 'next/navigation'
 import Otp from '@/interface/Otp'
 import SignupResponse from '@/interface/SignupResponse'
 import Alert from './Alert'
+import AlertContext from './AlertContext'
 
 export default function Signup() {
     const { userType } = useContext(UserTypeContext);
     const router = useRouter();
-    const [alert, setAlert] = useState<{ type: "info" | "warning" | "error" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
-        type: "info",
-        message: "",
-        translate_: "-translate-y-96",
-        key: 0
-    });
     const [Otp, setOtp] = useState<string>("");
+    const { setAlert } = useContext(AlertContext);
 
     return (
         <dialog id="signup" className='rounded-lg backdrop:bg-black backdrop:bg-opacity-70 p-0'>
-            <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
+            <Alert />
             <div className='flex flex-col gap-3 p-2'>
                 <IoClose className='self-end text-2xl relative z-10' onClick={() => {
                     (document.getElementById("signup") as HTMLDialogElement).close();
@@ -49,7 +45,7 @@ export default function Signup() {
                     <p className='text-lg text-teal-500 self-center mt-3'>OR</p>
                     <form className='flex flex-col -mt-5'>
                         <div className='flex flex-col gap-1'>
-                            <span className='text-teal-500'>Email</span>
+                            <span className='text-teal-500'>Email*</span>
                             <input type='text' id="email" placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none invalid:focus:border-red-500' required />
                         </div>
                         <p className='text-lg text-teal-500 self-center mt-3'>OR</p>
@@ -60,7 +56,7 @@ export default function Signup() {
                         <div className='flex flex-col md:flex-row gap-3 mt-3 items-center justify-start'>
                             <div className='flex flex-col gap-1'>
                                 <span className='text-teal-500'>Zip Code</span>
-                                <input type='text' placeholder='Enter your zip code'
+                                <input id="zipcode" type='text' placeholder='Enter your zip code'
                                     pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
                                     className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none flex-grow' />
                             </div>
@@ -76,8 +72,7 @@ export default function Signup() {
                                         setAlert({
                                             type: "warning",
                                             message: "Please enter a valid email address.",
-                                            translate_: "translate-y-0",
-                                            key: alert.key + 1
+                                            open: true
                                         });
                                         return;
                                     }
@@ -85,8 +80,7 @@ export default function Signup() {
                                     setAlert({
                                         type: "info",
                                         message: "Sending OTP. Please Wait.",
-                                        translate_: "translate-y-0",
-                                        key: alert.key + 1
+                                        open: true
                                     });
 
                                     try {
@@ -108,24 +102,21 @@ export default function Signup() {
                                             setAlert({
                                                 type: "success",
                                                 message: "OTP sent please check your mail.",
-                                                translate_: "translate-y-0",
-                                                key: alert.key + 1
+                                                open: true
                                             });
                                             setOtp(data?.otp.toString());
                                         } else if (data?.error) {
                                             setAlert({
                                                 type: "error",
                                                 message: data?.error,
-                                                translate_: "translate-y-0",
-                                                key: alert.key + 1
+                                                open: true
                                             });
                                         }
                                     } catch (error) {
                                         setAlert({
                                             type: "error",
                                             message: "Couldn't send OTP please check your mail or try after some time.",
-                                            translate_: "translate-y-0",
-                                            key: alert.key + 1
+                                            open: true
                                         });
                                     }
 
@@ -143,8 +134,7 @@ export default function Signup() {
                                     setAlert({
                                         type: "error",
                                         message: "Invalid OTP. Please try again",
-                                        translate_: "translate-y-0",
-                                        key: alert.key + 1
+                                        open: true
                                     });
                                     return;
                                 }
@@ -168,6 +158,8 @@ export default function Signup() {
                                         dialog.close();
                                     });
                                     sessionStorage.setItem("email", email.value);
+                                    sessionStorage.setItem("phoneno", (document.getElementById("phoneno") as HTMLInputElement).value);
+                                    sessionStorage.setItem("zipcode", (document.getElementById("zipcode") as HTMLInputElement).value);
                                     sessionStorage.setItem("otp", Otp);
                                     if (userType === 'caregiver') {
                                         router.push("/caregiver/registration");
@@ -178,8 +170,7 @@ export default function Signup() {
                                     setAlert({
                                         type: "error",
                                         message: data?.error,
-                                        translate_: "translate-y-0",
-                                        key: alert.key + 1
+                                        open: true
                                     });
                                 }
                             }}>Sign Up</button>

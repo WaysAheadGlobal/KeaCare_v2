@@ -55,7 +55,7 @@ async function UpdateAccount(req, res) {
                             status: status,
                             languages: languages,
                             speciality: speciality,
-                            experience: experience,
+                            experience: experience ? parseFloat(experience) : caregiver.experience,
                             comfortableWithPets: comfortableWithPets,
                             task: task,
                             rate: rate ? parseFloat(rate) : caregiver.rate,

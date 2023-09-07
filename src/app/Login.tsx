@@ -5,25 +5,20 @@ import { IoClose } from 'react-icons/io5'
 import { ImFacebook2 } from 'react-icons/im'
 import { FcGoogle } from 'react-icons/fc'
 import UserTypeContext from '@/context/UserType'
-import LoginResponse from '@/interface/LoginResponse'
 import { useRouter } from 'next/navigation'
 import Otp from '@/interface/Otp'
 import Alert from './Alert'
+import AlertContext from './AlertContext'
 
 export default function Login() {
     const { userType } = useContext(UserTypeContext);
     const router = useRouter();
-    const [alert, setAlert] = useState<{ type: "info" | "warning" | "error" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
-        type: "info",
-        message: "",
-        translate_: "-translate-y-96",
-        key: 0
-    });
     const [Otp, setOtp] = useState<string>("");
+    const { setAlert } = useContext(AlertContext);
 
     return (
         <dialog id="login" className='rounded-lg backdrop:bg-black backdrop:bg-opacity-70 p-0'>
-            <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
+            <Alert />
             <div className='flex flex-col gap-3 p-2'>
                 <IoClose className='self-end text-2xl relative z-10' onClick={() => {
                     (document.getElementById("login") as HTMLDialogElement).close();
@@ -69,7 +64,7 @@ export default function Login() {
 
                         const data: any = await response.json();
 
-                        switch(data?.status) {
+                        switch (data?.status) {
                             case "incomplete":
                                 document.querySelectorAll("dialog").forEach(dialog => {
                                     dialog.close();
@@ -78,7 +73,7 @@ export default function Login() {
                                 sessionStorage.setItem("otp", Otp);
                                 router.push(`/${userType}/registration`);
                                 break;
-                            
+
                             case "inactive":
                                 document.querySelectorAll("dialog").forEach(dialog => {
                                     dialog.close();
@@ -88,7 +83,7 @@ export default function Login() {
                                 sessionStorage.setItem("pricing", "redo");
                                 router.push("/pricing");
                                 break;
-                            
+
                             case "active":
                                 document.querySelectorAll("dialog").forEach(dialog => {
                                     dialog.close();
@@ -107,20 +102,12 @@ export default function Login() {
                             setAlert({
                                 type: "error",
                                 message: data.error,
-                                translate_: "translate-y-0",
-                                key: alert.key + 1
-                            });
-                        } else {
-                            setAlert({
-                                type: "error",
-                                message: "Invalid OTP. Please try again",
-                                translate_: "translate-y-0",
-                                key: alert.key + 1
+                                open: true
                             });
                         }
                     }}>
                         <div className='flex flex-col gap-1'>
-                            <span className='text-teal-500'>Email</span>
+                            <span className='text-teal-500'>Email*</span>
                             <input id="email_login" type='email' placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none focus:invalid:border-red-500' required />
                         </div>
                         <p className='text-lg text-teal-500 self-center'>OR</p>
@@ -139,8 +126,7 @@ export default function Login() {
                                 setAlert({
                                     type: "warning",
                                     message: "Please enter a valid email address.",
-                                    translate_: "translate-y-0",
-                                    key: alert.key + 1
+                                    open: true
                                 });
                                 return;
                             }
@@ -148,8 +134,7 @@ export default function Login() {
                             setAlert({
                                 type: "info",
                                 message: "Sending OTP. Please Wait.",
-                                translate_: "translate-y-0",
-                                key: alert.key + 1
+                                open: true
                             });
 
 
@@ -171,24 +156,21 @@ export default function Login() {
                                     setAlert({
                                         type: "success",
                                         message: "OTP sent please check your mail.",
-                                        translate_: "translate-y-0",
-                                        key: alert.key + 1
+                                        open: true
                                     });
                                     setOtp(data?.otp.toString());
                                 } else if (data.error) {
                                     setAlert({
                                         type: "error",
                                         message: data.error,
-                                        translate_: "translate-y-0",
-                                        key: alert.key + 1
+                                        open: true
                                     });
                                 }
                             } catch (error) {
                                 setAlert({
                                     type: "error",
                                     message: "Couldn't send OTP please check your mail or try after some time.",
-                                    translate_: "translate-y-0",
-                                    key: alert.key + 1
+                                    open: true
                                 });
                             }
 

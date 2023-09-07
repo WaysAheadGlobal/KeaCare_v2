@@ -15,19 +15,28 @@ export default function Navbar() {
     const pathname = usePathname();
     const router = useRouter();
     const [otp, setOtp] = useState<string | null>(null);
-    
+
     useEffect(() => {
         setOtp(sessionStorage.getItem("otp"));
     }, [pathname, userType])
 
+    useEffect(() => {
+        document.querySelector("#mainBody")?.addEventListener("click", () => {
+            if (document.getElementById("navSection")?.classList.contains('h-full')) {
+                document.getElementById("navSection")?.classList.add('h-[7rem]');
+                document.getElementById("navSection")?.classList.remove('h-full');
+            }
+        });
+    }, [])
+
     return (
-        <header className={`${pathname === "/" ? 'sticky' : 'relative'} top-0 z-50 bg-white ${pathname === "/" ? "bg-opacity-40" : "bg-opacity-100"} backdrop-blur-md`}>
+        <header className={`${pathname === "/" ? 'sticky' : 'relative'} top-0 z-50 bg-white ${pathname === "/" ? "bg-opacity-40" : "bg-opacity-100"} backdrop-blur-md ${pathname.includes("admin") && "hidden"}`}>
             <nav className='shadow-md'>
-                <section className='flex flex-col lg:flex-row items-start lg:items-center gap-5 lg:gap-[3rem] justify-between px-8 pt-5 pb-[2rem] sm:pb-2 h-[7rem] overflow-hidden'>
+                <section id="navSection" className='flex flex-col lg:flex-row items-start lg:items-center gap-5 lg:gap-[3rem] justify-between px-8 pt-5 pb-[2rem] sm:pb-2 h-[7rem] overflow-hidden'>
                     <Link href={"/"}>
                         <Image src={logo.src} width={logo.width} height={logo.height} alt='KeaCare logo' className='w-[4rem]' />
                     </Link>
-                    <HiMenu className='text-3xl absolute right-8 top-8 block lg:hidden' onClick={(e) => {
+                    <HiMenu className='text-3xl absolute right-8 top-8 block lg:hidden cursor-pointer' onClick={(e) => {
                         e.currentTarget.parentElement?.classList.toggle('h-[7rem]');
                         e.currentTarget.parentElement?.classList.toggle('h-full');
                     }} />
@@ -81,20 +90,23 @@ export default function Navbar() {
                                 <button className={`${otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg`}>Log In/Sign up</button>
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
-                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'>
-                                    <p onClick={() => {
+                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
+                                    onClick={() => {
                                         (document.getElementById("login") as HTMLDialogElement).showModal();
                                         setUserType("careseeker");
                                         sessionStorage.setItem("userType", "careseeker");
-                                    }}>Careseeker</p>
+                                    }}>
+                                    <span>Careseeker</span>
                                 </Menu.Item>
                                 <Menu.Divider />
-                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'>
-                                    <p onClick={() => {
+                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
+                                    onClick={() => {
                                         (document.getElementById("login") as HTMLDialogElement).showModal();
                                         setUserType("caregiver");
                                         sessionStorage.setItem("userType", "caregiver");
-                                    }}>Caregiver</p>
+                                    }}
+                                >
+                                    <span>Caregiver</span>
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>
@@ -103,13 +115,17 @@ export default function Navbar() {
                                 <button disabled={pathname === "/pricing" || pathname === "/caregiver/registration" || pathname === "/careseeker/registration"} className={`${!otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg cursor-pointer disabled:bg-gray-400`}>My Account</button>
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
-                                <Menu.Item className={`${(userType === 'caregiver') && 'hidden'} font-semibold hover:bg-teal-500 hover:bg-opacity-60`} icon={<MdSpaceDashboard className='text-xl' />}>
-                                    <Link href={"/dashboard"}>Dashboard</Link>
-                                </Menu.Item>
+                                <Link href={"/dashboard"}>
+                                    <Menu.Item className={`${(userType === 'caregiver') && 'hidden'} font-semibold hover:bg-teal-500 hover:bg-opacity-60`} icon={<MdSpaceDashboard className='text-xl' />}>
+                                        <span>Dashboard</span>
+                                    </Menu.Item>
+                                </Link>
                                 <Menu.Divider />
-                                <Menu.Item className='font-semibold hover:bg-teal-500 hover:bg-opacity-60' icon={<MdAccountCircle className='text-xl' />}>
-                                    <Link href={`/${userType}/account`}>Profile</Link>
-                                </Menu.Item>
+                                <Link href={`/${userType}/account`}>
+                                    <Menu.Item className='font-semibold hover:bg-teal-500 hover:bg-opacity-60' icon={<MdAccountCircle className='text-xl' />}>
+                                        <span>Profile</span>
+                                    </Menu.Item>
+                                </Link>
                                 <Menu.Divider />
                                 <Menu.Item className='font-semibold hover:bg-teal-500 hover:bg-opacity-60' icon={<MdLogout className='text-xl' />}>
                                     <div role='button' onClick={() => {
@@ -120,8 +136,8 @@ export default function Navbar() {
                                         if (pathname === "/") {
                                             window.location.reload();
                                         } else {
-                                            router.push("/");
-                                        }                                        
+                                            window.location.assign("/");
+                                        }
                                         setUserType("careseeker")
                                     }}>Log out</div>
                                 </Menu.Item>

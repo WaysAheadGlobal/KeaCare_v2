@@ -1,23 +1,31 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import defaultUser from '../../../../public/defaultUser.png'
 import Image from 'next/image';
 import { MultiSelect } from '@mantine/core';
 import { useRouter } from 'next/navigation';
-import { MenuItem, OutlinedInput, Select } from '@mui/material';
+import { CircularProgress, MenuItem, OutlinedInput, Select } from '@mui/material';
+import AlertContext from '@/app/AlertContext';
 
 export default function Registration() {
     const router = useRouter();
     const [imageURL, setImageURL] = useState<string>(defaultUser.src);
     const [languages, setLanguages] = useState<string[]>([]);
     const [additionalServices, setAdditionalServices] = useState<string[]>([]);
-    const [email, setEmail] = useState<string | null>("");
+    const [autoFill, setAutoFill] = useState<{ [key: string]: string | null }>({});
     const [daysAWeek, setDaysAWeek] = useState<string>();
     const [workingHrs, setWorkingHrs] = useState<string>();
+    const [checked, setChecked] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const { setAlert } = useContext(AlertContext);
 
     useEffect(() => {
-        setEmail(sessionStorage.getItem("email"));
+        setAutoFill({
+            email: sessionStorage.getItem("email"),
+            phoneno: sessionStorage.getItem("phoneno"),
+            zipcode: sessionStorage.getItem("zipcode")
+        })
     }, [])
 
     const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
@@ -93,7 +101,7 @@ export default function Registration() {
                             daysAWeek: daysAWeek,
                             workingHrs: workingHrs,
                             bio: bio,
-                            certifications: certifications,
+                            certifications: certifications === "other" ? "other_" + (document.getElementById("certifications_others") as HTMLSelectElement).value : certifications,
                             distance: distance,
                             education: education,
                             ref1Email: ref1Email,
@@ -107,6 +115,7 @@ export default function Registration() {
                         });
 
                         try {
+                            setLoading(true);
                             const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/registration", {
                                 method: "POST",
                                 headers: {
@@ -117,9 +126,13 @@ export default function Registration() {
 
                             const data = await response.json();
                             if (data?.success) {
+                                setLoading(false);
                                 router.push("/caregiver/account");
+                            } else {
+                                setLoading(false);
                             }
                         } catch (error) {
+                            setLoading(false);
                             console.log(error);
                         }
                     }} >
@@ -129,24 +142,34 @@ export default function Registration() {
                         <input required id="profilePhoto" type="file" accept='image/png, image/jpg, image/jpeg' className='file:bg-teal-500 file:text-white file:border-0 file:px-[1.5rem] file:py-[0.5rem] file:rounded-lg text-opacity-100' onChange={async (e) => {
                             const files = e.currentTarget.files;
                             if (files) {
-                                setImageURL(URL.createObjectURL(files[0]));
+                                if (files[0].size > 2 * 1048576) {
+                                    setAlert({
+                                        message: "Profile Photo size too big.",
+                                        type: "warning",
+                                        open: true
+                                    })
+                                    e.currentTarget.value = "";
+                                    setImageURL(defaultUser.src);                                    
+                                } else {
+                                    setImageURL(URL.createObjectURL(files[0]));
+                                }
                             }
                         }} />
                     </div>
                     <div className='flex flex-col col-[1/2]'>
-                        <span>First Name</span>
+                        <span>First Name*</span>
                         <input id="fname" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col col-[2/3]'>
-                        <span>Last Name</span>
+                        <span>Last Name*</span>
                         <input id="lname" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Date of Birth</span>
+                        <span>Date of Birth*</span>
                         <input id="dob" required type="date" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Gender</span>
+                        <span>Gender*</span>
                         <select id="gender" required className='p-3 border-[1px] border-black  rounded-lg'>
                             <option value="">Select</option>
                             <option value="Male">Male</option>
@@ -155,19 +178,19 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col col-[1/3]'>
-                        <span>Phone Number</span>
-                        <input id="mobile" required type="text" pattern='^[0-9]{10}$' className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
+                        <span>Phone Number*</span>
+                        <input id="mobile" defaultValue={autoFill?.phoneno ?? undefined} required type="text" pattern='^[0-9]{10}$' className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
-                        <span>Email</span>
-                        <input id="email_regis" required type="email" defaultValue={email ? email : undefined} className='border-[1px] border-black p-3 rounded-lg' />
+                        <span>Email*</span>
+                        <input id="email_regis" required type="email" defaultValue={autoFill?.email ?? undefined} className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
-                        <span>Address</span>
+                        <span>Address*</span>
                         <input id="address" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Province</span>
+                        <span>Province*</span>
                         <select id="province" required className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="">Select</option>
                             <option value="Alberta">Alberta</option>
@@ -186,27 +209,28 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col'>
-                        <span>City</span>
+                        <span>City*</span>
                         <input id="city" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Zip Code</span>
+                        <span>Zip Code*</span>
                         <input id="zipcode"
+                            defaultValue={autoFill?.zipcode ?? undefined}
                             pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
                             required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Price per Hour</span>
+                        <span>Price per Hour*</span>
                         <input id="rate" required type="text" className='border-[1px] border-black p-3 rounded-lg' placeholder='Example 20' />
                     </div>
                     <p className='col-[1/3] text-center self-center'>Add Video Introduction (add one of the following format mp4, avi, mov)</p>
                     <button className='col-[1/3] text-white rounded-lg bg-teal-500 h-[3rem] sm:w-full md:w-[30rem] justify-self-center'>Upload Intro Video</button>
                     <div className='flex flex-col col-[1/3]'>
-                        <span>Add Bio</span>
+                        <span>Introduce Yourself*</span>
                         <textarea id="bio" required className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Comfortable With Pets</span>
+                        <span>Comfortable With Pets*</span>
                         <select id="comfortableWithPets" required className='p-3 border-[1px] border-black rounded-lg'>
                             <option value="">Select</option>
                             <option value="yes">Yes</option>
@@ -214,7 +238,7 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col'>
-                        <span>Type of Care</span>
+                        <span>Type of Care*</span>
                         <select id="speciality" required className='p-3 border-[1px] border-black rounded-lg'>
                             <option value="">Select</option>
                             <option value="child_care">Child Care</option>
@@ -233,7 +257,7 @@ export default function Registration() {
                             fontWeight: "normal"
                         }
                     }}
-                        label='Additional service you can provide.'
+                        label='Additional service you can provide*.'
                         data={[
                             { label: "Cook", value: 'cook' },
                             { label: "Cleaning", value: "cleaning" },
@@ -244,7 +268,7 @@ export default function Registration() {
                         }}
                     />
                     <div className='flex flex-col'>
-                        <span>How far you can travel from your locality.</span>
+                        <span>How far you can travel from your locality*.</span>
                         <select id="distance" required className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="">Select</option>
                             <option value="1">Within 1 km</option>
@@ -260,7 +284,7 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col'>
-                        <span>Experience (in years)</span>
+                        <span>Experience* (in years)</span>
                         <select id="experience" required className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="">Select</option>
                             <option value="1">1+</option>
@@ -274,7 +298,7 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col'>
-                        <span>Education Qualification</span>
+                        <span>Education Qualification*</span>
                         <select id="education" required className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="">Select</option>
                             <option value="Under Graduate">Under Graduate</option>
@@ -283,8 +307,16 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col'>
-                        <span>Certifications (Degree/Diploma)</span>
-                        <select id="certifications" required className="border-[1px] p-3 border-black   rounded-lg" >
+                        <span>Certifications* (Degree/Diploma)</span>
+                        <select id="certifications" required className="border-[1px] p-3 border-black rounded-lg"
+                            onChange={(e) => {
+                                if (e.currentTarget.value === "other") {
+                                    (document.getElementById("certifications_others") as HTMLInputElement).classList.remove("hidden");
+                                } else {
+                                    (document.getElementById("certifications_others") as HTMLInputElement).classList.add("hidden");
+                                }
+                            }}
+                        >
                             <option value="">Select</option>
                             <option
                                 value="A Child Development Assistant (formerly Level 1)">
@@ -336,7 +368,9 @@ export default function Registration() {
                                 value="National Caregiver Certification Course (NCCC)">
                                 National Caregiver Certification Course (NCCC)
                             </option>
+                            <option value="other">Other</option>
                         </select>
+                        <input id="certifications_others" required type="text" className='border-[1px] border-black p-3 rounded-lg hidden mt-3' placeholder='Please specify.' />
                     </div>
                     <MultiSelect size='md' radius='md' styles={{
                         input: {
@@ -350,7 +384,7 @@ export default function Registration() {
                             fontWeight: "normal"
                         }
                     }}
-                        label='Add Language'
+                        label='Can speak the language*'
                         data={[
                             { label: "English", value: "English" },
                             { label: "French", value: "French" },
@@ -364,7 +398,7 @@ export default function Registration() {
                         }}
                     />
                     <div className='flex flex-col'>
-                        <span>Availability (Select Working Days)</span>
+                        <span>Availability* (Select Working Days)</span>
                         <Select multiple fullWidth id="daysAWeek" required
                             sx={{ height: "3rem" }}
                             value={daysAWeek?.split(",") ?? []}
@@ -383,7 +417,7 @@ export default function Registration() {
                         </Select>
                     </div>
                     <div className='flex flex-col'>
-                        <span>Availability (Select Working Hours)</span>
+                        <span>Availability* (Select Working Hours)</span>
                         <Select multiple id="workingHrs" required
                             sx={{ height: "3rem" }}
                             value={workingHrs?.split(",") ?? []}
@@ -406,22 +440,25 @@ export default function Registration() {
                             <MenuItem value={"8 PM to 9 PM"}>8 PM to 9 PM</MenuItem>
                         </Select>
                     </div>
-                    <p className='row-[18/19] col-[1/3] place-self-center font-semibold text-xl'>Add Professional References</p>
+                    <div className='row-[18/19] col-[1/3] flex flex-col gap-2 items-center justify-center'>
+                        <p className='font-semibold text-xl'>Add Professional References</p>
+                        <p>Professional references are individuals who can vouch for your qualifications, skills, work ethic, and character in a professional setting.</p>
+                    </div>
                     <p className='col-[1/3] place-self-center font-semibold'>Reference 1</p>
                     <div className='flex flex-col'>
-                        <span>Name</span>
+                        <span>Name*</span>
                         <input id="ref1Name" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Phone Number</span>
+                        <span>Phone Number*</span>
                         <input id="ref1Phone" required pattern='^[0-9]{10}$' type="text" className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Email</span>
+                        <span>Email*</span>
                         <input id="ref1Email" required type="email" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Relation</span>
+                        <span>Relation*</span>
                         <select id="ref1Relation" required className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="">Select</option>
                             <option value="Sibling">Sibling</option>
@@ -432,19 +469,19 @@ export default function Registration() {
                     </div>
                     <p className='col-[1/3] place-self-center font-semibold'>Reference 2</p>
                     <div className='flex flex-col'>
-                        <span>Name</span>
+                        <span>Name*</span>
                         <input id="ref2Name" required type="text" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Phone Number</span>
+                        <span>Phone Number*</span>
                         <input id="ref2Phone" pattern='^[0-9]{10}$' required type="text" className='border-[1px] border-black p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Email</span>
+                        <span>Email*</span>
                         <input id="ref2Email" required type="email" className='border-[1px] border-black p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Relation</span>
+                        <span>Relation*</span>
                         <select id="ref2Relation" required className="border-[1px] p-3 border-black   rounded-lg" >
                             <option value="">Select</option>
                             <option value="Sibling">Sibling</option>
@@ -455,10 +492,19 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col gap-10 col-[1/3] justify-center items-center w-full'>
                         <div className='flex flex-row gap-3 items-center justify-center'>
-                            <input type="checkbox" className='w-[1.5rem] h-[1.5rem] accent-teal-600 bg-white' />
+                            <input type="checkbox" className='w-[1.5rem] h-[1.5rem] accent-teal-600 bg-white' onChange={(e) => {
+                                setChecked(e.currentTarget.checked);
+                                console.log(e.currentTarget.checked)
+                            }} />
                             <p>I Hereby Give Full Authorisation For Release Of Information For Background Verification Puposes</p>
                         </div>
-                        <button className='bg-teal-500 text-white font-semibold py-3 px-[2rem] md:px-[5rem] rounded-lg'>Submit</button>
+                        <button disabled={loading || !checked} className='bg-teal-500 text-white font-semibold py-3 px-[2rem] md:px-[5rem] rounded-lg disabled:bg-teal-700 disabled:text-opacity-60'>
+                            Submit
+                            {
+                                loading && <CircularProgress size={24} sx={{
+                                    color: "white"
+                                }} />
+                            }</button>
                     </div>
                 </form>
             </section>

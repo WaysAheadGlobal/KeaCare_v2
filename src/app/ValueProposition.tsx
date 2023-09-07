@@ -24,7 +24,7 @@ export default function ValueProposition() {
             document.getElementById("slide1")?.classList.toggle("opacity-0");
             document.getElementById("slide2")?.classList.toggle("opacity-0");
             document.getElementById("slide2")?.classList.toggle("opacity-100");
-        }, 2000)
+        }, 5000)
     }, []);
 
     return (
@@ -40,7 +40,7 @@ export default function ValueProposition() {
         >
             <h1 className='text-3xl font-semibold text-start'>Value Proposition</h1>
             <div className='relative'>
-                <div id="slide1" className='flex flex-col h-[90rem] lg:h-auto lg:grid lg:grid-cols-2 gap-[2rem] lg:gap-[10rem] lg:place-content-between w-full absolute z-10 transition-opacity opacity-100 duration-500'>
+                <div id="slide1" className='flex flex-col lg:h-auto lg:grid lg:grid-cols-2 gap-[2rem] lg:gap-[10rem] lg:place-content-between w-full absolute z-10 transition-opacity opacity-100 duration-500'>
                     <div className='text-xl space-y-7 lg:w-[30rem]'>
                         <p className='font-semibold'>
                             Secure access anytime, anywhere for
@@ -59,7 +59,7 @@ export default function ValueProposition() {
                     </div>
                     <Image src={seniorCare.src} width={seniorCarePortait.width} height={seniorCarePortait.height} alt='oldlady' className='aspect-square w-[25rem] object-cover object-center rounded-lg' />
                 </div>
-                <div id="slide2" className='flex flex-col h-[90rem] lg:h-auto lg:grid lg:grid-cols-2 gap-[2rem] lg:gap-[10rem] lg:place-content-between absolute z-10 transition-opacity opacity-0 duration-500 w-full'>
+                <div id="slide2" className='flex flex-col lg:h-auto lg:grid lg:grid-cols-2 gap-[2rem] lg:gap-[10rem] lg:place-content-between absolute z-10 transition-opacity opacity-0 duration-500 w-full'>
                     <div className='text-xl space-y-7 lg:w-[30rem]'>
                         <p className='font-semibold'>
                             Efficient way for

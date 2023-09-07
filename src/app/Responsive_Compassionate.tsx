@@ -35,7 +35,7 @@ export default function Responsive_Compassionate() {
             animate={animate}
             transition={{ duration: 0.5 }}
         >
-            <h1 className='text-teal-500 text-center text-3xl font-semibold mb-20'>Responsive & Compassionate</h1>
+            <h1 className='text-teal-500 text-center text-3xl font-semibold mb-20'>Services</h1>
             <div className='flex flex-col md:flex-row gap-10 items-center justify-evenly'>
                 <motion.div className='rounded-xl w-[20rem] sm:w-[30rem] p-5 flex flex-col gap-5 shadow-md hover:shadow-xl'
                     ref={ref}

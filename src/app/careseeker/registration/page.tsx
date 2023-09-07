@@ -1,16 +1,21 @@
 "use client"
 
+import { CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 export default function Registration() {
     const router = useRouter();
-
-    const [Email, setEmail] = useState<string>();
+    const [loading, setLoading] = useState(false);
+    const [autoFill, setAutoFill] = useState<{ [key: string]: string | null }>({});
 
     useEffect(() => {
-        setEmail(sessionStorage.getItem("email")?.toString());
-    }, []);
+        setAutoFill({
+            email: sessionStorage.getItem("email"),
+            phoneno: sessionStorage.getItem("phoneno"),
+            zipcode: sessionStorage.getItem("zipcode")
+        })
+    }, [])
 
     return (
         <form className='pb-20' onSubmit={async (e) => {
@@ -49,11 +54,18 @@ export default function Registration() {
                 body: bodyContent
             });
 
+            setLoading(true);
+
             const data = await response.json();
 
             if (data?.success) {
+                setLoading(false);
                 router.push("/dashboard");
+            } else {
+                setLoading(false);
             }
+
+
         }}>
             <div className='p-10 bg-teal-500'>
                 <h1 className='text-center text-3xl font-semibold text-white'>Complete your Registration</h1>
@@ -62,19 +74,19 @@ export default function Registration() {
                 <div className='flex flex-col lg:grid lg:grid-rows-[auto] lg:grid-cols-2 gap-[2rem] mt-10 w-full p-5 lg:w-[60rem]'>
                     <p className='col-[1/3] row-[1/2] lg:self-end text-2xl'>Personal Information</p>
                     <div className='flex flex-col'>
-                        <span>First Name</span>
+                        <span>First Name*</span>
                         <input id="fname" required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Last Name</span>
+                        <span>Last Name*</span>
                         <input id="lname" required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Date of Birth</span>
+                        <span>Date of Birth*</span>
                         <input id="dob" required type="date" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Gender</span>
+                        <span>Gender*</span>
                         <select id='gender' required className='p-3 border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none rounded-lg'>
                             <option value="">Select</option>
                             <option value="Male">Male</option>
@@ -83,19 +95,19 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col col-[1/3]'>
-                        <span>Phone Number</span>
-                        <input id='mobile' required type="text" pattern='^[0-9]{10}$' className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' minLength={10} maxLength={10} />
+                        <span>Phone Number*</span>
+                        <input id='mobile' defaultValue={autoFill?.phoneno ?? undefined} required type="text" pattern='^[0-9]{10}$' className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' minLength={10} maxLength={10} />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
-                        <span>Email</span>
-                        <input id='email_careseeker' required type="email" defaultValue={Email} className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
+                        <span>Email*</span>
+                        <input id='email_careseeker' required type="email" defaultValue={autoFill?.email ?? undefined} className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col col-[1/3]'>
-                        <span>Address</span>
+                        <span>Address*</span>
                         <input id='address' required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Province</span>
+                        <span>Province*</span>
                         <select id='province' required className="border-2 p-3 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none rounded-lg" >
                             <option value="">Select</option>
                             <option value="Alberta">Alberta</option>
@@ -114,17 +126,25 @@ export default function Registration() {
                         </select>
                     </div>
                     <div className='flex flex-col'>
-                        <span>City</span>
+                        <span>City*</span>
                         <input id='city' required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
                     </div>
                     <div className='flex flex-col'>
-                        <span>Zip Code</span>
+                        <span>Zip Code*</span>
                         <input id='zipcode'
+                            defaultValue={autoFill?.zipcode ?? undefined}
                             pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
-                            required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg' />
+                            required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg'
+                        />
                     </div>
-                    <button className='px-5 py-4 bg-teal-500 text-white row-[9/10] rounded-lg'>Submit</button>
-                    <button className='text-teal-500 text-lg justify-self-end font-semibold row-[9/10] col-[2/3]'>Skip</button>
+                    <button disabled={loading} className='px-[2rem] py-4 bg-teal-500 hover:bg-teal-600 text-white row-[9/10] rounded-lg flex items-center justify-center gap-4 self-start w-fit disabled:bg-teal-700 disabled:text-opacity-60'>
+                        Submit
+                        {
+                            loading && <CircularProgress size={24} sx={{
+                                color: "white"
+                            }} />
+                        }
+                    </button>
                 </div>
             </div>
         </form>

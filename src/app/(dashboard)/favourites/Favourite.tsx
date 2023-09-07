@@ -12,12 +12,7 @@ import { MdOutlineReviews } from 'react-icons/md'
 import { AiFillDelete } from 'react-icons/ai'
 import AlertContext from '../AlertContext'
 import { BsStarFill } from "react-icons/bs"
-
-/* export default function Favourite({ favourite }: { favourite: any }) {
-    return (
-        <div>{JSON.stringify(favourite)}</div>
-    )
-} */
+import Link from 'next/link'
 
 export default function Favourite({ favourite }: { favourite: any }) {
     const { setAlert } = useContext(AlertContext);
@@ -67,8 +62,16 @@ export default function Favourite({ favourite }: { favourite: any }) {
                     <span>Multilingual</span>
                 </div>
             </div>
-            <div className='flex-grow'>
-                <button className='border-2 border-black rounded-lg w-full py-2 flex flex-row items-center justify-center gap-2'
+            <div className='flex-grow flex flex-col gap-8'>
+                <Link href={{
+                    pathname: "/details",
+                    query: {
+                        id: favourite?.caregiverId
+                    }
+                }}>
+                    <button className='w-full py-2 bg-teal-500 hover:bg-teal-600 rounded-lg text-white'>Learn More</button>
+                </Link>
+                <button className='border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white rounded-lg w-full py-2 flex flex-row items-center justify-center gap-2'
                     onClick={async () => {
                         const bodyContent = {
                             careseekerEmail: sessionStorage.getItem("email"),

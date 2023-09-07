@@ -1,19 +1,8 @@
-"use client"
-
-import React, { useEffect } from 'react'
-import childCare from '../../public/childCareAboutUs.jpg'
+import React from 'react'
 import seniorCare from '../../public/seniorCareAboutUs.jpg'
 import Image from 'next/image'
 
 export default function AboutUs() {
-    useEffect(() => {
-        setInterval(() => {
-            document.getElementById("childCare")?.classList.toggle("opacity-100");
-            document.getElementById("childCare")?.classList.toggle("opacity-0");
-            document.getElementById("seniorCare")?.classList.toggle("opacity-0");
-            document.getElementById("seniorCare")?.classList.toggle("opacity-100");
-        }, 2000)
-    }, []);
     return (
         <section id="about" className="flex flex-col h-[70rem] lg:h-auto lg:grid lg:grid-cols-2 gap-[5rem] p-[2rem] md:p-[5rem] bg-teal-500 bg-opacity-30">
             <div className='space-y-[1rem]'>
@@ -30,8 +19,7 @@ export default function AboutUs() {
                 </p>
             </div>
             <div className='rounded-lg relative overflow-hidden mr-[2rem] h-full w-full'>
-                <Image id="childCare" src={childCare.src} width={childCare.width} height={childCare.height} alt='Child Care' className='absolute z-10 transition-opacity opacity-100 duration-500 w-full h-full object-cover object-center' />
-                <Image id="seniorCare" src={seniorCare.src} width={seniorCare.width} height={seniorCare.height} alt='Child Care' className='absolute transition-opacity opacity-0 duration-500 w-full h-full object-cover object-center' />
+                <Image id="seniorCare" src={seniorCare.src} width={seniorCare.width} height={seniorCare.height} alt='Child Care' className='absolute w-full h-full object-cover object-center' />
             </div>
         </section>
     )

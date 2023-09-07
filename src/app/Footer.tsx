@@ -6,7 +6,6 @@ import { HiMail } from 'react-icons/hi'
 import { BsInstagram } from 'react-icons/bs'
 import { SiLinkedin } from 'react-icons/si'
 import { ImFacebook2 } from 'react-icons/im'
-import { FaTwitterSquare } from 'react-icons/fa'
 import { usePathname, useRouter } from 'next/navigation'
 import footer from '../../public/footer.jpg'
 
@@ -15,7 +14,7 @@ export default function Footer() {
     const router = useRouter();
 
     return (
-        <footer className='min-h-[41rem] bg-no-repeat bg-cover bg-bottom grid place-items-center' style={{
+        <footer className={`${pathname.includes("admin") && "hidden"} min-h-[41rem] bg-no-repeat bg-cover bg-bottom grid place-items-center`} style={{
             backgroundImage: `url(${footer.src})`
         }}>
             <div className="flex flex-col md:flex-row flex-wrap gap-10 items-start md:items-center justify-between p-10 w-full h-full bg-white bg-opacity-60">

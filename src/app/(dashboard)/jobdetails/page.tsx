@@ -190,7 +190,7 @@ export default function JobDetails() {
                         </select>
                     </div>
                     <div className='w-full'>
-                        <p>Add Language</p>
+                        <p>Can speak the language</p>
                         <Select multiple fullWidth required
                             sx={{
                                 height: "3rem",
