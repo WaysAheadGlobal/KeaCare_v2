@@ -31,6 +31,7 @@ export default function Account() {
     useEffect(() => {
         setTask(userInfo?.task.split(","));
         setLanguages(userInfo?.languages.split(","));
+        console.log(userInfo)
     }, [userInfo]);
 
     const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
@@ -46,25 +47,14 @@ export default function Account() {
         })
     }
 
-    /* const [alert, setAlert] = useState<{ type: "info" | "warning" | "error" | "success", message: string, translate_: "-translate-y-96" | "translate-y-0", key: number }>({
-        type: "info",
-        message: "",
-        translate_: "-translate-y-96",
-        key: 0
-    }); */
-
-
     return (
         <>
             <div className='p-20 text-3xl font-semibold text-white bg-teal-500 text-center'>Your Account</div>
-            {/* <div className='sticky top-0 bg-transparent h-[1rem]'>
-                <Alert type={alert.type} message={alert.message} translate_={alert.translate_} _key={alert.key} />
-            </div> */}
             <form id="caregiver_form_update" className='px-[2rem] md:px-[8rem] py-[2rem] flex flex-col lg:grid lg:grid-cols-[18rem_1fr] grid-rows-1 gap-10'
                 onChange={(e) => {
                     setUserInfo({
                         ...userInfo,
-                        [(e.target as any).name]: (e.target as any).value
+                        [(e.target as any).name]: (e.target as any).value,
                     });
                 }}
                 onSubmit={async (e) => {
@@ -74,7 +64,10 @@ export default function Account() {
                         headers: {
                             "Content-Type": "application/json"
                         },
-                        body: JSON.stringify(userInfo)
+                        body: JSON.stringify({
+                            ...userInfo,
+                            certifications: (document.getElementById("certifications_others") as HTMLInputElement).value ? "other_" + (document.getElementById("certifications_others") as HTMLInputElement).value : userInfo.certifications
+                        })
                     })
 
                     const data = await response.json();
@@ -367,12 +360,7 @@ export default function Account() {
                             </option>
                             <option value="other">Other</option>
                         </select>
-                        <input id="certifications_others" required type="text" value={userInfo?.certifications.split("_")[1]} className={`border-[1px] border-black p-3 rounded-lg hidden mt-3 ${userInfo?.certifications.split("_")[0] === "other" && "hidden"}`} placeholder='Please specify.' onChange={(e) => {
-                            setUserInfo({
-                                ...userInfo,
-                                certifications: "other_" + e.currentTarget.value
-                            })
-                        }} />
+                        <input id="certifications_others" required type="text" value={userInfo?.certifications.split("_")[1]} className={`border-[1px] border-black p-3 rounded-lg mt-3 ${userInfo?.certifications.split("_")[0] !== "other" && "hidden"}`} placeholder='Please specify.'/>
                     </div>
                     <MultiSelect size='md' radius='md'
                         styles={{
