@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link';
 import React from 'react'
 
 export default function Appointment({ appointment }: { appointment: any }) {
@@ -40,7 +41,14 @@ export default function Appointment({ appointment }: { appointment: any }) {
             </div>
             <div className='flex-grow space-y-4'>
                 <p className='text-teal-500 text-xl text-center font-semibold'>{speciality[appointment.speciality]}</p>
-                <button className='border-2 border-black rounded-lg w-full py-2'>Details</button>
+                <Link href={{
+                    pathname: "/details",
+                    query: {
+                        id: appointment?.caregiverId
+                    }
+                }}>
+                    <button className='border-2 border-black rounded-lg w-full py-2'>Details</button>
+                </Link>
             </div>
         </div>
     )

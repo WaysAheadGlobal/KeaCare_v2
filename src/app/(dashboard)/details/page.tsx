@@ -11,7 +11,7 @@ import petsIcon from '../../../../public/petsIcon.png'
 import { ImLocation } from 'react-icons/im'
 import { MdOutlineReviews } from 'react-icons/md'
 import { IoChatbubbles, IoClose, IoLanguage } from 'react-icons/io5'
-import { LuEdit } from 'react-icons/lu'
+import { FiEdit } from 'react-icons/fi'
 import Review from '@/app/(dashboard)/details/Review'
 import RecommendedCard from '@/app/(dashboard)/dashboard/RecommendedCard'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -322,7 +322,7 @@ export default function Details() {
                         <h2 className='justify-self-end flex items-center gap-2 cursor-pointer text-teal-500 hover:underline focus:underline' onClick={() => {
                             (document.getElementById("reviewDialogBox") as HTMLDialogElement).showModal();
                         }}>
-                            <LuEdit className='text-xl' />
+                            <FiEdit className='text-xl' />
                             {
                                 Object.keys(reviews.userReview).length !== 0 ? <p>Edit Review</p> : <p>Write a Review</p>
                             }
