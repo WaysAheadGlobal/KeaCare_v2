@@ -160,12 +160,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender*</span>
-                        <select required value={userInfo?.gender} className='p-3 border-[1px] border-black rounded-lg'
-                            onChange={(e) => setUserInfo({
-                                ...userInfo,
-                                gender: e.currentTarget.value
-                            })}
-                        >
+                        <select required value={userInfo?.gender} name="gender" className='p-3 border-[1px] border-black rounded-lg'>
                             <option value={""} disabled>Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -360,7 +355,7 @@ export default function Account() {
                             </option>
                             <option value="other">Other</option>
                         </select>
-                        <input id="certifications_others" required type="text" value={userInfo?.certifications.split("_")[1]} className={`border-[1px] border-black p-3 rounded-lg mt-3 ${userInfo?.certifications.split("_")[0] !== "other" && "hidden"}`} placeholder='Please specify.'/>
+                        <input id="certifications_others" required type="text" value={userInfo?.certifications.split("_")[1]} className={`border-[1px] border-black p-3 rounded-lg mt-3 ${userInfo?.certifications.split("_")[0] !== "other" && "hidden"}`} placeholder='Please specify.' />
                     </div>
                     <MultiSelect size='md' radius='md'
                         styles={{

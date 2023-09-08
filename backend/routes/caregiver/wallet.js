@@ -9,7 +9,7 @@ function wallet(req, res) {
         } else {
             const { email } = req.query;
 
-            connection.query(`SELECT a.*, CONCAT(c.fname, ' ', c.lname) AS careseekername FROM appointments_ a INNER JOIN caregivers_ c WHERE a.caregiverId = c.id AND c.email = '${email}'`, (err, results) => {
+            connection.query(`SELECT a.*, CONCAT(c1.fname, ' ', c1.lname) AS careseekername FROM appointments_ a INNER JOIN caregivers_ c, careseekers_ c1 WHERE a.caregiverId = c.id AND c.email = '${email}' AND c1.id = a.careseekerId`, (err, results) => {
                 if (err) throw err;
 
                 res.status(200).send(results);

@@ -9,6 +9,7 @@ import AlertContext from '@/app/AlertContext';
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
+    const [refreshData, setRefreshData] = useState<number>(0);
 
     useEffect(() => {
         async function getUserInfo(email: string) {
@@ -20,7 +21,7 @@ export default function Account() {
         }
         const email = sessionStorage.getItem("email");
         getUserInfo(email ?? "");
-    }, []);
+    }, [refreshData]);
 
     const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
         return new Promise((resolve, reject) => {
@@ -230,7 +231,8 @@ export default function Account() {
                         <button className='text-teal-500 font-semibold hover:bg-gray-200 focus:bg-gray-200  px-[3rem] py-[1rem] rounded-xl' onClick={(e) => {
                             e.preventDefault();
                             (document.getElementById("careseeker_update_form") as HTMLFormElement).reset();
-                        }}>Disgard</button>
+                            setRefreshData(prev => prev + 1);
+                        }}>Disgard Changes</button>
                     </div>
                 </div>
             </form>
