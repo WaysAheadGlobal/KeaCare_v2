@@ -43,6 +43,7 @@ enum ApplicationStatus {
 
 model careseekers_ {
   id           Int       @id @unique @default(autoincrement())
+  stripeId     String    @unique
   fname        String?
   lname        String?
   email        String    @unique

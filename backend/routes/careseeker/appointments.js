@@ -62,8 +62,8 @@ async function appointmentFees(req, res) {
             }
         ],
         mode: 'payment',
-        success_url: 'https://keacare.waysdatalabs.com/success.html',
-        cancel_url: 'https://keacare.waysdatalabs.com/dashboard.html'
+        success_url: 'https://keacare.waysdatalabs.com/success',
+        cancel_url: 'https://keacare.waysdatalabs.com/dashboard'
     });
 
     res.status(200).json(session.url);

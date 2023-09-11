@@ -30,9 +30,6 @@ export default function Card({ price, heading, id, duration }: { price: string, 
                     const body = JSON.stringify({
                         priceId: id,
                         email: sessionStorage.getItem("email"),
-                        planType: heading,
-                        planDuration: duration,
-                        planPrice: price,
                         redo: sessionStorage.getItem("pricing") === "redo"
                     });
 

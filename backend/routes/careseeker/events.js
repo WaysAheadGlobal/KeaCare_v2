@@ -19,100 +19,112 @@ async function webHook(req, res) {
         return;
     }
 
-    // Cast event data to Stripe object
-    if (event.type === "charge.succeeded") {
-        /** console.log(event.data.object.receipt_url); */
-        sendReceipt(event.data.object.receipt_email, event.data.object.receipt_url);
-        res.status(200).send(true);
-    } else if (event.type === "checkout.session.completed") {
-        /* console.log(event.data.object.metadata); */
-        const { type } = event.data.object.metadata;
+    let subscription, status;
 
-        if (type === "appointment") {
-            const { appointment, careseekerEmail, caregiverId, price } = event.data.object.metadata;
+    switch (event.type) {
+        case 'customer.subscription.deleted': {
+            subscription = event.data.object;
+            status = subscription.status;
+            console.log(`Subscription status is ${status}.`);
+            // Then define and call a method to handle the subscription deleted.
+            // handleSubscriptionDeleted(subscriptionDeleted);
+            break;
+        }
+        case 'customer.subscription.created': {
+            status = event.data.object.status;
+            let stripeId = event.data.object.customer;
+            let { amount, nickname, interval } = event.data.object.plan;
+            if (status === "active") {
+                connection.query(`UPDATE careseekers_ SET status = 'active', planDuration = '${interval}', planType = '${nickname}', planPrice = '$${amount / 100}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${interval.toUpperCase()}) WHERE stripeId = '${stripeId}'`, (err) => { if (err) throw err; });
 
-            /* connection.query(`SELECT id, fname, lname FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
-                if (error) throw error;
+                connection.query(`SELECT id FROM careseekers_ WHERE stripeId = '${stripeId}'`, (error, results) => {
+                    if (error) throw error;
 
-                const careseeker = results[0];
-                if (careseeker) {
-                    connection.query(`SELECT id, fname, lname FROM caregivers_ WHERE id = ${caregiverId}`, (err, results_) => {
-                        if (err) throw err;
+                    connection.query(`INSERT INTO subscription (careseekerId, type, price) VALUES (${results[0].id}, '${nickname}', ${amount / 100})`, (err) => { if (err) throw err; });
 
-                        const caregiver = results_[0];
-                        if (caregiver) {
-                            const _appointment = JSON.parse(appointment);
+                    connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${results[0].id}, '${nickname}', ${amount / 100})`, (err) => { if (err) throw err; });
+                })
 
-                            for (const key in _appointment) {
-                                connection.query(`INSERT INTO appointments_(totalPrice, time, status, modified_on, careseekerId, caregiverId, date) VALUES (${price}, '${_appointment[key].toString()}', 'Upcoming', NOW(), ${careseeker.id}, ${caregiverId}, '${key}')`, (err_) => {
-                                    if (err_) throw err_;
-                                })
-                            }
-                            sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname);
-                            sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname);
-                            res.status(200).json({ success: true });
-                        } else {
-                            res.status(401).json({ success: false, error: "Invalid Credentials" });
-                        }
-                    })
-                } else {
-                    res.status(401).json({ success: false, error: "Invalid Credentials" });
-                }
-            }) */
-            const careseeker = await prisma.careseekers_.findUnique({
-                select: {
-                    id: true,
-                    fname: true,
-                    lname: true
-                },
-                where: {
-                    email: careseekerEmail,
-                }
-            });
-            const caregiver = await prisma.caregivers_.findUnique({
-                where: {
-                    id: parseInt(caregiverId)
-                }
-            });
-            const _appointment = JSON.parse(appointment);
-            try {
-                await prisma.appointments_.create({
-                    data: {
-                        caregiverId: parseInt(caregiverId),
-                        careseekerId: careseeker.id,
-                        date: _appointment.date,
-                        time: _appointment.time,
-                        status: "Upcoming",
-                        totalPrice: parseFloat(price),
+                res.status(200).json({ "success": true });
+            }
+            break;
+        }
+        case 'customer.subscription.updated': {
+            status = event.data.object.status;
+            let stripeId = event.data.object.customer;
+            let { amount, nickname, interval } = event.data.object.plan;
+            if (status === "active") {
+                connection.query(`UPDATE careseekers_ SET status = 'active', planDuration = '${interval}', planType = '${nickname}', planPrice = '$${amount / 100}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${interval.toUpperCase()}) WHERE stripeId = '${stripeId}'`, (err) => { if (err) throw err; });
+
+                connection.query(`SELECT id FROM careseekers_ WHERE stripeId = '${stripeId}'`, (error, results) => {
+                    if (error) throw error;
+
+                    connection.query(`INSERT INTO subscription (careseekerId, type, price) VALUES (${results[0].id}, '${nickname}', ${amount / 100})`, (err) => { if (err) throw err; });
+
+                    connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${results[0].id}, '${nickname}', ${amount / 100})`, (err) => { if (err) throw err; });
+                })
+
+                res.status(200).json({ "success": true });
+            }
+            break;
+        }
+        case "charge.succeeded": {
+            sendReceipt(event.data.object.receipt_email, event.data.object.receipt_url);
+            res.status(200).send(true);
+            break;
+        }
+        case "checkout.session.completed": {
+            /** console.log(event.data.object.metadata); */
+            const { type } = event.data.object.metadata;
+
+            if (type === "appointment") {
+                const { appointment, careseekerEmail, caregiverId, price } = event.data.object.metadata;
+
+                const careseeker = await prisma.careseekers_.findUnique({
+                    select: {
+                        id: true,
+                        fname: true,
+                        lname: true
+                    },
+                    where: {
+                        email: careseekerEmail,
                     }
                 });
+                const caregiver = await prisma.caregivers_.findUnique({
+                    where: {
+                        id: parseInt(caregiverId)
+                    }
+                });
+                const _appointment = JSON.parse(appointment);
+                try {
+                    await prisma.appointments_.create({
+                        data: {
+                            caregiverId: parseInt(caregiverId),
+                            careseekerId: careseeker.id,
+                            date: _appointment.date,
+                            time: _appointment.time,
+                            status: "Upcoming",
+                            totalPrice: parseFloat(price),
+                        }
+                    });
 
-                connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${careseeker.id}, 'Appointment - ${caregiver.fname + " " + caregiver.lname}', ${price})`, (err) => { if (err) throw err; });
+                    connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${careseeker.id}, 'Appointment - ${caregiver.fname + " " + caregiver.lname}', ${price})`, (err) => { if (err) throw err; });
 
-                sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname, "careseeker");
-                sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname, "caregiver");
-                res.status(200).json({ success: true });
-            } catch (err) {
-                console.log(err);
-                res.status(500).send("Internal Server Error");
+                    sendAppointment(careseekerEmail, careseeker.fname + " " + careseeker.lname, caregiver.fname + " " + caregiver.lname, "careseeker");
+                    sendAppointment(caregiver.email, caregiver.fname + " " + caregiver.lname, careseeker.fname + " " + careseeker.lname, "caregiver");
+                    res.status(200).json({ success: true });
+                } catch (err) {
+                    console.log(err);
+                    res.status(500).send("Internal Server Error");
+                }
             }
-        } else if (type === "subscription") {
-            const { planType, planDuration, planPrice, email } = event.data.object.metadata;
-
-            connection.query(`UPDATE careseekers_ SET status = 'active', planDuration = '${planDuration}', planType = '${planType}', planPrice = '${planPrice}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${planDuration.toUpperCase()}) WHERE email = '${email}'`, (err) => { if (err) throw err; });
-
-            connection.query(`SELECT id FROM careseekers_ WHERE email = '${email}'`, (error, results) => {
-                if (error) throw error;
-
-                connection.query(`INSERT INTO subscription (careseekerId, type, price) VALUES (${results[0].id}, '${planType}', ${planPrice})`, (err) => { if (err) throw err; });
-
-                connection.query(`INSERT INTO payment_history (careseekerId, description, price) VALUES (${results[0].id}, '${planType}', ${planPrice})`, (err) => { if (err) throw err;});
-            })
-
-            res.status(200).json({ "success": true });
+            else {
+                res.status(200).json(true);
+            }
+            break;
         }
-    } else {
-        res.status(200).json(true);
+        default:
+            res.status(200).json(true);
     }
 }
 

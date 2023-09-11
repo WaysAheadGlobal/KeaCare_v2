@@ -38,6 +38,17 @@ export default function Subscription({ id, className }: { id: string, className:
                     })
                 }
             </div>
+            <span className='flex-grow'></span>
+            <div className='flex flex-col gap-4 items-end justify-start'>
+                <button className='bg-teal-500 hover:bg-teal-600 py-2 px-4 rounded-md text-white'
+                    onClick={async (e) => {
+                        e.preventDefault();
+                        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/portal?email=${sessionStorage.getItem("email")}`);
+                        const data = await response.json();
+                        window.location.assign(data.url);
+                    }}
+                >Manage Subscriptions</button>
+            </div>
         </div>
     )
 }

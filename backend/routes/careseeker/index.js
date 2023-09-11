@@ -21,6 +21,7 @@ const UpdateJob = require("./updateJob");
 const { addFavourites, getFavourites, removeFromFavourites, getFavouriteByCareseekerAndCaregiverId } = require("./favourites");
 const getCaregiversByName = require("./getCaregiversByName");
 const PaymentHistory = require("./paymentHistory");
+const portal = require("./billingportal");
 
 const CareseekerRouter = Router();
 
@@ -57,5 +58,6 @@ CareseekerRouter.get("/favourites", query("careseekerEmail").trim().isEmail(), g
 CareseekerRouter.get("/getfavourite", query("careseekerEmail").trim().isEmail(), getFavouriteByCareseekerAndCaregiverId);
 CareseekerRouter.delete("/favourites", body("careseekerEmail").trim().isEmail(), removeFromFavourites);
 CareseekerRouter.get("/paymentHistory", query("email").trim().isEmail(), PaymentHistory);
+CareseekerRouter.get("/portal", portal);
 
 module.exports = CareseekerRouter;

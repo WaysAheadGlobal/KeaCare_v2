@@ -30,7 +30,7 @@ export default function Registration() {
             const address = (document.getElementById("address") as HTMLInputElement).value;
             const city = (document.getElementById("city") as HTMLInputElement).value;
             const province = (document.getElementById("province") as HTMLSelectElement).value;
-            const zipcode = (document.getElementById("zipcode") as HTMLInputElement).value;
+            const zipcode = (document.getElementById("zipcode_regis") as HTMLInputElement).value;
 
             const bodyContent = JSON.stringify({
                 fname: fname,
@@ -131,7 +131,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Zip Code*</span>
-                        <input id='zipcode'
+                        <input id='zipcode_regis'
                             defaultValue={autoFill?.zipcode ?? undefined}
                             pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
                             required type="text" className='border-2 border-teal-500 hover:ring-2 hover:ring-teal-400 focus:ring-2 focus:ring-teal-400 outline-none p-3 rounded-lg'

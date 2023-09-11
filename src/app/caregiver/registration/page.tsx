@@ -58,7 +58,7 @@ export default function Registration() {
                         const address = (document.getElementById("address") as HTMLInputElement).value;
                         const city = (document.getElementById("city") as HTMLInputElement).value;
                         const province = (document.getElementById("province") as HTMLInputElement).value;
-                        const zipcode = (document.getElementById("zipcode") as HTMLInputElement).value;
+                        const zipcode = (document.getElementById("zipcode_regis_caregiver") as HTMLInputElement).value;
                         const speciality = (document.getElementById("speciality") as HTMLSelectElement).value;
                         const experience = (document.getElementById("experience") as HTMLSelectElement).value;
                         const comfortableWithPets = (document.getElementById("comfortableWithPets") as HTMLSelectElement).value;
@@ -214,7 +214,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Zip Code*</span>
-                        <input id="zipcode"
+                        <input id="zipcode_regis_caregiver"
                             defaultValue={autoFill?.zipcode ?? undefined}
                             pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
                             required type="text" className='border-[1px] border-black p-3 rounded-lg' />

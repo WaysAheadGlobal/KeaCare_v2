@@ -1,8 +1,10 @@
 const { validationResult } = require("express-validator");
 const { PrismaClient } = require("@prisma/client");
 const { sendOTP } = require("../../mail/MailService.js");
+const { Stripe } = require('stripe');
 
 const prisma = new PrismaClient();
+const stripe = new Stripe(process.env.STRIPE_API_KEY);
 
 async function SignupOTP(req, res) {
     const errors = validationResult(req);
@@ -44,8 +46,12 @@ async function Signup(req, res) {
                 if (careseeker) {
                     res.status(403).json({ error: "User already exists. Please try logging in." });
                 } else {
+                    const customer = await stripe.customers.create({
+                        email: email
+                    });
                     const user = await prisma.careseekers_.create({
                         data: {
+                            stripeId: customer.id,
                             email: email,
                             token: token,
                         }
