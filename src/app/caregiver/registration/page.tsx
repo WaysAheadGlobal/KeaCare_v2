@@ -24,7 +24,6 @@ export default function Registration() {
         setAutoFill({
             email: sessionStorage.getItem("email"),
             phoneno: sessionStorage.getItem("phoneno"),
-            zipcode: sessionStorage.getItem("zipcode")
         })
     }, [])
 
@@ -149,7 +148,7 @@ export default function Registration() {
                                         open: true
                                     })
                                     e.currentTarget.value = "";
-                                    setImageURL(defaultUser.src);                                    
+                                    setImageURL(defaultUser.src);
                                 } else {
                                     setImageURL(URL.createObjectURL(files[0]));
                                 }
@@ -259,9 +258,14 @@ export default function Registration() {
                     }}
                         label='Additional service you can provide*.'
                         data={[
-                            { label: "Cook", value: 'cook' },
-                            { label: "Cleaning", value: "cleaning" },
-                            { label: "Laundry", value: "laundry" }
+                            { label: "Exercise and physical therapy", value: "Exercise and physical therapy" },
+                            { label: "Transportation", value: 'Transportation' },
+                            { label: "Meal planning and preparation", value: "Meal planning and preparation" },
+                            { label: "Housekeeping", value: "Housekeeping" },
+                            { label: "Medication management", value: 'Medication management' },
+                            { label: "Emotional support", value: "Emotional support" },
+                            { label: "Companionship", value: "Companionship" },
+                            { label: "Pet Care", value: 'Pet Care' },
                         ]}
                         onChange={(value) => {
                             setAdditionalServices(value);
@@ -459,13 +463,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Relation*</span>
-                        <select id="ref1Relation" required className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="">Select</option>
-                            <option value="Sibling">Sibling</option>
-                            <option value="Colleague">Colleague</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <input id="ref1Relation" required className="border-[1px] p-3 border-black   rounded-lg" />
                     </div>
                     <p className='col-[1/3] place-self-center font-semibold'>Reference 2</p>
                     <div className='flex flex-col'>
@@ -482,13 +480,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Relation*</span>
-                        <select id="ref2Relation" required className="border-[1px] p-3 border-black   rounded-lg" >
-                            <option value="">Select</option>
-                            <option value="Sibling">Sibling</option>
-                            <option value="Colleague">Colleague</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <input id="ref2Relation" required className="border-[1px] p-3 border-black   rounded-lg" />
                     </div>
                     <div className='flex flex-col gap-10 col-[1/3] justify-center items-center w-full'>
                         <div className='flex flex-row gap-3 items-center justify-center'>

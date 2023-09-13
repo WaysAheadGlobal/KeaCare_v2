@@ -70,7 +70,7 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                 <div className='flex flex-col gap-3 text-sm w-full pr-8'>
                     <p className='font-semibold'>Hourly Rate</p>
                     <div className='grid grid-cols-[125px_10px_125px] gap-3 h-[40px]'>
-                        <input type="text" className='p-2 rounded-md outline-none border-2 border-teal-600 hover:ring-2 hover:ring-teal-500 focus:ring-2 focus:ring-teal-500'
+                        <input type="number" className='p-2 rounded-md outline-none border-2 border-teal-600 hover:ring-2 hover:ring-teal-500 focus:ring-2 focus:ring-teal-500'
                             onChange={(e) => {
                                 setFilters({
                                     ...filters,
@@ -78,7 +78,7 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                                 });
                             }} />
                         <p className='justify-self-center self-center'>to</p>
-                        <input type="text" className='p-2 rounded-md outline-none border-2 border-teal-600 hover:ring-2 hover:ring-teal-500 focus:ring-2 focus:ring-teal-500'
+                        <input type="number" className='p-2 rounded-md outline-none border-2 border-teal-600 hover:ring-2 hover:ring-teal-500 focus:ring-2 focus:ring-teal-500'
                             onChange={(e) => {
                                 setFilters({
                                     ...filters,
@@ -133,7 +133,7 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                     </select>
                 </div>
                 <div className='flex flex-col w-full gap-1'>
-                    <p className='font-semibold'>Availability</p>
+                    <p className='font-semibold'>Day of Week</p>
                     <Select required multiple fullWidth
                         name="availability"
                         id="availability_week"
@@ -154,6 +154,7 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                         <MenuItem value={"Saturday"}>Saturday</MenuItem>
                         <MenuItem value={"Sunday"}>Sunday</MenuItem>
                     </Select>
+                    <p className='font-semibold mt-4'>Time</p>
                     <Select required multiple fullWidth name="availability" id="availability_perDay"
                         sx={{ height: "3rem", borderRadius: "7px" }}
                         value={filters?.hrs?.split(",") ?? []}
@@ -284,11 +285,16 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
                             color: "white",
                         }
                     }}
-                    label='Additional service you can provide.'
+                    label='More services'
                     data={[
-                        { label: "Can do Cook", value: 'cook' },
-                        { label: "Can do Cleaning", value: "cleaning" },
-                        { label: "Can do Laundry", value: "laundry" }
+                        { label: "Exercise and physical therapy", value: "Exercise and physical therapy" },
+                        { label: "Transportation", value: 'Transportation' },
+                        { label: "Meal planning and preparation", value: "Meal planning and preparation" },
+                        { label: "Housekeeping", value: "Housekeeping" },
+                        { label: "Medication management", value: 'Medication management' },
+                        { label: "Emotional support", value: "Emotional support" },
+                        { label: "Companionship", value: "Companionship" },
+                        { label: "Pet Care", value: 'Pet Care' },
                     ]}
                     onChange={(values) => {
                         setFilters({

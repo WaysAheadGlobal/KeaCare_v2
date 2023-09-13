@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { MultiSelect } from '@mantine/core';
-import Alert from '@/app/Alert';
 import { MenuItem, OutlinedInput, Select } from '@mui/material';
 import AlertContext from '@/app/AlertContext';
+import { useRouter } from 'next/navigation';
 const Wallet = dynamic(() => import("./Wallet"));
 
 export default function Account() {
@@ -14,13 +14,19 @@ export default function Account() {
     const [languages, setLanguages] = useState<string[]>([]);
     const [refreshData, setRefreshData] = useState<number>(0);
     const { setAlert } = useContext(AlertContext);
+    const router = useRouter();
 
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
                 const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
                 const data = await response.json();
-                setUserInfo(data);
+                if (data.status === "incomplete") {
+                    router.push("/caregiver/registration");
+                } else {
+                    setUserInfo(data);
+                }
+                
             }
         }
         const email = sessionStorage.getItem("email");
@@ -96,6 +102,7 @@ export default function Account() {
                             backgroundImage: `url(${userInfo?.imageUrl})`
                         }}></div>
                         <p className='text-white font-semibold'>{(userInfo?.fname ?? "Loading...") + " " + (userInfo?.lname ?? "")}</p>
+                        <p className='text-white font-semibold'>Caregiver</p>
                         <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
                             <label htmlFor="image" className='cursor-pointer'>Update Profile Photo</label>
                             <input type="file" id="image" className='w-0' accept='image/*' onChange={async (e) => {
@@ -113,7 +120,7 @@ export default function Account() {
                                     })
                                 }
                             }} />
-                        </div>
+                        p</div>
                     </div>
                     <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg'
                         onClick={(e) => {
@@ -229,7 +236,6 @@ export default function Account() {
                             <option value="">Select</option>
                             <option value="child_care">Child Care</option>
                             <option value="senior_care">Senior Care</option>
-                            <option value="child_senior_care">Both</option>
                         </select>
                     </div>
                     <MultiSelect size='md' radius='md'
@@ -248,9 +254,14 @@ export default function Account() {
                         value={task}
                         label='Additional service you can provide*.'
                         data={[
-                            { label: "Cook", value: 'cook' },
-                            { label: "Cleaning", value: "cleaning" },
-                            { label: "Laundry", value: "laundry" }
+                            { label: "Exercise and physical therapy", value: "Exercise and physical therapy" },
+                            { label: "Transportation", value: 'Transportation' },
+                            { label: "Meal planning and preparation", value: "Meal planning and preparation" },
+                            { label: "Housekeeping", value: "Housekeeping" },
+                            { label: "Medication management", value: 'Medication management' },
+                            { label: "Emotional support", value: "Emotional support" },
+                            { label: "Companionship", value: "Companionship" },
+                            { label: "Pet Care", value: 'Pet Care' },
                         ]}
                         onChange={(e) => {
                             setTask(e);

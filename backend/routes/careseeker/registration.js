@@ -43,7 +43,8 @@ async function Register(req, res) {
                             city: city,
                             province: province,
                             zipcode: zipcode,
-                            device_type: device_type
+                            device_type: device_type,
+                            status: "active"
                         }
                     });
                     res.status(200).json({ "success": true, ...updatedCareseeker });

@@ -37,9 +37,11 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (careseeker) {
-            if (careseeker.status === "inactive") {
+            if (careseeker.status === "incomplete") {
                 sessionStorage.setItem("pricing", "redo");
                 router.push("/pricing");
+            } else if (careseeker.status === "inactive") {
+                router.push("/careseeker/registration");
             }
         }
     }, [careseeker]);

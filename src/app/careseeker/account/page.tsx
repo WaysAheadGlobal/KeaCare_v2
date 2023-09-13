@@ -87,7 +87,8 @@ export default function Account() {
                                 backgroundImage: `url(${userInfo?.imageUrl ? userInfo?.imageUrl : profilePic.src})`
                             }}></div>
                         </div>
-                        <p className='text-white font-semibold'>{userInfo?.fname + " " + userInfo?.lname}</p>
+                        <p className='text-white font-semibold'>{(userInfo?.fname ?? "Loading...") + " " + (userInfo?.lname ?? "")}</p>
+                        <p className='text-white font-semibold'>Careseeker</p>
                         <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
                             <label htmlFor='updatePhoto' className='cursor-pointer'>Update Profile Photo</label>
                             <input type="file" name="updatePhoto" id="updatePhoto" className='invisible w-0'
@@ -106,7 +107,7 @@ export default function Account() {
                                         })
                                     }
                                 }} />
-                        </div>
+                            p</div>
                     </div>
                     <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'
                         onClick={(e) => {

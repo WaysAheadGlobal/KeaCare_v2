@@ -51,15 +51,9 @@ export default function Signup() {
                         <p className='text-lg text-teal-500 self-center mt-3'>OR</p>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Phone Number</span>
-                            <input type='text' id="phoneno" placeholder='Enter your phone number' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' />
+                            <input type='text' id="phoneno" placeholder='Enter your phone number' minLength={10} maxLength={10} className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' />
                         </div>
                         <div className='flex flex-col md:flex-row gap-3 mt-3 items-center justify-start'>
-                            <div className='flex flex-col gap-1'>
-                                <span className='text-teal-500'>Zip Code</span>
-                                <input id="zipcode" type='text' placeholder='Enter your zip code'
-                                    pattern='^[ABCEGHJ-NPRSTVXY][0-9][ABCEGHJ-NPRSTV-Z][ ]?[0-9][ABCEGHJ-NPRSTV-Z][0-9]$'
-                                    className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none flex-grow' />
-                            </div>
                             <button className='py-[0.8rem] px-8 bg-teal-500 rounded-lg mt-0 md:mt-7 text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500'
                                 onClick={async (e) => {
                                     e.preventDefault();
@@ -159,7 +153,6 @@ export default function Signup() {
                                     });
                                     sessionStorage.setItem("email", email.value);
                                     sessionStorage.setItem("phoneno", (document.getElementById("phoneno") as HTMLInputElement).value);
-                                    sessionStorage.setItem("zipcode", (document.getElementById("zipcode") as HTMLInputElement).value);
                                     sessionStorage.setItem("otp", Otp);
                                     if (userType === 'caregiver') {
                                         router.push("/caregiver/registration");

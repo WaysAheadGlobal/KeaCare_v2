@@ -12,8 +12,7 @@ export default function Registration() {
     useEffect(() => {
         setAutoFill({
             email: sessionStorage.getItem("email"),
-            phoneno: sessionStorage.getItem("phoneno"),
-            zipcode: sessionStorage.getItem("zipcode")
+            phoneno: sessionStorage.getItem("phoneno")
         })
     }, [])
 
@@ -64,8 +63,6 @@ export default function Registration() {
             } else {
                 setLoading(false);
             }
-
-
         }}>
             <div className='p-10 bg-teal-500'>
                 <h1 className='text-center text-3xl font-semibold text-white'>Complete your Registration</h1>

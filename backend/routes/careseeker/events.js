@@ -35,7 +35,7 @@ async function webHook(req, res) {
             let stripeId = event.data.object.customer;
             let { amount, nickname, interval } = event.data.object.plan;
             if (status === "active") {
-                connection.query(`UPDATE careseekers_ SET status = 'active', planDuration = '${interval}', planType = '${nickname}', planPrice = '$${amount / 100}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${interval.toUpperCase()}) WHERE stripeId = '${stripeId}'`, (err) => { if (err) throw err; });
+                connection.query(`UPDATE careseekers_ SET status = 'inactive', planDuration = '${interval}', planType = '${nickname}', planPrice = '$${amount / 100}', expiryDate = ADDDATE(created_at, INTERVAL 1 ${interval.toUpperCase()}) WHERE stripeId = '${stripeId}'`, (err) => { if (err) throw err; });
 
                 connection.query(`SELECT id FROM careseekers_ WHERE stripeId = '${stripeId}'`, (error, results) => {
                     if (error) throw error;

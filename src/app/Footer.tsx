@@ -97,7 +97,7 @@ export default function Footer() {
                 </div>
                 <div className='text-lg space-y-3'>
                     <p className='text-3xl font-semibold mb-5'>Contact</p>
-                    <p>4170 Still Creek Dr, Burnaby, BC, Canada, V5C 6C6</p>
+                    <p>2025 Willingdon Ave, Suite 900, Burnaby, British Columbia V5C 0J3, CA</p>
                     <p className='flex flex-row gap-3 items-center justify-start'>
                         <HiMail />
                         contact@KeaCare.com

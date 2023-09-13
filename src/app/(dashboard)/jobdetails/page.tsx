@@ -121,9 +121,14 @@ export default function JobDetails() {
                             onChange={(e) => setAdditionalService(e.target.value.toString())}
                             input={<OutlinedInput color='success' />}
                         >
-                            <MenuItem value={"cook"}>Cook</MenuItem>
-                            <MenuItem value={"laundry"}>Laundry</MenuItem>
-                            <MenuItem value={"cleaning"}>Cleaning</MenuItem>
+                            <MenuItem value="Exercise and physical therapy">Exercise and physical therapy</MenuItem>
+                            <MenuItem value="Transportation">Transportation</MenuItem>
+                            <MenuItem value="Meal planning and preparation">Meal planning </MenuItem>and preparation
+                            <MenuItem value="Housekeeping">Housekeeping</MenuItem>
+                            <MenuItem value="Medication management">Medication management</MenuItem>
+                            <MenuItem value="Emotional support">Emotional support</MenuItem>
+                            <MenuItem value="Companionship">Companionship</MenuItem>
+                            <MenuItem value="Pet Care">Pet Care</MenuItem>
                         </Select>
                     </div>
                     <div className='w-full'>
