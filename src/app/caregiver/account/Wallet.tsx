@@ -6,7 +6,7 @@ export default function Wallet({ id, className }: { id: string, className: strin
 
     useEffect(() => {
         async function wallet() {
-            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/wallet?email=${sessionStorage.getItem("email")}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/wallet?email=${sessionStorage.getItem("email")}`);
             const data: any[] = await response.json();
             setWallet(data);
             data?.forEach((element: any) => {

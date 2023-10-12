@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       })(window,document,'script','dataLayer','GTM-NNL5B72');`}
         </Script>
       </head>
-      <body className={`${rubic.className} overflow-x-hidden`} suppressHydrationWarning>
+      <body className={`${rubic.className} overflow-x-hidden min-h-[100dvh]`} suppressHydrationWarning>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNL5B72"
           height="0" width="0" style={{ display: "none", visibility: "hidden" }}></iframe>
         </noscript>

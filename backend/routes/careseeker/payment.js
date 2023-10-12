@@ -21,8 +21,8 @@ async function payment(req, res) {
                     }
                 ],
                 mode: 'subscription',
-                success_url: redo ? 'https://keacare.waysdatalabs.com/dashboard' : 'https://keacare.waysdatalabs.com/careseeker/registration',
-                cancel_url: 'https://keacare.waysdatalabs.com/pricing'
+                success_url: redo ? 'http://localhost:3000/dashboard' : 'http://localhost:3000/careseeker/registration',
+                cancel_url: 'http://localhost:3000/pricing'
             });
             res.status(200).json(session.url);
         }

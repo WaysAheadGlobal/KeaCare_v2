@@ -3,7 +3,7 @@ import Appointment from './Appointment';
 
 async function getAppointments(email: string | null) {
     if (email) {
-        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments?careseekerEmail=${email}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/appointments?careseekerEmail=${email}`);
         const data = await response.json();
         return data;
     }

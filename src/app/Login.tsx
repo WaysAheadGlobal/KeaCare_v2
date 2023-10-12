@@ -54,7 +54,7 @@ export default function Login() {
                             'token': otp.value
                         });
 
-                        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/login`, {
+                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/login`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -143,7 +143,7 @@ export default function Login() {
                                     "email": email.value
                                 });
 
-                                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/login/otp`, {
+                                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/login/otp`, {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"

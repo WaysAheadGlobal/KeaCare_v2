@@ -10,11 +10,11 @@ const roboto = Roboto({
 
 export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
     return (
-        <section className='h-full'>
-            <header className={`${roboto.className} sticky top-0`}>
+        <section className='h-[100dvh] grid grid-rows-[min-content_auto]'>
+            <section className={`${roboto.className} sticky top-0`}>
                 <AppBar />
-            </header>
-            <section className={`${roboto.className} grid grid-cols-[20rem_1fr]`}>
+            </section>
+            <section className={`${roboto.className} grid grid-cols-1 sm:grid-cols-[15rem_1fr] md:grid-cols-[20rem_1fr]`}>
                 <SideBar />
                 {children}
             </section>

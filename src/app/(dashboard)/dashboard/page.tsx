@@ -26,7 +26,7 @@ export default function Dashboard() {
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/account?email=${email}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`);
                 const data = await response.json();
                 setCareseeker(data);
             }

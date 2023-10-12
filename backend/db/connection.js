@@ -7,4 +7,12 @@ const connection = mysql.createConnection({
     password: "w!K2310in"
 });
 
+/* const connection = mysql.createConnection({
+    database: "keacare",
+    host: "127.0.0.1",
+    port: 3306,
+    user: "root",
+    password: "2212"
+});
+ */
 module.exports = connection;

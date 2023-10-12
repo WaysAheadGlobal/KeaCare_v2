@@ -14,7 +14,7 @@ export default function Account() {
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/account?email=${email}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`);
                 const data = await response.json();
                 setUserInfo(data);
             }
@@ -53,7 +53,7 @@ export default function Account() {
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/updateAccount", {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/updateAccount`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -81,15 +81,17 @@ export default function Account() {
                     }
                 }}>
                 <div className='flex flex-col gap-[2rem]'>
-                    <div className='bg-teal-500 rounded-lg flex flex-col items-center justify-start gap-10 h-[17rem]'>
+                    <div className='bg-teal-500 rounded-lg flex flex-col gap-5 items-center justify-start h-[17rem]'>
                         <div className='rounded-full bg-white'>
                             <div className='rounded-full aspect-square w-[7rem] bg-cover bg-no-repeat bg-center' style={{
                                 backgroundImage: `url(${userInfo?.imageUrl ? userInfo?.imageUrl : profilePic.src})`
                             }}></div>
                         </div>
-                        <p className='text-white font-semibold'>{(userInfo?.fname ?? "Loading...") + " " + (userInfo?.lname ?? "")}</p>
-                        <p className='text-white font-semibold'>Careseeker</p>
-                        <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
+                        <div className='flex flex-col w-full items-center justify-center'>
+                            <p className='text-white font-semibold'>{(userInfo?.fname ?? "Loading...") + " " + (userInfo?.lname ?? "")}</p>
+                            <p className='text-white font-medium text-sm'>Careseeker</p>
+                        </div>
+                        <div className='relative bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
                             <label htmlFor='updatePhoto' className='cursor-pointer'>Update Profile Photo</label>
                             <input type="file" name="updatePhoto" id="updatePhoto" className='invisible w-0'
                                 onChange={async (e) => {
@@ -107,7 +109,7 @@ export default function Account() {
                                         })
                                     }
                                 }} />
-                            p</div>
+                        </div>
                     </div>
                     <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg hover:bg-teal-600 transition-all duration-200'
                         onClick={(e) => {

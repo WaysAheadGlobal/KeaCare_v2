@@ -19,14 +19,14 @@ export default function Account() {
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
                 const data = await response.json();
                 if (data.status === "incomplete") {
                     router.push("/caregiver/registration");
                 } else {
                     setUserInfo(data);
                 }
-                
+
             }
         }
         const email = sessionStorage.getItem("email");
@@ -65,7 +65,7 @@ export default function Account() {
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/updateAccount", {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/updateAccount`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -97,13 +97,15 @@ export default function Account() {
                 }}
             >
                 <div className='flex flex-col gap-[3rem]'>
-                    <div className='bg-teal-500 rounded-lg flex flex-col items-center justify-start gap-10 h-[17rem]'>
+                    <div className='bg-teal-500 rounded-lg flex flex-col items-center justify-start gap-5 h-[17rem]'>
                         <div className='rounded-full aspect-square w-[7rem] bg-cover bg-no-repeat bg-center relative top-[1rem]' style={{
                             backgroundImage: `url(${userInfo?.imageUrl})`
                         }}></div>
-                        <p className='text-white font-semibold'>{(userInfo?.fname ?? "Loading...") + " " + (userInfo?.lname ?? "")}</p>
-                        <p className='text-white font-semibold'>Caregiver</p>
-                        <div className='relative bottom-[-1.5rem] bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
+                        <div className='flex flex-col items-center justify-center'>
+                            <p className='text-white font-semibold'>{(userInfo?.fname ?? "Loading...") + " " + (userInfo?.lname ?? "")}</p>
+                            <p className='text-white font-semibold'>Caregiver</p>
+                        </div>
+                        <div className='bg-white border-[1px] rounded-lg border-black p-3 font-semibold cursor-pointer'>
                             <label htmlFor="image" className='cursor-pointer'>Update Profile Photo</label>
                             <input type="file" id="image" className='w-0' accept='image/*' onChange={async (e) => {
                                 if (e.currentTarget.files && e.currentTarget.files[0].size > 2 * 1048576) {
@@ -120,7 +122,7 @@ export default function Account() {
                                     })
                                 }
                             }} />
-                        p</div>
+                            </div>
                     </div>
                     <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg'
                         onClick={(e) => {

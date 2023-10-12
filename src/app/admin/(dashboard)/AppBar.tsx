@@ -8,6 +8,7 @@ import { MdAccountCircle } from 'react-icons/md';
 import { FaBell } from 'react-icons/fa'
 import { Menu, MenuItem } from '@mui/material';
 import { BsChevronDown } from "react-icons/bs"
+import Link from 'next/link';
 
 export default function AppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -19,7 +20,7 @@ export default function AppBar() {
         setAnchorEl(null);
     };
     return (
-        <nav className='flex flex-row items-center justify-between py-[1rem] px-[3rem] shadow-lg'>
+        <nav className='flex flex-row items-center justify-between py-[1rem] px-[3rem] shadow-lg bg-white'>
             <Image src={logo} width={logo.width} height={logo.height} alt={"logo"} className='w-[5rem] h-[5rem] object-contain object-center' />
             <div className='flex flex-row gap-[1rem] items-center justify-center'>
                 <FaBell className='text-2xl text-gray-300' />
@@ -45,6 +46,21 @@ export default function AppBar() {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
+                        <MenuItem className='sm:hidden' onClick={handleClose}>
+                            <Link href="/admin/dashboard">
+                                Dashboard
+                            </Link>
+                        </MenuItem>
+                        <MenuItem className='sm:hidden' onClick={handleClose}>
+                            <Link href="/admin/vettinglist">
+                                Vetting List
+                            </Link>
+                        </MenuItem>
+                        <MenuItem className='sm:hidden' onClick={handleClose}>
+                            <Link href={"/payments"}>
+                                Payments
+                            </Link>
+                        </MenuItem>
                         <MenuItem onClick={handleClose}>Logout</MenuItem>
                     </Menu>
                 </div>

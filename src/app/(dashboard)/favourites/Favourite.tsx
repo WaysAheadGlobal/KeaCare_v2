@@ -77,7 +77,7 @@ export default function Favourite({ favourite }: { favourite: any }) {
                             careseekerEmail: sessionStorage.getItem("email"),
                             caregiverId: favourite?.caregiverId
                         };
-                        const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/careseeker/favourites", {
+                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/favourites`, {
                             method: "DELETE",
                             body: JSON.stringify(bodyContent),
                             headers: {

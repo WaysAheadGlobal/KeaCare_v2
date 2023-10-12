@@ -28,7 +28,7 @@ export default function Client({ children }: { children: React.ReactNode }) {
             <UserTypeContext.Provider value={values} >
                 <Navbar />
                 <AlertContext.Provider value={{ alert, setAlert }}>
-                    <main id="mainBody">
+                    <main id="mainBody" className='min-h-[100dvh]'>
                         <Alert />
                         <Login />
                         <Signup />

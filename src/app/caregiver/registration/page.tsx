@@ -47,6 +47,7 @@ export default function Registration() {
                 <form className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit'
                     onSubmit={async (e) => {
                         e.preventDefault();
+                        console.log("first");
                         const profilePhoto = ((document.getElementById("profilePhoto") as HTMLInputElement).files as FileList)[0];
                         const fname = (document.getElementById("fname") as HTMLInputElement).value;
                         const lname = (document.getElementById("lname") as HTMLInputElement).value;
@@ -115,7 +116,7 @@ export default function Registration() {
 
                         try {
                             setLoading(true);
-                            const response = await fetch("https://webapi.waysdatalabs.com/keacare/api/caregiver/registration", {
+                            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/registration`, {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
@@ -374,7 +375,7 @@ export default function Registration() {
                             </option>
                             <option value="other">Other</option>
                         </select>
-                        <input id="certifications_others" required type="text" className='border-[1px] border-black p-3 rounded-lg hidden mt-3' placeholder='Please specify.' />
+                        <input id="certifications_others" name="certifications_others" required={(document.getElementById("certifications") as HTMLSelectElement)?.value === "other"} type="text" className='border-[1px] border-black p-3 rounded-lg hidden mt-3' placeholder='Please specify.' />
                     </div>
                     <MultiSelect size='md' radius='md' styles={{
                         input: {
@@ -490,13 +491,14 @@ export default function Registration() {
                             }} />
                             <p>I Hereby Give Full Authorisation For Release Of Information For Background Verification Puposes</p>
                         </div>
-                        <button disabled={loading || !checked} className='bg-teal-500 text-white font-semibold py-3 px-[2rem] md:px-[5rem] rounded-lg disabled:bg-teal-700 disabled:text-opacity-60'>
+                        <button type="submit" disabled={loading || !checked} className='bg-teal-500 text-white font-semibold py-3 px-[2rem] md:px-[5rem] rounded-lg disabled:bg-teal-700 disabled:text-opacity-60'>
                             Submit
                             {
                                 loading && <CircularProgress size={24} sx={{
                                     color: "white"
                                 }} />
-                            }</button>
+                            }
+                        </button>
                     </div>
                 </form>
             </section>
