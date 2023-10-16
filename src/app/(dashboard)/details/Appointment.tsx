@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
 import AlertContext from '../AlertContext'
 import { ObjectToString } from '@/Hooks/useObjectToString'
+import { useCookies } from '@/Hooks/useCookies'
 
 export default function Appointment({ price, id, workingHrs }: { price: number, id: number | null, workingHrs: string }) {
     const router = useRouter();
@@ -16,6 +17,7 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
     const [appointment, setAppointment] = useState<{ [key: string]: string[] }>({});
     const [date, setDate] = useState<string>("");
     const [Time, setTime] = useState<string[]>([]);
+    const cookies = useCookies();
     const checkBoxStyle = {
         '&.Mui-checked': {
             color: teal[500],
@@ -131,6 +133,7 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                 const response1 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/appointments/checkAppointments`, {
                                     method: "POST",
                                     headers: {
+                                        "Authorization": `${cookies.getCookie("token")}`,
                                         "Content-Type": "application/json",
                                     },
                                     body: body
@@ -141,6 +144,7 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json",
+                                            "Authorization": `${cookies.getCookie("token")}`
                                         },
                                         body: body
                                     });

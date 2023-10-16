@@ -1,24 +1,35 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import logo from "../../../../public/logo.png"
 import Image from 'next/image'
-import { FiMenu } from 'react-icons/fi';
 import { MdAccountCircle } from 'react-icons/md';
 import { FaBell } from 'react-icons/fa'
 import { Menu, MenuItem } from '@mui/material';
 import { BsChevronDown } from "react-icons/bs"
 import Link from 'next/link';
-
+import { useRouter, usePathname } from 'next/navigation';
+import { useCookies } from '@/Hooks/useCookies';
 export default function AppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const router = useRouter();
+    const cookies = useCookies();
+
+    useEffect(() => {
+        if (!cookies.getCookie("adminToken")) {
+            router.push("/admin/login");
+        }
+    })
+
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     return (
         <nav className='flex flex-row items-center justify-between py-[1rem] px-[3rem] shadow-lg bg-white'>
             <Image src={logo} width={logo.width} height={logo.height} alt={"logo"} className='w-[5rem] h-[5rem] object-contain object-center' />

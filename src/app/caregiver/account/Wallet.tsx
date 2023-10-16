@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import { useCookies } from '@/Hooks/useCookies';
+import React, { useEffect, useState } from 'react';
 
 export default function Wallet({ id, className }: { id: string, className: string }) {
     const [wallet, setWallet] = useState<any[]>([]);
     const [total, setTotal] = useState(0);
+    const cookies = useCookies();
 
     useEffect(() => {
         async function wallet() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/wallet?email=${sessionStorage.getItem("email")}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/wallet?email=${sessionStorage.getItem("email")}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
             const data: any[] = await response.json();
             setWallet(data);
             data?.forEach((element: any) => {

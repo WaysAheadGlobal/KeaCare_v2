@@ -1,17 +1,22 @@
 import JobPostings from '@/app/(dashboard)/mypostings/JobPostings'
 import React from 'react'
 
-async function getPostings(email: string | null) {
+async function getPostings(email: string | null, cookies: any) {
     if (email) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/posts?email=${email}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/posts?email=${email}`, {
+            headers: {
+                "Authorization": `${cookies.getCookie("token")}`,
+                "Content-Type": "application/json"
+            }
+        });
         const data = await response.json();
         return data;
     }
 }
 
-export default async function MyPostings({ email }: { email: string | null }) {
+export default async function MyPostings({ email, cookies }: { email: string | null, cookies: any }) {
 
-    const posts = await getPostings(email);
+    const posts = await getPostings(email, cookies);
 
     if (posts?.length !== 0) {
         return (

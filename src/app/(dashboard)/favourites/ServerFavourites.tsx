@@ -1,16 +1,21 @@
 import React from 'react'
 import Favourite from './Favourite';
 
-async function getFavourites(email: string) {
+async function getFavourites(email: string, cookies: any) {
     if (email) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/favourites?careseekerEmail=${email}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/favourites?careseekerEmail=${email}`, {
+            headers: {
+                "Authorization": `${cookies.getCookie("token")}`,
+                "Content-Type": "application/json"
+            }
+        });
         const data = await response.json();
         return data;
     }
 }
 
-export default async function ServerFavourites({ email }: { email: string }) {
-    const favourites = await getFavourites(email);
+export default async function ServerFavourites({ email, cookies }: { email: string, cookies: any }) {
+    const favourites = await getFavourites(email, cookies);
     if (favourites?.length === 0) {
         return (
             <section className='flex flex-col w-full h-[450px] text-xl items-center justify-center text-gray-500'>

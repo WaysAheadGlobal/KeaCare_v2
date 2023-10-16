@@ -1,5 +1,6 @@
 "use client"
 
+import { useCookies } from '@/Hooks/useCookies';
 import { CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -8,6 +9,7 @@ export default function Registration() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [autoFill, setAutoFill] = useState<{ [key: string]: string | null }>({});
+    const cookies = useCookies();
 
     useEffect(() => {
         setAutoFill({
@@ -48,7 +50,8 @@ export default function Registration() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/registration`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `${cookies.getCookie("token")}`
                 },
                 body: bodyContent
             });

@@ -9,15 +9,17 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu } from '@mantine/core';
 import { MdAccountCircle, MdLogout, MdSpaceDashboard } from 'react-icons/md'
+import { useCookies } from '@/Hooks/useCookies'
 
 export default function Navbar() {
     const { userType, setUserType } = useContext(UserTypeContext);
     const pathname = usePathname();
     const router = useRouter();
-    const [otp, setOtp] = useState<string | null>(null);
+    const [jwtToken, setJWTtoken] = useState<string | null>(null);
+    const cookies = useCookies();
 
     useEffect(() => {
-        setOtp(sessionStorage.getItem("otp"));
+        setJWTtoken(cookies.getCookie("token") as string);
     }, [pathname, userType])
 
     useEffect(() => {
@@ -87,7 +89,7 @@ export default function Navbar() {
                     <div className='flex flex-row gap-5'>
                         <Menu trigger='click' shadow='lg' width={200}>
                             <Menu.Target>
-                                <button className={`${otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg`}>Log In/Sign up</button>
+                                <button className={`${jwtToken && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg`}>Log In/Sign up</button>
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
                                 <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
@@ -112,7 +114,7 @@ export default function Navbar() {
                         </Menu>
                         <Menu trigger='click' shadow="lg" width={200}>
                             <Menu.Target>
-                                <button disabled={pathname === "/pricing" || pathname === "/caregiver/registration" || pathname === "/careseeker/registration"} className={`${!otp && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg cursor-pointer disabled:bg-gray-400`}>My Account</button>
+                                <button disabled={pathname === "/pricing" || pathname === "/caregiver/registration" || pathname === "/careseeker/registration"} className={`${!jwtToken && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg cursor-pointer disabled:bg-gray-400`}>My Account</button>
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
                                 <Link href={"/dashboard"}>
@@ -129,7 +131,7 @@ export default function Navbar() {
                                 <Menu.Divider />
                                 <Menu.Item className='font-semibold hover:bg-teal-500 hover:bg-opacity-60' icon={<MdLogout className='text-xl' />}>
                                     <div role='button' onClick={() => {
-                                        sessionStorage.removeItem("otp");
+                                        cookies.deleteCookie("token");
                                         sessionStorage.removeItem("email");
                                         sessionStorage.removeItem("userType");
                                         sessionStorage.removeItem("planType");

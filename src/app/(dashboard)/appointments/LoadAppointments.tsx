@@ -1,16 +1,22 @@
 import React from 'react'
 import Appointment from './Appointment';
 
-async function getAppointments(email: string | null) {
+
+async function getAppointments(email: string | null, cookies: any) {
     if (email) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/appointments?careseekerEmail=${email}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/appointments?careseekerEmail=${email}`, {
+            headers: {
+                "Authorization": `${cookies.getCookie("token")}`,
+                "Content-Type": "application/json"
+            }
+        });
         const data = await response.json();
         return data;
     }
 }
 
-export default async function LoadAppointments({ email }: { email: string | null }) {
-    const appointments = await getAppointments(email);
+export default async function LoadAppointments({ email, cookies }: { email: string | null, cookies: any }) {
+    const appointments = await getAppointments(email, cookies);
     if (appointments?.length === 0) {
         return (
             <section className='py-10 px-[3rem] lg:px-[7rem]'>

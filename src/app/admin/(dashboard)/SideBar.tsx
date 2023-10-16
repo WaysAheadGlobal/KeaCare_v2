@@ -22,7 +22,7 @@ export default function SideBar() {
                     <MdSpaceDashboard className='text-xl' />
                     <p>Dashboard</p>
                 </Link>
-                <Link href="/admin/vettinglist" className={`flex p-2 px-[2rem] items-center gap-2 ${pathname === "/admin/vettinglist" ? "bg-white text-teal-500" : "text-white"}`}>
+                <Link href="/admin/vettinglist" className={`flex p-2 px-[2rem] items-center gap-2 ${pathname.includes("/admin/vettinglist") ? "bg-white text-teal-500" : "text-white"}`}>
                     <RiUserSearchLine className='text-xl' />
                     <p>Vetting List</p>
                 </Link>

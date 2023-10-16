@@ -2,13 +2,20 @@
 
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function PaymentHistory({ id, className }: { id: string, className: string }) {
     const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
+    const cookies = useCookies();
 
     useEffect(() => {
         async function getPaymentHistory() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/paymentHistory?email=${sessionStorage.getItem("email")}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/paymentHistory?email=${sessionStorage.getItem("email")}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await response.json();
             setPaymentHistory(data);
         }

@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link';
-import React from 'react'
+import React from 'react';
 
 export default function Appointment({ appointment }: { appointment: any }) {
     const speciality: any = {
         "child_care": "Child Care",
         "senior_care": "Senior Care"
     };
+
     return (
         <div className={`flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg ${appointment?.status === "Completed" && "grayscale"}`}>
             <Image src={appointment?.imageUrl} alt={'appointment'} width={300} height={300} className='rounded-lg w-full md:w-[300px] h-[350px] object-center object-cover' />

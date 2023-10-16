@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { StringtoObject } from '@/Hooks/StringToObject';
 import { ObjectToString } from '@/Hooks/useObjectToString';
 import AlertContext from '../AlertContext';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function JobDetails() {
     const searchParams = useSearchParams();
@@ -21,6 +22,7 @@ export default function JobDetails() {
     const [languages, setLanguages] = useState<string>("");
     const [datetime, setDateTime] = useState<{ [key: string]: string[] }>({});
     const { setAlert } = useContext(AlertContext);
+    const cookies = useCookies();
 
     const checkBoxStyle = {
         '&.Mui-checked': {
@@ -30,7 +32,12 @@ export default function JobDetails() {
 
     useEffect(() => {
         async function getJobById() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await response.json();
             setJob(data);
             setDateTime(StringtoObject(data?.date, data?.time));
@@ -39,7 +46,6 @@ export default function JobDetails() {
     }, [])
 
     useEffect(() => {
-        console.log(job);
         setAdditionalService(job?.additionalService);
         setLanguages(job?.language);
     }, [job])
@@ -79,7 +85,8 @@ export default function JobDetails() {
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/updatejob`, {
                         method: "PUT",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `${cookies.getCookie("token")}`
                         },
                         body: bodyContent
                     });

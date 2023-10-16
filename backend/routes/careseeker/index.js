@@ -1,6 +1,6 @@
 const { Router, raw, json } = require("express");
 const { body, query } = require("express-validator");
-const { LoginOTP, Login } = require("./login");
+const { LoginOTP, Login, googleLogin } = require("./login");
 const { SignupOTP, Signup } = require("./signup");
 const Register = require("./registration");
 const getCaregivers = require("./getCaregivers");
@@ -22,6 +22,7 @@ const { addFavourites, getFavourites, removeFromFavourites, getFavouriteByCarese
 const getCaregiversByName = require("./getCaregiversByName");
 const PaymentHistory = require("./paymentHistory");
 const portal = require("./billingportal");
+const verifyCareseekers = require("../../middleware/verifyCareseeker");
 
 const CareseekerRouter = Router();
 
@@ -31,8 +32,13 @@ CareseekerRouter.use(json({ limit: "5MB" }));
 
 CareseekerRouter.post("/signup/otp", body("email").trim().isEmail(), SignupOTP);
 CareseekerRouter.post("/signup", body("email").trim().isEmail(), Signup);
+CareseekerRouter.post("/google-login", googleLogin);
 CareseekerRouter.post("/login/otp", body("email").trim().isEmail(), LoginOTP);
 CareseekerRouter.post("/login", body("email").trim().isEmail(), Login);
+CareseekerRouter.get("/getproducts", getProducts);
+
+
+CareseekerRouter.use(verifyCareseekers);
 CareseekerRouter.post("/registration", body("email").trim().isEmail(), Register);
 CareseekerRouter.get("/getCaregivers", getCaregivers);
 CareseekerRouter.get("/filters", filters);
@@ -42,7 +48,6 @@ CareseekerRouter.put("/updatejob", body("email").trim().isEmail(), UpdateJob);
 CareseekerRouter.get("/posts", query("email").trim().isEmail(), postings);
 CareseekerRouter.get("/account", query("email").trim().isEmail(), getCareseekerInfo);
 CareseekerRouter.put("/updateAccount", body("email").trim().isEmail(), UpdateAccount);
-CareseekerRouter.get("/getproducts", getProducts);
 CareseekerRouter.post("/payment", payment);
 CareseekerRouter.get("/getSubcription", query("email").trim().isEmail(), getSubscription);
 CareseekerRouter.get("/getjob", getJobById);

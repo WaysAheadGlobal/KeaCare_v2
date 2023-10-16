@@ -13,6 +13,7 @@ import { AiFillDelete } from 'react-icons/ai'
 import AlertContext from '../AlertContext'
 import { BsStarFill } from "react-icons/bs"
 import Link from 'next/link'
+import { useCookies } from '@/Hooks/useCookies'
 
 export default function Favourite({ favourite }: { favourite: any }) {
     const { setAlert } = useContext(AlertContext);
@@ -20,6 +21,7 @@ export default function Favourite({ favourite }: { favourite: any }) {
         "child_care": "Child Care",
         "senior_care": "Senior Care"
     };
+    const cookies = useCookies();
     return (
         <div id={"favourite" + favourite.id} className={`flex md:flex-row flex-col gap-5 justify-start md:items-center md:justify-center shadow-md hover:shadow-lg transition-shadow p-[1rem] rounded-lg`}>
             <Image src={favourite?.imageUrl} alt={'favourite'} width={100} height={100} className='rounded-lg w-full md:w-[300px] h-[300px] object-center object-cover' />
@@ -81,7 +83,8 @@ export default function Favourite({ favourite }: { favourite: any }) {
                             method: "DELETE",
                             body: JSON.stringify(bodyContent),
                             headers: {
-                                "Content-Type": "application/json"
+                                "Content-Type": "application/json",
+                                "Authorization": `${cookies.getCookie("token")}`
                             }
                         });
                         const data = await response.json();

@@ -1,28 +1,30 @@
+"use client"
+
 import { Divider } from '@mui/material';
 import React from 'react';
-import Image, { StaticImageData } from "next/image";
-import person1 from "../../../../../public/person1.jpg";
-import person2 from "../../../../../public/person2.jpg";
+import ListItem from './ListItem';
+import Link from 'next/link';
+import { useCookies } from '@/Hooks/useCookies';
 
-function ListItem({ image, name, speciality }: { image: StaticImageData, name: string, speciality: string }) {
-    return (
-        <>
-            <div className="p-4 grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] items-center gap-4">
-                <Image src={image} width={image.width} height={image.height} alt="image" className='aspect-square w-[4rem] rounded-md object-cover object-center' />
-                <p>{name}</p>
-                <p>{speciality}</p>
-                <div className='flex flex-wrap gap-4'>
-                    <button className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>Accept</button>
-                    <button className='px-[2rem] py-2 bg-red-100 border-2 border-red-500 text-red-700 rounded-full'>Decline</button>
-                </div>
-            </div>
-            <Divider />
-        </>
-    )
-}
+export default function VettingList({ searchParams }: { searchParams: { [key: string]: string } }) {
+    const [vettingList, setVettingList] = React.useState<any>(null);
+    const cookies = useCookies();
 
-export default function VettingList() {
-    
+    React.useEffect(() => {
+        async function getVettingList(page?: string) {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/caregivers?page=${page ?? 1}`, {
+                cache: "no-store",
+                headers: {
+                    "Authorization": `${cookies.getCookie("adminToken")}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await res.json();
+            setVettingList(data);
+        }
+        getVettingList(searchParams.page);
+    }, [searchParams.page]);
+
     return (
         <section className="overflow-y-auto h-[100%] p-4 flex flex-col gap-[1rem]">
             <h1 className="p-3 text-lg bg-teal-500 text-white">VETTING LIST</h1>
@@ -34,11 +36,23 @@ export default function VettingList() {
                     <p className='font-semibold'>Status</p>
                 </div>
                 <Divider />
-                <ListItem image={person1} name={"Rahul"} speciality='Child Care' />
-                <ListItem image={person2} name={"Rahul"} speciality='Senior Care' />
-                <ListItem image={person1} name={"Rahul"} speciality='Child Care' />
-                <ListItem image={person2} name={"Rahul"} speciality='Senior Care' />
-                <ListItem image={person1} name={"Rahul"} speciality='Child Care' />
+                {
+                    vettingList?.map((item: any) => {
+                        return (
+                            <ListItem key={item.id} id={item.id} image={item.imageUrl} name={item.fname + " " + item.lname} speciality={item.speciality} />
+                        )
+                    })
+                }
+            </div>
+            <div className='w-full flex justify-between px-5'>
+                <Link href={`?page=${parseInt(searchParams.page ?? 1) - 1}`} passHref>
+                    <button disabled={parseInt(searchParams.page ?? 1) - 1 <= 0} className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>
+                        Previous Page
+                    </button>
+                </Link>
+                <Link href={`?page=${parseInt(searchParams.page ?? 1) + 1}`} passHref>
+                    <button className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>Next Page</button>
+                </Link>
             </div>
         </section>
     )

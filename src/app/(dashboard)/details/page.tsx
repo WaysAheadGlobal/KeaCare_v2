@@ -18,6 +18,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import Appointment from './Appointment'
 import { Divider, Rating, Container } from '@mui/material'
 import AlertContext from '../AlertContext'
+import { useCookies } from '@/Hooks/useCookies'
 
 export default function Details() {
     const router = useRouter();
@@ -28,13 +29,19 @@ export default function Details() {
         userReview: {},
         otherReviews: []
     });
+    const cookies = useCookies();
     const searchParams = useSearchParams();
     const [favourite, setFavourite] = useState<boolean>(false);
     const { setAlert } = useContext(AlertContext);
 
     useEffect(() => {
         async function getCaregivers() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getCaregivers?page=1`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getCaregivers?page=1`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await response.json();
             setCaregivers(data);
         }
@@ -44,7 +51,11 @@ export default function Details() {
     useEffect(() => {
         async function getReviews() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/review?caregiverId=${searchParams.get("id")}&email=${sessionStorage.getItem("email")}`, {
-                cache: "no-cache"
+                cache: "no-store",
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
             });
             const data = await response.json();
             setReviews(data);
@@ -57,7 +68,11 @@ export default function Details() {
     useEffect(() => {
         async function getCaregiverById() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
-                cache: "no-cache"
+                cache: "no-store",
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
             });
             const data = await response.json();
             setCaregiver(data);
@@ -67,7 +82,12 @@ export default function Details() {
 
     useEffect(() => {
         async function getFavourite() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await response.json();
 
             if (data.length !== 0) {
@@ -95,7 +115,8 @@ export default function Details() {
             method: favourite ? "DELETE" : "POST",
             body: JSON.stringify(bodyContent),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": `${cookies.getCookie("token")}`
             }
         });
         const data = await response.json();
@@ -147,7 +168,8 @@ export default function Details() {
                                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/review`, {
                                     method: Object?.keys(reviews.userReview).length !== 0 ? "PUT" : "POST",
                                     headers: {
-                                        "Content-Type": "application/json"
+                                        "Content-Type": "application/json",
+                                        "Authorization": `${cookies.getCookie("token")}`
                                     },
                                     body: body
                                 });

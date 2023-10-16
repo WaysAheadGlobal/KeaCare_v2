@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from '@/app/(dashboard)/dashboard/Filter'
 import Caregivers from '@/app/(dashboard)/dashboard/Caregivers'
 import { useRouter } from 'next/navigation';
+import { useCookies } from '@/Hooks/useCookies';
 
 
 export default function Dashboard() {
@@ -22,11 +23,17 @@ export default function Dashboard() {
     });
     const [careseeker, setCareseeker] = useState<any>();
     const router = useRouter();
+    const cookies = useCookies();
 
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`, {
+                    headers: {
+                        "Authorization": `${cookies.getCookie("token")}`,
+                        "Content-Type": "application/json"
+                    }
+                });
                 const data = await response.json();
                 setCareseeker(data);
             }

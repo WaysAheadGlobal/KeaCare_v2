@@ -3,15 +3,22 @@
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import RecommendedCard from '../dashboard/RecommendedCard';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function Applications() {
     const searchParams = useSearchParams();
     const [applicants, setApplicants] = useState<any>([]);
     const [applicantsData, setApplicantsData] = useState<any>([]);
+    const cookies = useCookies();
 
     useEffect(() => {
         async function getApplicantsById() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getapplicants?jobId=${searchParams.get("id")}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getapplicants?jobId=${searchParams.get("id")}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
             const data = await response.json();
 
@@ -24,6 +31,10 @@ export default function Applications() {
         async function getCaregiverById(id: number) {
             if (id) {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?id=${id}`, {
+                    headers: {
+                        "Authorization": `${cookies.getCookie("token")}`,
+                        "Content-Type": "application/json"
+                    },
                     next: {
                         revalidate: 10
                     }

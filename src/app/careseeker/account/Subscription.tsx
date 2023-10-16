@@ -2,13 +2,20 @@
 
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function Subscription({ id, className }: { id: string, className: string }) {
     const [subscriptions, setSubscriptions] = useState<any[]>([]);
+    const cookies = useCookies();
 
     useEffect(() => {
         async function getSubscription() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getSubcription?email=${sessionStorage.getItem("email")}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getSubcription?email=${sessionStorage.getItem("email")}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await response.json();
             setSubscriptions(data);
         }
@@ -43,7 +50,12 @@ export default function Subscription({ id, className }: { id: string, className:
                 <button className='bg-teal-500 hover:bg-teal-600 py-2 px-4 rounded-md text-white'
                     onClick={async (e) => {
                         e.preventDefault();
-                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/portal?email=${sessionStorage.getItem("email")}`);
+                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/portal?email=${sessionStorage.getItem("email")}`, {
+                            headers: {
+                                "Authorization": `${cookies.getCookie("token")}`,
+                                "Content-Type": "application/json"
+                            }
+                        });
                         const data = await response.json();
                         window.location.assign(data.url);
                     }}

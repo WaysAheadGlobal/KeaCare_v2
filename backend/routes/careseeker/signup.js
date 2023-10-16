@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const { PrismaClient } = require("@prisma/client");
 const { sendOTP } = require("../../mail/MailService.js");
 const { Stripe } = require('stripe');
+const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_API_KEY);
@@ -56,9 +57,13 @@ async function Signup(req, res) {
                             token: token,
                         }
                     });
+                    const jwtToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+                        algorithm: "HS512"
+                    });
                     res.status(200).json({
                         "success": true,
-                        ...user
+                        ...user,
+                        jwtToken
                     });
                 }
             } catch (err) {

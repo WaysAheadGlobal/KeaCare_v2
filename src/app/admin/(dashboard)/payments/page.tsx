@@ -1,36 +1,17 @@
 import { Divider } from '@mui/material';
 import React from 'react';
-import Image, { StaticImageData } from "next/image";
-import person1 from "../../../../../public/person1.jpg";
-import person2 from "../../../../../public/person2.jpg";
+import ListItem from './ListItem';
+import Link from 'next/link';
 
-function ListItem({ image, name, speciality, amount }: { image: StaticImageData, name: string, speciality: string, amount: string }) {
-    return (
-        <>
-            <div className="p-4 grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] items-center gap-4">
-                <Image src={image} width={image.width} height={image.height} alt="image" className='aspect-square w-[4rem] rounded-md object-cover object-center' />
-                <article className='flex gap-1'>
-                    <p className='sm:hidden'>Name:</p>
-                    <p>{name}</p>
-                </article>
-                <article className='flex gap-1'>
-                    <p className='sm:hidden'>Speciality:</p>
-                    <p>{speciality}</p>
-                </article>
-                <article className='flex gap-1'>
-                    <p className='sm:hidden'>Amount:</p>
-                    <p className='font-medium'>{amount}</p>
-                </article>
-                <div className='flex flex-wrap gap-4'>
-                    <button className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>Pay</button>
-                </div>
-            </div>
-            <Divider />
-        </>
-    )
+async function getPaymentInfo(page?: number) {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/caregivers/payment?page=${page ?? 1}`);
+    const data = await response.json();
+    return data;
 }
 
-export default function Payments() {
+export default async function Payments({ searchParams }: { searchParams: { [key: string]: string } }) {
+    const caregivers = await getPaymentInfo(parseInt(searchParams.page ?? 1));
+
     return (
         <section className="overflow-y-auto h-[100%] p-4 flex flex-col gap-[1rem]">
             <h1 className="p-3 text-lg bg-teal-500 text-white">PAYMENTS</h1>
@@ -43,11 +24,19 @@ export default function Payments() {
                     <p>Action</p>
                 </div>
                 <Divider />
-                <ListItem image={person1} name={"Rahul"} speciality='Child Care' amount='$100' />
-                <ListItem image={person2} name={"Rahul"} speciality='Senior Care' amount='$100' />
-                <ListItem image={person1} name={"Rahul"} speciality='Child Care' amount='$100' />
-                <ListItem image={person2} name={"Rahul"} speciality='Senior Care' amount='$100' />
-                <ListItem image={person1} name={"Rahul"} speciality='Child Care' amount='$100' />
+                {
+                    caregivers?.map((caregiver: any) => <ListItem key={caregiver.id} id={caregiver.id} amount={caregiver.amount} image={caregiver.imageUrl} name={caregiver.name} speciality={caregiver.speciality.replaceAll("_", " ")} />)
+                }
+            </div>
+            <div className='w-full flex justify-between px-5'>
+                <Link href={`?page=${parseInt(searchParams.page ?? 1) - 1}`} passHref>
+                    <button disabled={parseInt(searchParams.page ?? 1) - 1 <= 0} className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>
+                        Previous Page
+                    </button>
+                </Link>
+                <Link href={`?page=${parseInt(searchParams.page ?? 1) + 1}`} passHref>
+                    <button className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>Next Page</button>
+                </Link>
             </div>
         </section>
     )

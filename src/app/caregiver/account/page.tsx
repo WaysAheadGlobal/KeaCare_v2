@@ -6,6 +6,7 @@ import { MultiSelect } from '@mantine/core';
 import { MenuItem, OutlinedInput, Select } from '@mui/material';
 import AlertContext from '@/app/AlertContext';
 import { useRouter } from 'next/navigation';
+import { useCookies } from '@/Hooks/useCookies';
 const Wallet = dynamic(() => import("./Wallet"));
 
 export default function Account() {
@@ -15,11 +16,17 @@ export default function Account() {
     const [refreshData, setRefreshData] = useState<number>(0);
     const { setAlert } = useContext(AlertContext);
     const router = useRouter();
+    const cookies = useCookies();
 
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?email=${email}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?email=${email}`, {
+                    headers: {
+                        "Authorization": `${cookies.getCookie("token")}`,
+                        "Content-Type": "application/json"
+                    }
+                });
                 const data = await response.json();
                 if (data.status === "incomplete") {
                     router.push("/caregiver/registration");
@@ -37,7 +44,6 @@ export default function Account() {
     useEffect(() => {
         setTask(userInfo?.task.split(","));
         setLanguages(userInfo?.languages.split(","));
-        console.log(userInfo)
     }, [userInfo]);
 
     const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
@@ -68,7 +74,8 @@ export default function Account() {
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/updateAccount`, {
                         method: "PUT",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `${cookies.getCookie("token")}`
                         },
                         body: JSON.stringify({
                             ...userInfo,

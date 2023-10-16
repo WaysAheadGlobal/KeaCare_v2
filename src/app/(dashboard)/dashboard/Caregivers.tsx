@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import { FiSearch } from 'react-icons/fi'
 const RecommendedCard = dynamic(() => import('./RecommendedCard'));
 /* import SearchResultCard from './SearchResultCard' */
+import { useCookies } from '@/Hooks/useCookies'
 
 
 export default function Caregivers({ filters }: { filters: any }) {
@@ -12,6 +13,7 @@ export default function Caregivers({ filters }: { filters: any }) {
     /** const [page, setPage] = useState<string>("1"); */
     const [search, setSearch] = useState<string>("");
     const [heading, setHeading] = useState<string>("Recommended for you");
+    const cookies = useCookies();
 
     /** useEffect(() => {
         async function getCaregivers() {
@@ -29,11 +31,14 @@ export default function Caregivers({ filters }: { filters: any }) {
     useEffect(() => {
         async function filter() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rateStart=${filters?.rateStart ?? ""}&rateEnd=${filters?.rateEnd ?? ""}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}`, {
-                cache: "no-cache"
+                cache: "no-store",
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
             });
 
             const data = await response.json();
-            console.log(data);
             setCaregivers(data);
         }
         filter();
@@ -44,7 +49,12 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     useEffect(() => {
         async function getCaregiverByName() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/filterByName?name=${search}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/filterByName?name=${search}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await response.json();
             setCaregivers(data);
         }

@@ -1,10 +1,12 @@
 "use client"
 
+import { useCookies } from "@/Hooks/useCookies";
 import UserTypeContext from "@/context/UserType";
 import { useContext } from "react";
 
 export default function Card({ price, heading, id, duration }: { price: string, heading: string, id: string, duration: string }) {
     const { setUserType } = useContext(UserTypeContext);
+    const cookies = useCookies();
     return (
         <>
             <div className='rounded-xl w-[20rem] p-5 flex flex-col gap-10 transition-shadow shadow-lg hover:shadow-2xl bg-white'>
@@ -36,7 +38,8 @@ export default function Card({ price, heading, id, duration }: { price: string, 
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/payment`, {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `${cookies.getCookie("token")}`
                         },
                         body: body
                     });

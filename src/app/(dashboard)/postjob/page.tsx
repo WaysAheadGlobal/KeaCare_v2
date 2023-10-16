@@ -9,6 +9,7 @@ import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ObjectToString } from '@/Hooks/useObjectToString';
 import AlertContext from '../AlertContext';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function PostJob() {
     const router = useRouter();
@@ -20,6 +21,7 @@ export default function PostJob() {
     const [Time, setTime] = useState<string[]>([]);
     const [job, setJob] = useState<any>();
     const { setAlert } = useContext(AlertContext);
+    const cookies = useCookies();
 
     const checkBoxStyle = {
         '&.Mui-checked': {
@@ -34,8 +36,6 @@ export default function PostJob() {
         }
         setTime([..._time]);
     }, [appointment]);
-
-    useEffect(() => { console.log(job) }, [job]);
 
     return (
         <section className='relative'>
@@ -63,7 +63,8 @@ export default function PostJob() {
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/postjob`, {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `${cookies.getCookie("token")}`
                         },
                         body: bodyContent
                     });

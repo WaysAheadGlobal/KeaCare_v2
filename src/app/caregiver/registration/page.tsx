@@ -7,6 +7,7 @@ import { MultiSelect } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import { CircularProgress, MenuItem, OutlinedInput, Select } from '@mui/material';
 import AlertContext from '@/app/AlertContext';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function Registration() {
     const router = useRouter();
@@ -19,6 +20,7 @@ export default function Registration() {
     const [checked, setChecked] = useState(false);
     const [loading, setLoading] = useState(false);
     const { setAlert } = useContext(AlertContext);
+    const cookies = useCookies();
 
     useEffect(() => {
         setAutoFill({
@@ -47,7 +49,6 @@ export default function Registration() {
                 <form className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit'
                     onSubmit={async (e) => {
                         e.preventDefault();
-                        console.log("first");
                         const profilePhoto = ((document.getElementById("profilePhoto") as HTMLInputElement).files as FileList)[0];
                         const fname = (document.getElementById("fname") as HTMLInputElement).value;
                         const lname = (document.getElementById("lname") as HTMLInputElement).value;
@@ -119,7 +120,8 @@ export default function Registration() {
                             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/registration`, {
                                 method: "POST",
                                 headers: {
-                                    "Content-Type": "application/json"
+                                    "Content-Type": "application/json",
+                                    "Authorization": `${cookies.getCookie("token")}`
                                 },
                                 body: bodyContent
                             });
@@ -487,7 +489,6 @@ export default function Registration() {
                         <div className='flex flex-row gap-3 items-center justify-center'>
                             <input type="checkbox" className='w-[1.5rem] h-[1.5rem] accent-teal-600 bg-white' onChange={(e) => {
                                 setChecked(e.currentTarget.checked);
-                                console.log(e.currentTarget.checked)
                             }} />
                             <p>I Hereby Give Full Authorisation For Release Of Information For Background Verification Puposes</p>
                         </div>

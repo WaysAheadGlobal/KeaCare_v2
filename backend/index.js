@@ -4,15 +4,16 @@ const cors = require('cors');
 const CaregiverRouter = require('./routes/caregiver');
 const CareseekerRouter = require('./routes/careseeker');
 const connection = require('./db/connection');
-
 const Expiry = require('./routes/careseeker/expiry');
 const age = require('./routes/caregiver/age');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 app.use(cors());
 
 app.use("/keacare/api/careseeker", CareseekerRouter);
 app.use("/keacare/api/caregiver", CaregiverRouter);
+app.use("/keacare/api/admin", adminRouter);
 
 app.listen(3004, () => {
     if (connection.state === "disconnected") {

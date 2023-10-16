@@ -6,15 +6,22 @@ import Alert from '@/app/Alert';
 import Subscription from './Subscription';
 import PaymentHistory from './PaymentHistory';
 import AlertContext from '@/app/AlertContext';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function Account() {
     const [userInfo, setUserInfo] = useState<any>();
     const [refreshData, setRefreshData] = useState<number>(0);
+    const cookies = useCookies();
 
     useEffect(() => {
         async function getUserInfo(email: string) {
             if (email) {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`, {
+                    headers: {
+                        "Authorization": `${cookies.getCookie("token")}`,
+                        "Content-Type": "application/json"
+                    }
+                });
                 const data = await response.json();
                 setUserInfo(data);
             }
@@ -56,7 +63,8 @@ export default function Account() {
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/updateAccount`, {
                         method: "PUT",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `${cookies.getCookie("token")}`
                         },
                         body: JSON.stringify(userInfo)
                     })
