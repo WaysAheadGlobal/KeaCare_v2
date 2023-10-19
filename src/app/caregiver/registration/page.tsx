@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import defaultUser from '../../../../public/defaultUser.png'
 import Image from 'next/image';
 import { MultiSelect } from '@mantine/core';
@@ -21,6 +21,7 @@ export default function Registration() {
     const [loading, setLoading] = useState(false);
     const { setAlert } = useContext(AlertContext);
     const cookies = useCookies();
+    const certificationsRef = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
         setAutoFill({
@@ -42,102 +43,105 @@ export default function Registration() {
         })
     }
 
+    const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const profilePhoto = ((document.getElementById("profilePhoto") as HTMLInputElement).files as FileList)[0];
+        const fname = (document.getElementById("fname") as HTMLInputElement).value;
+        const lname = (document.getElementById("lname") as HTMLInputElement).value;
+        const email = (document.getElementById("email_regis") as HTMLInputElement).value;
+        const mobile = (document.getElementById("mobile") as HTMLInputElement).value;
+        const dob = (document.getElementById("dob") as HTMLInputElement).value;
+        const gender = (document.getElementById("gender") as HTMLSelectElement).value;
+        const address = (document.getElementById("address") as HTMLInputElement).value;
+        const city = (document.getElementById("city") as HTMLInputElement).value;
+        const province = (document.getElementById("province") as HTMLInputElement).value;
+        const zipcode = (document.getElementById("zipcode_regis_caregiver") as HTMLInputElement).value;
+        const speciality = (document.getElementById("speciality") as HTMLSelectElement).value;
+        const experience = (document.getElementById("experience") as HTMLSelectElement).value;
+        const comfortableWithPets = (document.getElementById("comfortableWithPets") as HTMLSelectElement).value;
+        const rate = (document.getElementById("rate") as HTMLInputElement).value;
+        const bio = (document.getElementById("bio") as HTMLTextAreaElement).value;
+        const certifications = (document.getElementById("certifications") as HTMLSelectElement).value;
+        const distance = (document.getElementById("distance") as HTMLSelectElement).value;
+        const education = (document.getElementById("education") as HTMLSelectElement).value;
+        const ref1Email = (document.getElementById("ref1Email") as HTMLInputElement).value;
+        const ref1Name = (document.getElementById("ref1Name") as HTMLInputElement).value;
+        const ref1Phone = (document.getElementById("ref1Phone") as HTMLInputElement).value;
+        const ref1Relation = (document.getElementById("ref1Relation") as HTMLInputElement).value;
+        const ref2Email = (document.getElementById("ref2Email") as HTMLInputElement).value;
+        const ref2Name = (document.getElementById("ref2Name") as HTMLInputElement).value;
+        const ref2Phone = (document.getElementById("ref2Phone") as HTMLInputElement).value;
+        const ref2Relation = (document.getElementById("ref2Relation") as HTMLInputElement).value;
+
+        const bodyContent = JSON.stringify({
+            image: {
+                file: await convertToBase64(profilePhoto),
+                name: profilePhoto.name.split(".")[0]
+            },
+            fname: fname,
+            lname: lname,
+            email: email,
+            mobile: mobile,
+            dob: dob,
+            gender: gender,
+            address: address,
+            city: city,
+            province: province,
+            zipcode: zipcode,
+            device_type: "web",
+            languages: languages.toString().substring(0, languages.toString().length),
+            speciality: speciality,
+            experience: experience,
+            comfortableWithPets: comfortableWithPets === "yes",
+            task: additionalServices.toString().substring(0, additionalServices.toString().length),
+            rate: rate,
+            daysAWeek: daysAWeek,
+            workingHrs: workingHrs,
+            bio: bio,
+            certifications: certifications === "other" ? "other_" + (document.getElementById("certifications_others") as HTMLSelectElement).value : certifications,
+            distance: distance,
+            education: education,
+            ref1Email: ref1Email,
+            ref1Name: ref1Name,
+            ref1Phone: ref1Phone,
+            ref1Relation: ref1Relation,
+            ref2Email: ref2Email,
+            ref2Name: ref2Name,
+            ref2Phone: ref2Phone,
+            ref2Relation: ref2Relation
+        });
+
+        try {
+            setLoading(true);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/registration`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `${cookies.getCookie("token")}`
+                },
+                body: bodyContent
+            });
+
+            const data = await response.json();
+            if (data?.success) {
+                setLoading(false);
+                router.push("/caregiver/account");
+            } else {
+                setLoading(false);
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <h1 className='py-[3rem] px-[2rem] text-center text-3xl text-white bg-teal-500 font-bold'>Complete your Registration</h1>
             <section className='flex flex-col items-center justify-center p-[2rem] sm:p-[5rem]'>
                 <form className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit'
-                    onSubmit={async (e) => {
-                        e.preventDefault();
-                        const profilePhoto = ((document.getElementById("profilePhoto") as HTMLInputElement).files as FileList)[0];
-                        const fname = (document.getElementById("fname") as HTMLInputElement).value;
-                        const lname = (document.getElementById("lname") as HTMLInputElement).value;
-                        const email = (document.getElementById("email_regis") as HTMLInputElement).value;
-                        const mobile = (document.getElementById("mobile") as HTMLInputElement).value;
-                        const dob = (document.getElementById("dob") as HTMLInputElement).value;
-                        const gender = (document.getElementById("gender") as HTMLSelectElement).value;
-                        const address = (document.getElementById("address") as HTMLInputElement).value;
-                        const city = (document.getElementById("city") as HTMLInputElement).value;
-                        const province = (document.getElementById("province") as HTMLInputElement).value;
-                        const zipcode = (document.getElementById("zipcode_regis_caregiver") as HTMLInputElement).value;
-                        const speciality = (document.getElementById("speciality") as HTMLSelectElement).value;
-                        const experience = (document.getElementById("experience") as HTMLSelectElement).value;
-                        const comfortableWithPets = (document.getElementById("comfortableWithPets") as HTMLSelectElement).value;
-                        const rate = (document.getElementById("rate") as HTMLInputElement).value;
-                        const bio = (document.getElementById("bio") as HTMLTextAreaElement).value;
-                        const certifications = (document.getElementById("certifications") as HTMLSelectElement).value;
-                        const distance = (document.getElementById("distance") as HTMLSelectElement).value;
-                        const education = (document.getElementById("education") as HTMLSelectElement).value;
-                        const ref1Email = (document.getElementById("ref1Email") as HTMLInputElement).value;
-                        const ref1Name = (document.getElementById("ref1Name") as HTMLInputElement).value;
-                        const ref1Phone = (document.getElementById("ref1Phone") as HTMLInputElement).value;
-                        const ref1Relation = (document.getElementById("ref1Relation") as HTMLInputElement).value;
-                        const ref2Email = (document.getElementById("ref2Email") as HTMLInputElement).value;
-                        const ref2Name = (document.getElementById("ref2Name") as HTMLInputElement).value;
-                        const ref2Phone = (document.getElementById("ref2Phone") as HTMLInputElement).value;
-                        const ref2Relation = (document.getElementById("ref2Relation") as HTMLInputElement).value;
-
-                        const bodyContent = JSON.stringify({
-                            image: {
-                                file: await convertToBase64(profilePhoto),
-                                name: profilePhoto.name.split(".")[0]
-                            },
-                            fname: fname,
-                            lname: lname,
-                            email: email,
-                            mobile: mobile,
-                            dob: dob,
-                            gender: gender,
-                            address: address,
-                            city: city,
-                            province: province,
-                            zipcode: zipcode,
-                            device_type: "web",
-                            languages: languages.toString().substring(0, languages.toString().length),
-                            speciality: speciality,
-                            experience: experience,
-                            comfortableWithPets: comfortableWithPets === "yes",
-                            task: additionalServices.toString().substring(0, additionalServices.toString().length),
-                            rate: rate,
-                            daysAWeek: daysAWeek,
-                            workingHrs: workingHrs,
-                            bio: bio,
-                            certifications: certifications === "other" ? "other_" + (document.getElementById("certifications_others") as HTMLSelectElement).value : certifications,
-                            distance: distance,
-                            education: education,
-                            ref1Email: ref1Email,
-                            ref1Name: ref1Name,
-                            ref1Phone: ref1Phone,
-                            ref1Relation: ref1Relation,
-                            ref2Email: ref2Email,
-                            ref2Name: ref2Name,
-                            ref2Phone: ref2Phone,
-                            ref2Relation: ref2Relation
-                        });
-
-                        try {
-                            setLoading(true);
-                            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/registration`, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "Authorization": `${cookies.getCookie("token")}`
-                                },
-                                body: bodyContent
-                            });
-
-                            const data = await response.json();
-                            if (data?.success) {
-                                setLoading(false);
-                                router.push("/caregiver/account");
-                            } else {
-                                setLoading(false);
-                            }
-                        } catch (error) {
-                            setLoading(false);
-                            console.log(error);
-                        }
-                    }} >
+                    onSubmit={handleRegistration} >
                     <p className='col-[1/3] font-semibold text-2xl self-center md:self-end'>Your Personal Information</p>
                     <div className='flex flex-col items-center justify-center gap-3 col-[1/3] row-[2/3] place-self-center'>
                         <Image src={imageURL} width={defaultUser.width} height={defaultUser.height} alt='Profile Photo' className='rounded-full aspect-square w-[15rem] border-2 border-black object-cover object-center' />
@@ -172,7 +176,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Gender*</span>
-                        <select id="gender" required className='p-3 border-[1px] border-black  rounded-lg'>
+                        <select id="gender" required className='p-3 border-[1px] border-black rounded-lg'>
                             <option value="">Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -193,7 +197,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Province*</span>
-                        <select id="province" required className="border-[1px] p-3 border-black   rounded-lg" >
+                        <select id="province" required className="border-[1px] p-3 border-black rounded-lg" >
                             <option value="">Select</option>
                             <option value="Alberta">Alberta</option>
                             <option value="British Columbia">British Columbia</option>
@@ -315,7 +319,7 @@ export default function Registration() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Certifications* (Degree/Diploma)</span>
-                        <select id="certifications" required className="border-[1px] p-3 border-black rounded-lg"
+                        <select ref={certificationsRef} id="certifications" required className="border-[1px] p-3 border-black rounded-lg"
                             onChange={(e) => {
                                 if (e.currentTarget.value === "other") {
                                     (document.getElementById("certifications_others") as HTMLInputElement).classList.remove("hidden");
@@ -377,7 +381,7 @@ export default function Registration() {
                             </option>
                             <option value="other">Other</option>
                         </select>
-                        <input id="certifications_others" name="certifications_others" required={(document.getElementById("certifications") as HTMLSelectElement)?.value === "other"} type="text" className='border-[1px] border-black p-3 rounded-lg hidden mt-3' placeholder='Please specify.' />
+                        <input id="certifications_others" name="certifications_others" required={certificationsRef.current?.value === "other"} type="text" className='border-[1px] border-black p-3 rounded-lg hidden mt-3' placeholder='Please specify.' />
                     </div>
                     <MultiSelect size='md' radius='md' styles={{
                         input: {

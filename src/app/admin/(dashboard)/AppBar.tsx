@@ -8,7 +8,7 @@ import { FaBell } from 'react-icons/fa'
 import { Menu, MenuItem } from '@mui/material';
 import { BsChevronDown } from "react-icons/bs"
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 import { useCookies } from '@/Hooks/useCookies';
 export default function AppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,6 +28,8 @@ export default function AppBar() {
 
     const handleClose = () => {
         setAnchorEl(null);
+        cookies.deleteCookie("adminToken");
+        redirect("/admin/login");
     };
 
     return (

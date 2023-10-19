@@ -5,10 +5,12 @@ import React from 'react';
 import ListItem from './ListItem';
 import Link from 'next/link';
 import { useCookies } from '@/Hooks/useCookies';
+import { useSearchParams } from 'next/navigation';
 
-export default function VettingList({ searchParams }: { searchParams: { [key: string]: string } }) {
+export default function VettingList() {
     const [vettingList, setVettingList] = React.useState<any>(null);
     const cookies = useCookies();
+    const searchParams = useSearchParams();
 
     React.useEffect(() => {
         async function getVettingList(page?: string) {
@@ -22,8 +24,8 @@ export default function VettingList({ searchParams }: { searchParams: { [key: st
             const data = await res.json();
             setVettingList(data);
         }
-        getVettingList(searchParams.page);
-    }, [searchParams.page]);
+        getVettingList(searchParams.get("page") as string);
+    }, [searchParams.get("page")]);
 
     return (
         <section className="overflow-y-auto h-[100%] p-4 flex flex-col gap-[1rem]">
@@ -45,12 +47,12 @@ export default function VettingList({ searchParams }: { searchParams: { [key: st
                 }
             </div>
             <div className='w-full flex justify-between px-5'>
-                <Link href={`?page=${parseInt(searchParams.page ?? 1) - 1}`} passHref>
-                    <button disabled={parseInt(searchParams.page ?? 1) - 1 <= 0} className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>
+                <Link href={`?page=${parseInt(searchParams.get("page") as string ?? 1) - 1}`} passHref>
+                    <button disabled={parseInt(searchParams.get("page") as string ?? 1) - 1 <= 0} className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>
                         Previous Page
                     </button>
                 </Link>
-                <Link href={`?page=${parseInt(searchParams.page ?? 1) + 1}`} passHref>
+                <Link href={`?page=${parseInt(searchParams.get("page") as string ?? 1) + 1}`} passHref>
                     <button className='px-[2rem] py-2 bg-teal-100 border-2 border-teal-500 text-teal-700 rounded-full'>Next Page</button>
                 </Link>
             </div>

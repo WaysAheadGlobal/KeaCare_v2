@@ -4,33 +4,22 @@ import React, { useEffect, useState } from 'react'
 import dynamic from "next/dynamic"
 import { FiSearch } from 'react-icons/fi'
 const RecommendedCard = dynamic(() => import('./RecommendedCard'));
-/* import SearchResultCard from './SearchResultCard' */
 import { useCookies } from '@/Hooks/useCookies'
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 
 
 export default function Caregivers({ filters }: { filters: any }) {
     const [caregivers, setCaregivers] = useState<any[]>([]);
-    /** const [page, setPage] = useState<string>("1"); */
     const [search, setSearch] = useState<string>("");
     const [heading, setHeading] = useState<string>("Recommended for you");
     const cookies = useCookies();
-
-    /** useEffect(() => {
-        async function getCaregivers() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getCaregivers?page=${page}`, {
-                next: {
-                    revalidate: 10
-                }
-            });
-            const data = await response.json();
-            setCaregivers(data);
-        }
-        getCaregivers();
-    }, [page]); */
+    const searchParams = useSearchParams();
 
     useEffect(() => {
         async function filter() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rateStart=${filters?.rateStart ?? ""}&rateEnd=${filters?.rateEnd ?? ""}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rateStart=${filters?.rateStart ?? ""}&rateEnd=${filters?.rateEnd ?? ""}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}&page=${searchParams.get("page") ?? 1}`, {
                 cache: "no-store",
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
@@ -45,7 +34,7 @@ export default function Caregivers({ filters }: { filters: any }) {
         return () => {
             Promise.resolve();
         }
-    }, [filters]);
+    }, [filters, searchParams.get("page")]);
 
     useEffect(() => {
         async function getCaregiverByName() {
@@ -110,16 +99,20 @@ export default function Caregivers({ filters }: { filters: any }) {
                     }
                 </div>
             </div>
-            {/* <div className='w-full'>
-                <h1 className='text-3xl font-semibold text-teal-500'>Search Results</h1>
-                <p className='text-gray-400 mt-2'>34 profiles based on your search criteria.</p>
-                <div className='flex flex-col items-center justify-center gap-5 mt-5'>
-                    <SearchResultCard />
-                    <SearchResultCard />
-                    <SearchResultCard />
-                    <SearchResultCard />
-                </div>
-            </div> */}
+            <div className='w-full flex justify-between px-5'>
+                <Link href={`?page=${parseInt(searchParams.get("page") as string ?? 1) - 1}`} passHref>
+                    <button disabled={parseInt(searchParams.get("page") as string ?? 1) - 1 <= 0} className='bg-transparent text-sm px-5 py-2 hover:bg-gray-100 rounded-lg disabled:text-gray-400 disabled:bg-transparent'>
+                        <BsArrowLeft className='inline-block mr-2 text-xl' />
+                        Previous Page
+                    </button>
+                </Link>
+                <Link href={`?page=${parseInt(searchParams.get("page") as string ?? 1) + 1}`} passHref>
+                    <button className='bg-transparent text-sm px-5 py-2 hover:bg-gray-100 rounded-lg disabled:text-gray-400 disabled:bg-transparent'>
+                        Next Page
+                        <BsArrowRight className='inline-block ml-2 text-xl' />
+                    </button>
+                </Link>
+            </div>
         </div>
     )
 }

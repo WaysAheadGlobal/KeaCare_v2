@@ -1,5 +1,3 @@
-"use client"
-
 export const useCookies = () => {
     const getCookie = (name: string) => {
         const value = `; ${document.cookie}`;

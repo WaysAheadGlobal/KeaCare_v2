@@ -8,7 +8,7 @@ export default function Filter({ filters, setFilters }: { filters: any, setFilte
     const [key, setKey] = useState<string>("1");
     return (
         <>
-            <section key={key} id="filters" className='absolute w-[20rem] md:static flex flex-col items-start gap-4 bg-gray-200 border-[1px] border-black rounded-lg p-5 transition-transform md:translate-x-0 -translate-x-full'>
+            <section key={key} id="filters" className='sticky top-0 h-fit w-[20rem] md:static flex flex-col items-start gap-4 bg-gray-200 border-[1px] border-black rounded-lg p-5 transition-transform md:translate-x-0 -translate-x-full'>
                 <p className='self-start font-semibold'>FILTER PROFILES</p>
                 <p className='self-end text-xs font-semibold text-red-600 cursor-pointer' onClick={() => {
                     setKey(key => (parseInt(key) + 1).toString());

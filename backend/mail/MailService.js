@@ -20,20 +20,21 @@ const transporter = nodemailer.createTransport({
     secureConnection: false,
     port: 587,
     tls: {
-        ciphers: "SSLv3"
+        ciphers: "SSLv3",
     },
     auth: {
-        user: 'dev@waysaheadglobal.com',
-        pass: 'Singapore@2022'
-    }
+        user: "dev@waysaheadglobal.com",
+        pass: "Singapore@2022",
+    },
 });
 
 async function sendOTP(email, otp, action) {
     try {
         await transporter.sendMail({
-            from: 'dev@waysaheadglobal.com',
+            from: "dev@waysaheadglobal.com",
             to: email,
-            subject: `OTP for ${action === "Log in" ? "logging In" : "Signing Up"} in KeaCare`,
+            subject: `OTP for ${action === "Log in" ? "logging In" : "Signing Up"
+                } in KeaCare`,
             html: `
             <p>Dear ${email},</p> 
             <p>You have requested to ${action} into your Keacare account. Please use the following OTP to complete your ${action}:</p>
@@ -44,7 +45,7 @@ async function sendOTP(email, otp, action) {
             <p>Best regards,  </p>
             <p>Team KeaCare</p>          
             `,
-        })
+        });
     } catch (err) {
         console.error(err);
     }
@@ -53,7 +54,7 @@ async function sendOTP(email, otp, action) {
 async function sendReceipt(email, url) {
     try {
         await transporter.sendMail({
-            from: 'dev@waysaheadglobal.com',
+            from: "dev@waysaheadglobal.com",
             to: email,
             subject: "Purchase Details | KeaCare",
             html: `<p>Hello ${email},</p> 
@@ -63,7 +64,7 @@ async function sendReceipt(email, url) {
             <p style="margin-top: 3rem;">Regards,</p>
             <p>Team KeaCare.</p>
             `,
-        })
+        });
     } catch (err) {
         console.error(err);
     }
@@ -73,7 +74,7 @@ async function sendAppointment(email, from, to, type) {
     try {
         if (type === "careseeker") {
             await transporter.sendMail({
-                from: 'dev@waysaheadglobal.com',
+                from: "dev@waysaheadglobal.com",
                 to: email,
                 subject: "Appointment Scheduled",
                 html: `<p>Hello ${from},</p> 
@@ -82,10 +83,10 @@ async function sendAppointment(email, from, to, type) {
                 <p style="margin-top: 3rem;">Regards,</p>
                 <p>Team KeaCare.</p>
                 `,
-            })
+            });
         } else {
             await transporter.sendMail({
-                from: 'dev@waysaheadglobal.com',
+                from: "dev@waysaheadglobal.com",
                 to: email,
                 subject: "Appointment Scheduled",
                 html: `<p>Dear ${from},</p> 
@@ -97,11 +98,30 @@ async function sendAppointment(email, from, to, type) {
                 <p style="margin-top: 3rem;">Warm regards,</p>
                 <p>Team KeaCare</p>
                 `,
-            })
+            });
         }
     } catch (err) {
         console.error(err);
     }
 }
 
-module.exports = { transporter, sendOTP, sendReceipt, sendAppointment };
+async function sendAccountVerificationCompletedMail(to, receiverEmail) {
+    try {
+        await transporter.sendMail({
+            from: "dev@waysaheadglobal.com",
+            to: receiverEmail,
+            subject: "Account Verification Completed",
+            html: `<p>Hello ${to},</p>
+            <p>Your account verification has been completed.</p>
+            <p>Now you can apply for jobs through our website.</p>
+            <p>For more details please log in in KeaCare website.</p>
+            <p style="margin-top: 3rem;">Regards,</p>
+            <p>Team KeaCare.</p>
+            `,
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+module.exports = { transporter, sendOTP, sendReceipt, sendAppointment, sendAccountVerificationCompletedMail };

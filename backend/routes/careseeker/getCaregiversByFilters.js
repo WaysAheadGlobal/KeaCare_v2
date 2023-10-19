@@ -1,7 +1,7 @@
 const connection = require("../../db/connection");
 
 async function filters(req, res) {
-    const { speciality, pet, rateStart, rateEnd, experience, daysAWeek, hrs, gender, age, languages, addservices, rating } = req.query;
+    const { speciality, pet, rateStart, rateEnd, experience, daysAWeek, hrs, gender, age, languages, addservices, rating, page } = req.query;
 
     let sqlQuery = `
         SELECT c.id, c.fname, c.lname, c.gender, c.status, c.imageUrl, c.rating, c.languages, c.speciality, c.experience, 
@@ -35,6 +35,7 @@ async function filters(req, res) {
         ${gender ? `gender = '${gender}'` : ""}
         ${gender && age ? ' AND ' : ''}
         ${age ? `age >= ${age.split("-")[0]} AND age <= ${age.split("-")[1]}` : ""}
+        AND isVerified = TRUE ORDER BY id LIMIT 10 OFFSET ${((page ?? 1) - 1) * 10}
     `;
 
     connection.query(sqlQuery, (error, results) => {
