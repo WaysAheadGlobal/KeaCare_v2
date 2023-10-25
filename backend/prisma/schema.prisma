@@ -46,8 +46,8 @@ model careseekers_ {
   stripeId     String    @unique
   fname        String?
   lname        String?
-  email        String    @unique
-  mobile       String?
+  email        String?   @unique
+  mobile       String?   @unique
   dob          String?   @db.VarChar(500)
   gender       Gender?
   address      String?   @db.VarChar(1000)
@@ -73,8 +73,8 @@ model caregivers_ {
   id                  Int         @id @unique @default(autoincrement())
   fname               String?
   lname               String?
-  email               String      @unique
-  mobile              String?
+  email               String?     @unique
+  mobile              String?     @unique
   dob                 String?     @db.VarChar(500)
   gender              Gender?
   age                 Int?

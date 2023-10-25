@@ -4,6 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const { sendOTP } = require("../../mail/MailService.js");
 const jwt = require("jsonwebtoken");
 const connection = require("../../db/connection.js");
+const { sendOTPtoPhoneNumber, verifyOTP } = require("../../twilio/OTPService.js");
 
 const caregiverLoginRouter = Router();
 const prisma = new PrismaClient();
@@ -11,6 +12,22 @@ const prisma = new PrismaClient();
 async function LoginOTP(req, res) {
     const errors = validationResult(req);
     try {
+        if (req.body.phoneNo) {
+            const user = await prisma.caregivers_.findFirst({
+                where: {
+                    mobile: req.body.phoneNo
+                }
+            });
+
+            if (!user) {
+                res.status(403).json({ "error": "User not found. Please sign up or try with a different phone number" });
+                return;
+            }
+
+            await sendOTPtoPhoneNumber({ countryCode: req.body.countryCode, phoneNumber: req.body.phoneNo });
+            res.status(200).json({ "success": true });
+            return;
+        }
         if (!errors.isEmpty() && errors.errors[0].path === 'email') {
             res.status(400).send('Invalid email address. Please try again.');
         } else {
@@ -47,6 +64,33 @@ async function LoginOTP(req, res) {
 async function Login(req, res) {
     const errors = validationResult(req);
     try {
+        if (req.body.phoneNo) {
+            const user = await prisma.caregivers_.findFirst({
+                where: {
+                    mobile: req.body.phoneNo
+                }
+            });
+            if (!user) {
+                res.status(403).json({ "error": "User not found. Please sign up or try with a different phone number" });
+                return;
+            }
+            const verificationResponse = await verifyOTP({ countryCode: req.body.countryCode, phoneNumber: req.body.phoneNo, otp: req.body.token });
+            if (verificationResponse.status === "approved") {
+                const jwtToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET_KEY, {
+                    algorithm: "HS512"
+                });
+                res.status(200).json({
+                    "success": true,
+                    ...user,
+                    jwtToken
+                });
+            } else {
+                res.status(403).json({
+                    "error": "Invalid OTP"
+                });
+            }
+            return;
+        }
         if (!errors.isEmpty() && errors.errors[0].path === 'email') {
             res.status(400).send('Invalid email address. Please try again.');
         } else {

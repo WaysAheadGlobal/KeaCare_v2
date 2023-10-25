@@ -2,29 +2,29 @@
 
 import React, { useContext, useState } from 'react'
 import { IoClose } from 'react-icons/io5'
-import { ImFacebook2 } from 'react-icons/im'
-import { FcGoogle } from 'react-icons/fc'
 import UserTypeContext from '@/context/UserType'
 import { useRouter } from 'next/navigation'
-import Otp from '@/interface/Otp'
 import SignupResponse from '@/interface/SignupResponse'
 import Alert from './Alert'
 import AlertContext from './AlertContext'
+import PhoneInput from 'react-phone-number-input'
+import { E164Number } from 'libphonenumber-js/types'
 
 export default function Signup() {
     const { userType } = useContext(UserTypeContext);
     const router = useRouter();
-    const [Otp, setOtp] = useState<string>("");
     const { setAlert } = useContext(AlertContext);
+    const [phoneNo, setPhoneNo] = useState<E164Number>();
 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const email = document.getElementById("email") as HTMLInputElement;
+        const email = document.getElementById("email_signup") as HTMLInputElement;
+        const phoneno = document.getElementById("phoneNo_signup") as HTMLInputElement;
         const otp_element = e.currentTarget.previousElementSibling as HTMLInputElement;
 
-        if (!Otp) {
+        if (!email.value && !phoneno.value.split(" ")[1]) {
             setAlert({
                 type: "error",
-                message: "Invalid OTP. Please try again",
+                message: "Please enter either email or phone number.",
                 open: true
             });
             return;
@@ -32,6 +32,8 @@ export default function Signup() {
 
         const bodyContent = JSON.stringify({
             "email": email.value,
+            "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+            "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" ")),
             "token": otp_element.value
         });
 
@@ -49,8 +51,7 @@ export default function Signup() {
                 dialog.close();
             });
             sessionStorage.setItem("email", email.value);
-            sessionStorage.setItem("phoneno", (document.getElementById("phoneno") as HTMLInputElement).value);
-            sessionStorage.setItem("otp", Otp);
+            sessionStorage.setItem("phoneno", (document.getElementById("phoneNo_signup") as HTMLInputElement).value);
             if (userType === 'caregiver') {
                 router.push("/caregiver/registration");
             } else {
@@ -68,18 +69,8 @@ export default function Signup() {
     const requestOTP = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
 
-        const email = document.getElementById("email") as HTMLInputElement;
-        /* const phoneno = document.getElementById("phoneno") as HTMLInputElement; */
-
-        if (!email.validity.valid) {
-            email.focus();
-            setAlert({
-                type: "warning",
-                message: "Please enter a valid email address.",
-                open: true
-            });
-            return;
-        }
+        const email = document.getElementById("email_signup") as HTMLInputElement;
+        const phoneno = document.getElementById("phoneNo_signup") as HTMLInputElement;
 
         setAlert({
             type: "info",
@@ -89,7 +80,9 @@ export default function Signup() {
 
         try {
             const bodyContent = JSON.stringify({
-                "email": email.value
+                "email": email.value,
+                "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+                "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
             });
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/signup/otp`, {
@@ -100,7 +93,7 @@ export default function Signup() {
                 body: bodyContent
             });
 
-            const data: Otp = await response.json();
+            const data: any = await response.json();
 
             if (data?.otp) {
                 setAlert({
@@ -108,8 +101,15 @@ export default function Signup() {
                     message: "OTP sent please check your mail.",
                     open: true
                 });
-                setOtp(data?.otp.toString());
-            } else if (data?.error) {
+            }
+            else if (data?.success) {
+                setAlert({
+                    type: "success",
+                    message: "OTP sent please check your messages.",
+                    open: true
+                });
+            } 
+            else if (data?.error) {
                 setAlert({
                     type: "error",
                     message: data?.error,
@@ -139,19 +139,35 @@ export default function Signup() {
                         (document.getElementById("signup") as HTMLDialogElement).close();
                         (document.getElementById("login") as HTMLDialogElement).showModal();
                     }}>Log In</span></h2>
-                    <p className='text-lg text-teal-500 self-center mt-3'>OR</p>
-                    <form className='flex flex-col -mt-5'>
+                    <form className='flex flex-col gap-5'>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Email*</span>
-                            <input type='text' id="email" placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none invalid:focus:border-red-500' required />
+                            <input type='text' id="email_signup" placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none invalid:focus:border-red-500' required />
                         </div>
-                        <p className='text-lg text-teal-500 self-center mt-3'>OR</p>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Phone Number</span>
-                            <input type='text' id="phoneno" placeholder='Enter your phone number' minLength={10} maxLength={10} className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' />
+                            <PhoneInput
+                                international
+                                id="phoneNo_signup"
+                                placeholder="Enter phone number"
+                                countryCallingCodeEditable={false}
+                                defaultCountry="CA"
+                                value={phoneNo}
+                                onChange={setPhoneNo}
+                                style={{
+                                    border: "2px solid #38B2AC",
+                                    borderRadius: "0.5rem",
+                                    padding: "0.75rem",
+                                    outline: "none",
+                                    display: "grid",
+                                    gridTemplateColumns: "2rem 1fr",
+                                    gap: "1rem"
+                                }}
+                                limitMaxLength={true}
+                            />
                         </div>
-                        <div className='flex flex-col md:flex-row gap-3 mt-3 items-center justify-center'>
-                            <button className='py-[0.8rem] px-8 bg-teal-500 rounded-lg mt-0 md:mt-7 text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500' onClick={requestOTP}>Send OTP</button>
+                        <div className='flex flex-col md:flex-row gap-3 items-center justify-center'>
+                            <button className='py-[0.8rem] px-8 bg-teal-500 rounded-lg text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500' onClick={requestOTP}>Send OTP</button>
                         </div>
                     </form>
                     <div className='flex flex-col gap-3 items-center justify-start mt-3'>

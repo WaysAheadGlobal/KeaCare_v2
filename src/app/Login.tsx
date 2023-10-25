@@ -4,18 +4,19 @@ import React, { useContext, useState } from 'react'
 import { IoClose } from 'react-icons/io5'
 import UserTypeContext from '@/context/UserType'
 import { useRouter } from 'next/navigation'
-import Otp from '@/interface/Otp'
 import Alert from './Alert'
 import AlertContext from './AlertContext'
 import { GoogleLogin, GoogleOAuthProvider, CredentialResponse } from '@react-oauth/google'
 import { useCookies } from '@/Hooks/useCookies'
+import PhoneInput from 'react-phone-number-input'
+import { E164Number } from 'libphonenumber-js/types'
 
 export default function Login() {
     const { userType } = useContext(UserTypeContext);
     const router = useRouter();
-    const [Otp, setOtp] = useState<string>("");
     const { setAlert } = useContext(AlertContext);
     const cookies = useCookies();
+    const [phoneNo, setPhoneNo] = useState<E164Number>();
 
     async function handleGoogleLogin(credentials: CredentialResponse) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/google-login`, {
@@ -41,13 +42,12 @@ export default function Login() {
         e.preventDefault();
 
         const email = document.getElementById("email_login") as HTMLInputElement;
-        /* const phoneno = document.getElementById("phoneno") as HTMLInputElement; */
+        const phoneno = document.getElementById("phoneNo_login") as HTMLInputElement;
 
-        if (!email.validity.valid) {
-            email.focus();
+        if (!email.value && !phoneno.value.split(" ")[1]) {
             setAlert({
-                type: "warning",
-                message: "Please enter a valid email address.",
+                type: "error",
+                message: "Please enter either email or phone number.",
                 open: true
             });
             return;
@@ -62,7 +62,9 @@ export default function Login() {
 
         try {
             const bodyContent = JSON.stringify({
-                "email": email.value
+                "email": email.value,
+                "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+                "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
             });
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/login/otp`, {
@@ -73,25 +75,32 @@ export default function Login() {
                 body: bodyContent
             });
 
-            const data: Otp = await response.json();
-            if (data.otp) {
+            const data: any = await response.json();
+            if (data?.otp) {
                 setAlert({
                     type: "success",
                     message: "OTP sent please check your mail.",
                     open: true
                 });
-                setOtp(data?.otp.toString());
-            } else if (data.error) {
+            }
+            else if (data?.success) {
+                setAlert({
+                    type: "success",
+                    message: "OTP sent please check your messages.",
+                    open: true
+                });
+            }
+            else if (data?.error) {
                 setAlert({
                     type: "error",
-                    message: data.error,
+                    message: data?.error,
                     open: true
                 });
             }
         } catch (error) {
             setAlert({
                 type: "error",
-                message: "Couldn't send OTP please check your mail or try after some time.",
+                message: "Couldn't send OTP please check your email address or phone number or try after some time.",
                 open: true
             });
         }
@@ -101,12 +110,23 @@ export default function Login() {
         e.preventDefault();
 
         const email = document.getElementById("email_login") as HTMLInputElement;
-        /* const phoneNo = document.getElementById("phoneNo_login") as HTMLInputElement; */
+        const phoneno = document.getElementById("phoneNo_login") as HTMLInputElement;
         const otp = document.getElementById("otp_login") as HTMLInputElement;
+
+        if (!email.value && !phoneno.value.split(" ")[1]) {
+            setAlert({
+                type: "error",
+                message: "Please enter either email or phone number.",
+                open: true
+            });
+            return;
+        }
 
         const bodyContent = JSON.stringify({
             'email': email.value,
-            'token': otp.value
+            'token': otp.value,
+            "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+            "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
         });
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/login`, {
@@ -188,12 +208,30 @@ export default function Login() {
                     <form id="loginForm" className='flex flex-col gap-2' onSubmit={handleSubmit}>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Email*</span>
-                            <input id="email_login" type='email' placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none focus:invalid:border-red-500' required />
+                            <input id="email_login" type='email' placeholder='Enter your email address' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none focus:invalid:border-red-500' />
                         </div>
                         <p className='text-lg text-teal-500 self-center'>OR</p>
                         <div className='flex flex-col gap-1'>
                             <span className='text-teal-500'>Phone Number</span>
-                            <input id="phoneNo_login" type='text' pattern='[0-9]{10}' placeholder='Enter your phone number' className='border-2 border-teal-500 rounded-lg hover:ring-2 hover:ring-teal-400 p-3 outline-none' maxLength={10} minLength={10} />
+                            <PhoneInput
+                                international
+                                id="phoneNo_login"
+                                placeholder="Enter phone number"
+                                countryCallingCodeEditable={false}
+                                defaultCountry="CA"
+                                value={phoneNo}
+                                onChange={setPhoneNo}
+                                style={{
+                                    border: "2px solid #38B2AC",
+                                    borderRadius: "0.5rem",
+                                    padding: "0.75rem",
+                                    outline: "none",
+                                    display: "grid",
+                                    gridTemplateColumns: "2rem 1fr",
+                                    gap: "1rem"
+                                }}
+                                limitMaxLength={true}
+                            />
                         </div>
                         <button type="button" className='py-4 px-8 bg-teal-500 rounded-lg mt-5 text-white self-center hover:bg-white hover:text-teal-500 hover:outline hover:outline-teal-500 focus:bg-white focus:text-teal-500 focus:outline focus:outline-teal-500' onClick={requestOTP}>Send OTP</button>
                     </form>

@@ -5,3 +5,17 @@
 .MuiOutlinedInput-notchedOutline {
     border: 1.5px solid black;
 }
+
+.PhoneInputCountry {
+    width: 100%;
+}
+
+.PhoneInputCountrySelect {
+    width: 100%;
+    font-size: xx-small;
+}
+
+.PhoneInputInput {
+    outline: none;
+}
+
