@@ -1,14 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const { validationResult } = require("express-validator");
-const cloudinary = require("cloudinary").v2;
 
 const prisma = new PrismaClient();
-
-cloudinary.config({ 
-  cloud_name: 'dbimbo0su', 
-  api_key: '323346454524645', 
-  api_secret: 'XXosQxG2fnCfBSrPCZRwCI2e_cM' 
-});
 
 async function UpdateAccount(req, res) {
     const errors = validationResult(req);
@@ -25,13 +18,7 @@ async function UpdateAccount(req, res) {
 
             if (careseeker) {
                 try {
-                    const { fname, lname, mobile, dob, gender, address, city, province, zipcode, device_type, image } = req.body;
-                    let result;
-                    if (image) {
-                        result = await cloudinary.uploader.upload(image, { public_id: "careseeker" + careseeker.id, folder: "keacare" });
-                    } else {
-                        result = undefined;
-                    }
+                    const { fname, lname, mobile, dob, gender, address, city, province, zipcode, device_type } = req.body;
 
                     const updatedCareseeker = await prisma.careseekers_.update({
                         where: {
@@ -48,7 +35,6 @@ async function UpdateAccount(req, res) {
                             province: province,
                             zipcode: zipcode,
                             device_type: device_type,
-                            imageUrl: result ? result.secure_url : undefined
                         }
                     });
                     res.status(200).json({ "success": true, ...updatedCareseeker });

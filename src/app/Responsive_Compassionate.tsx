@@ -9,6 +9,7 @@ import playstore from '../../public/playstore.png'
 import { motion, useInView, useAnimation } from 'framer-motion'
 import UserTypeContext from '@/context/UserType'
 import { useRouter } from 'next/navigation'
+import { useCookies } from '@/Hooks/useCookies'
 
 
 export default function Responsive_Compassionate() {
@@ -17,6 +18,7 @@ export default function Responsive_Compassionate() {
     const animate = useAnimation();
     const { setUserType } = useContext(UserTypeContext);
     const router = useRouter();
+    const cookies = useCookies();
 
     useEffect(() => {
         if (isInView) {
@@ -56,6 +58,7 @@ export default function Responsive_Compassionate() {
                         } else {
                             (document.getElementById("login") as HTMLDialogElement).showModal();
                             setUserType("careseeker");
+                            cookies.setCookie("userType", "careseeker", 365, "/");
                             sessionStorage.setItem("userType", "careseeker");
                         }
                     }}>Book Now</button>
@@ -79,6 +82,7 @@ export default function Responsive_Compassionate() {
                         } else {
                             (document.getElementById("login") as HTMLDialogElement).showModal();
                             setUserType("careseeker");
+                            cookies.setCookie("userType", "careseeker", 365, "/");
                             sessionStorage.setItem("userType", "careseeker");
                         }
                     }}>Book Now</button>

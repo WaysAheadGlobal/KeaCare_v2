@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { MultiSelect } from '@mantine/core';
 import { MenuItem, OutlinedInput, Select } from '@mui/material';
@@ -17,23 +17,21 @@ export default function Account() {
     const { setAlert } = useContext(AlertContext);
     const router = useRouter();
     const cookies = useCookies();
+    const certificationsRef = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
         async function getUserInfo(email: string) {
-            if (email) {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?email=${email}`, {
-                    headers: {
-                        "Authorization": `${cookies.getCookie("token")}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const data = await response.json();
-                if (data.status === "incomplete") {
-                    router.push("/caregiver/registration");
-                } else {
-                    setUserInfo(data);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?email=${email}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
                 }
-
+            });
+            const data = await response.json();
+            if (data.status === "incomplete") {
+                router.push("/caregiver/registration");
+            } else {
+                setUserInfo(data);
             }
         }
         const email = sessionStorage.getItem("email");
@@ -45,19 +43,6 @@ export default function Account() {
         setTask(userInfo?.task.split(","));
         setLanguages(userInfo?.languages.split(","));
     }, [userInfo]);
-
-    const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                resolve(reader.result);
-            }
-            reader.onerror = (error) => {
-                reject(error);
-            }
-            reader.readAsDataURL(image);
-        })
-    }
 
     return (
         <>
@@ -125,11 +110,39 @@ export default function Account() {
                                     setUserInfo({
                                         ...userInfo,
                                         imageUrl: e.currentTarget.files ? URL.createObjectURL(e.currentTarget.files[0]) : userInfo?.imageURL,
-                                        image: e.currentTarget.files ? await convertToBase64(e.currentTarget.files[0]) : undefined
-                                    })
+                                    });
+
+                                    let formData = new FormData();
+                                    formData.append("image", e.currentTarget.files ? e.currentTarget.files[0] : "");
+                                    formData.append("fileType", e.currentTarget.files ? e.currentTarget.files[0].type.split("/")[1] : "");
+                                    formData.append("id", userInfo?.id)
+
+                                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/uploadImage`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Authorization": `${cookies.getCookie("token")}`
+                                        },
+                                        body: formData
+                                    });
+
+                                    const data = await response.json();
+                                    if (data?.success) {
+                                        setAlert({
+                                            message: "Profile Photo Updated.",
+                                            type: "success",
+                                            open: true
+                                        })
+                                        setRefreshData(refreshData => refreshData++);
+                                    } else {
+                                        setAlert({
+                                            message: "Couldn't update your profile photo.",
+                                            open: true,
+                                            type: "error"
+                                        })
+                                    }
                                 }
                             }} />
-                            </div>
+                        </div>
                     </div>
                     <button type='button' className='bg-teal-500 p-3 text-white font-semibold rounded-lg'
                         onClick={(e) => {
@@ -158,7 +171,11 @@ export default function Account() {
                     <button disabled className='p-3 font-semibold rounded-lg border-2 transition-all duration-200 border-red-500 text-red-500 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white'>Delete My Account</button>
                 </div>
 
-                <Wallet id={"wallet"} className="p-2 text-sm md:text-base md:px-[3rem] md:py-[3rem] hidden flex-col border-2 border-black rounded-lg w-full lg:min-w-[700px]" />
+                <Wallet
+                    id={"wallet"}
+                    className="p-2 text-sm md:text-base md:px-[3rem] md:py-[3rem] hidden flex-col border-2 border-black rounded-lg w-full lg:min-w-[700px]"
+                    stripe_account_id={userInfo?.stripe_account_id}
+                />
 
                 <div id="form" className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit' >
                     <h1 className='col-[1/3] font-semibold text-2xl self-start sm:self-end'>Your Personal Information</h1>
@@ -234,7 +251,64 @@ export default function Account() {
                         <input required type="text" name="rate" defaultValue={userInfo?.rate} className='border-[1px] border-black p-3 rounded-lg' placeholder='Example 20' />
                     </div>
                     <p className='col-[1/3] text-center self-center'>Add Video Introduction (add one of the following format mp4, avi, mov)</p>
-                    <button className='col-[1/3] text-white rounded-lg bg-teal-500 h-[3rem] w-full sm:w-[30rem] justify-self-center'>Update Intro Video</button>
+                    <video
+                        className='col-[1/3] rounded-lg h-[20rem] w-full sm:w-[30rem] justify-self-center'
+                        controls
+                        src={userInfo?.videoUrl}
+                        controlsList='nodownload'
+                    ></video>
+                    <div className='col-[1/3] text-white rounded-lg bg-teal-500 h-[3rem] w-full sm:w-[30rem] justify-self-center flex items-center justify-center'>
+                        <label htmlFor="video" className='cursor-pointer'>Update Intro Video</label>
+                        <input type="file" id="video" className='w-0' accept='video/*' onChange={async (e) => {
+                            if (e.currentTarget.files && e.currentTarget.files[0].size > 50 * 1048576) {
+                                setAlert({
+                                    message: "Profile Photo size too big.",
+                                    type: "warning",
+                                    open: true
+                                })
+                            } else {
+                                setAlert({
+                                    message: "Uploading Video. Please wait.",
+                                    type: "info",
+                                    open: true
+                                });
+
+                                setUserInfo({
+                                    ...userInfo,
+                                    imageUrl: e.currentTarget.files ? URL.createObjectURL(e.currentTarget.files[0]) : userInfo?.imageURL,
+                                });
+
+                                let formData = new FormData();
+                                formData.append("video", e.currentTarget.files ? e.currentTarget.files[0] : "");
+                                formData.append("fileType", e.currentTarget.files ? e.currentTarget.files[0].type.split("/")[1] : "");
+                                formData.append("id", userInfo?.id)
+
+                                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/uploadVideo`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Authorization": `${cookies.getCookie("token")}`
+                                    },
+                                    body: formData
+                                });
+
+                                const data = await response.json();
+                                if (data?.success) {
+                                    setAlert({
+                                        message: "Intro Video Updated.",
+                                        type: "success",
+                                        open: true
+                                    })
+                                    setRefreshData(refreshData => refreshData++);
+                                } else {
+                                    setAlert({
+                                        message: "Couldn't update your intro video.",
+                                        open: true,
+                                        type: "error"
+                                    })
+                                }
+                            }
+                        }} />
+                    </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Introduce Yourself*</span>
                         <textarea defaultValue={userInfo?.bio} name="bio" required className='border-[1px] border-black   p-3 rounded-lg' />
@@ -321,7 +395,7 @@ export default function Account() {
                     </div>
                     <div className='flex flex-col'>
                         <span>Certifications* (Degree/Diploma)</span>
-                        <select required value={userInfo?.certifications.split("_")[0]} name="certifications" className="border-[1px] p-3 border-black rounded-lg">
+                        <select ref={certificationsRef} required value={userInfo?.certifications.split("_")[0]} name="certifications" className="border-[1px] p-3 border-black rounded-lg">
                             <option value="" disabled>Select</option>
                             <option
                                 value="A Child Development Assistant (formerly Level 1)">
@@ -375,7 +449,7 @@ export default function Account() {
                             </option>
                             <option value="other">Other</option>
                         </select>
-                        <input id="certifications_others" required type="text" value={userInfo?.certifications.split("_")[1]} className={`border-[1px] border-black p-3 rounded-lg mt-3 ${userInfo?.certifications.split("_")[0] !== "other" && "hidden"}`} placeholder='Please specify.' />
+                        <input id="certifications_others" required={certificationsRef.current?.value === "other"} type="text" value={userInfo?.certifications.split("_")[1]} className={`border-[1px] border-black p-3 rounded-lg mt-3 ${userInfo?.certifications.split("_")[0] !== "other" && "hidden"}`} placeholder='Please specify.' />
                     </div>
                     <MultiSelect size='md' radius='md'
                         styles={{

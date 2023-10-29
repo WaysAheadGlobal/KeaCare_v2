@@ -71,6 +71,7 @@ model careseekers_ {
 
 model caregivers_ {
   id                  Int         @id @unique @default(autoincrement())
+  stripe_account_id   String?     @unique
   fname               String?
   lname               String?
   email               String?     @unique
@@ -91,6 +92,7 @@ model caregivers_ {
   created_at          DateTime    @default(now())
   updated_at          DateTime    @updatedAt
   imageUrl            String?     @db.VarChar(500)
+  videoUrl            String?     @db.VarChar(500)
   rating              Float?      @default(0.0)
   reviews             Int         @default(0)
   languages           String?
@@ -194,4 +196,26 @@ model admin_kc {
   password   String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model chats {
+  id           Int      @id @unique @default(autoincrement())
+  senderId     Int
+  receiverId   Int
+  message      String
+  created_on   DateTime @default(now())
+  modified_on  DateTime @updatedAt
+  isRead       Boolean  @default(false)
+  senderType   String
+  receiverType String
+}
+
+model contacts {
+  id           Int      @id @unique @default(autoincrement())
+  senderId     Int
+  receiverId   Int
+  created_on   DateTime @default(now())
+  modified_on  DateTime @updatedAt
+  senderType   String
+  receiverType String
 }

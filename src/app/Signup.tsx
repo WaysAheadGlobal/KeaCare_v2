@@ -32,7 +32,7 @@ export default function Signup() {
 
         const bodyContent = JSON.stringify({
             "email": email.value,
-            "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+            "phoneNo": phoneno.value.split(" ").length !== 1 ? phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", "") : "",
             "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" ")),
             "token": otp_element.value
         });
@@ -81,7 +81,7 @@ export default function Signup() {
         try {
             const bodyContent = JSON.stringify({
                 "email": email.value,
-                "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+                "phoneNo": phoneno.value.split(" ").length !== 1 ? phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", "") : "",
                 "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
             });
 
@@ -108,7 +108,7 @@ export default function Signup() {
                     message: "OTP sent please check your messages.",
                     open: true
                 });
-            } 
+            }
             else if (data?.error) {
                 setAlert({
                     type: "error",

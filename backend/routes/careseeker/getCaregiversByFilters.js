@@ -6,8 +6,7 @@ async function filters(req, res) {
     let sqlQuery = `
         SELECT c.id, c.fname, c.lname, c.gender, c.status, c.imageUrl, c.rating, c.languages, c.speciality, c.experience, 
         c.isVerified, c.task, c.comfortableWithPets, c.rate, c.daysAWeek, c.workingHrs, c.bio, c.distance, c.age, c.reviews
-        FROM caregivers_ as c 
-        ${(speciality || pet || rateStart || rateEnd || experience || languages || addservices || rating || daysAWeek || hrs || gender || age) ? 'WHERE' : ''}
+        FROM caregivers_ as c WHERE 
         ${speciality ? `speciality = '${speciality}'` : ''}
         ${speciality && (pet || rateStart || rateEnd || experience || languages || addservices || rating || daysAWeek || hrs || gender || age) ? ' AND ' : ''}
         ${pet ? `comfortableWithPets = 1` : ''}
@@ -35,7 +34,7 @@ async function filters(req, res) {
         ${gender ? `gender = '${gender}'` : ""}
         ${gender && age ? ' AND ' : ''}
         ${age ? `age >= ${age.split("-")[0]} AND age <= ${age.split("-")[1]}` : ""}
-        AND isVerified = TRUE ORDER BY id LIMIT 10 OFFSET ${((page ?? 1) - 1) * 10}
+        ${(speciality || pet || rateStart || rateEnd || experience || languages || addservices || rating || daysAWeek || hrs || gender || age) ? 'AND' : ''} isVerified = TRUE ORDER BY id LIMIT 10 OFFSET ${((page ?? 1) - 1) * 10}
     `;
 
     connection.query(sqlQuery, (error, results) => {

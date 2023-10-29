@@ -16,6 +16,12 @@ const nextConfig = {
                 port: '',
                 pathname: '/dbimbo0su/image/upload/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'storage.googleapis.com',
+                port: '',
+                pathname: '/keacare_blob_storage/**',
+            },
         ],
     }
 }

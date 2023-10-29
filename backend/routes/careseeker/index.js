@@ -23,8 +23,22 @@ const getCaregiversByName = require("./getCaregiversByName");
 const PaymentHistory = require("./paymentHistory");
 const portal = require("./billingportal");
 const verifyCareseekers = require("../../middleware/verifyCareseeker");
+const { getAllChatsBySenderIdAndReceiverId, getLastChatBySenderIdAndReceiverId, addChat } = require("../chats/chats");
+const { getContacts, addContact } = require("../chats/contacts");
+const Multer = require("multer");
+const { uploadImage } = require("./upload");
+
+
+const multerImage = Multer({
+    storage: Multer.memoryStorage(),
+    limits: {
+        fileSize: 2 * 1024 * 1024, // No larger than 2mb
+    },
+});
 
 const CareseekerRouter = Router();
+
+CareseekerRouter.post("/uploadImage", multerImage.single("image"), uploadImage);
 
 CareseekerRouter.post("/webhook", raw({ type: 'application/json' }), webHook);
 
@@ -64,5 +78,10 @@ CareseekerRouter.get("/getfavourite", query("careseekerEmail").trim().isEmail(),
 CareseekerRouter.delete("/favourites", body("careseekerEmail").trim().isEmail(), removeFromFavourites);
 CareseekerRouter.get("/paymentHistory", query("email").trim().isEmail(), PaymentHistory);
 CareseekerRouter.get("/portal", portal);
+CareseekerRouter.get("/chats/all/:receiverId", getAllChatsBySenderIdAndReceiverId);
+CareseekerRouter.get("/chats/last/:receiverId", getLastChatBySenderIdAndReceiverId);
+CareseekerRouter.post("/chats", body("message").trim().isString(), addChat);
+CareseekerRouter.get("/contacts", getContacts);
+CareseekerRouter.post("/contacts", addContact);
 
 module.exports = CareseekerRouter;

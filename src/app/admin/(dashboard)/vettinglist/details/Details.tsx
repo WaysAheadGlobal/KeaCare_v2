@@ -2,17 +2,21 @@ import React from 'react'
 import Link from 'next/link';
 import Button from './Button';
 
-async function getCaregiver(id: string) {
+async function getCaregiver(id: string, cookies: any) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/getcaregiver?id=${id}`, {
-        cache: "no-store"
+        cache: "no-store",
+        headers: {
+            "Authorization": `${cookies.getCookie("token")}`,
+            "Content-Type": "application/json"
+        }
     });
     const data = await res.json();
     return data;
 }
 
 
-export default async function Details({ searchParams }: { searchParams: { [key: string]: string } }) {
-    const caregiver = await getCaregiver(searchParams.id);
+export default async function Details({ searchParams, cookies }: { searchParams: { [key: string]: string }, cookies: any }) {
+    const caregiver = await getCaregiver(searchParams.id, cookies);
     return (
         <section className='p-5'>
             <div className='grid gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))]'>

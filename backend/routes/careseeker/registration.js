@@ -1,14 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const { validationResult } = require("express-validator");
-/* const cloudinary = require("cloudinary").v2; */
 
 const prisma = new PrismaClient();
-
-/* cloudinary.config({
-    cloud_name: 'dp80qqzsw',
-    api_key: '867115631113898',
-    api_secret: 'KoFw8fVjFfFRmiMwREAPoH0MOdQ'
-}); */
 
 async function Register(req, res) {
     const errors = validationResult(req);
@@ -26,8 +19,6 @@ async function Register(req, res) {
             if (careseeker) {
                 try {
                     const { fname, lname, mobile, dob, gender, address, city, province, zipcode, device_type } = req.body;
-
-                    /* const result = await cloudinary.uploader.upload(image, { public_id: careseeker.id, folder: "keacare" }); */
 
                     const updatedCareseeker = await prisma.careseekers_.update({
                         where: {

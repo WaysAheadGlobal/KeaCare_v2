@@ -19,6 +19,7 @@ import Appointment from './Appointment'
 import { Divider, Rating, Container } from '@mui/material'
 import AlertContext from '../AlertContext'
 import { useCookies } from '@/Hooks/useCookies'
+import Link from 'next/link'
 
 export default function Details() {
     const router = useRouter();
@@ -128,6 +129,29 @@ export default function Details() {
                 open: true
             });
             setFavourite(prev => !prev);
+        }
+    }
+
+    async function addToContacts() {
+        const bodyContent = {
+            receiverId: searchParams.get("id")
+        };
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/contacts`, {
+            method: "POST",
+            body: JSON.stringify(bodyContent),
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `${cookies.getCookie("token")}`
+            }
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            setAlert({
+                type: "success",
+                message: "Added to Contacts",
+                open: true
+            });
         }
     }
 
@@ -325,10 +349,10 @@ export default function Details() {
                                     <BsCalendar3Week className="text-xl" />
                                     Book an Appointment
                                 </button>
-                                <button className='border-[1px] rounded-lg border-black px-5 py-3 flex items-center justify-center gap-3'>
+                                <Link href={`/chats/chat?cw=${caregiver?.id}`} onClick={addToContacts} className='border-[1px] rounded-lg border-black px-5 py-3 flex items-center justify-center gap-3'>
                                     <IoChatbubbles className='text-xl' />
                                     Chat/Message
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

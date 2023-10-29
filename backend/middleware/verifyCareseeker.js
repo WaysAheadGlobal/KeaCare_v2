@@ -8,11 +8,15 @@ const verifyCareseekers = (req, res, next) => {
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
         const { email } = verified;
-        connection.query(`SELECT * FROM careseekers_ WHERE email = '${email}'`, (err) => {
+        connection.query(`SELECT * FROM careseekers_ WHERE email = '${email}'`, (err, results) => {
             if (err) {
                 res.status(401).send("Access Denied");
                 throw err
             } else {
+                req.body.email = email;
+                req.query.email = email;
+                req.body.role = "careseeker";
+                req.body.id = results[0].id;
                 next();
             }
         });

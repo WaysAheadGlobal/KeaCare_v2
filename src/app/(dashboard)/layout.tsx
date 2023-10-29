@@ -42,10 +42,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             <p className='text-sm md:text-base'>Appointments</p>
                         </button>
                     </Link>
-                    <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/chats" && 'bg-white text-teal-500'}`}>
-                        <BsFillChatFill />
-                        <p className='text-sm md:text-base'>Chat/Messages</p>
-                    </button>
+                    <Link href={"/chats"}>
+                        <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/chats" && 'bg-white text-teal-500'}`}>
+                            <BsFillChatFill />
+                            <p className='text-sm md:text-base'>Chat/Messages</p>
+                        </button>
+                    </Link>
                     <button className={`flex gap-2 items-center justify-center border-2 border-white p-3 rounded-lg hover:bg-white hover:text-teal-500 focus:bg-white focus:text-teal-500 ${pathname === "/help" && 'bg-white text-teal-500'}`}>
                         <TfiHeadphoneAlt />
                         <p className='text-sm md:text-base'>Need Assistance</p>

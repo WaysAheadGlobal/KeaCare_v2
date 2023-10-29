@@ -89,7 +89,7 @@ export default function Navbar() {
                     <div className='flex flex-row gap-5'>
                         <Menu trigger='click' shadow='lg' width={200}>
                             <Menu.Target>
-                                <button className={`${jwtToken && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg`}>Log In/Sign up</button>
+                                <button className={`${jwtToken && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg`}>Join Now</button>
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
                                 <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
@@ -97,6 +97,7 @@ export default function Navbar() {
                                         (document.getElementById("login") as HTMLDialogElement).showModal();
                                         setUserType("careseeker");
                                         sessionStorage.setItem("userType", "careseeker");
+                                        cookies.setCookie("userType", "careseeker", 365, "/");
                                     }}>
                                     <span>Careseeker</span>
                                 </Menu.Item>
@@ -106,6 +107,7 @@ export default function Navbar() {
                                         (document.getElementById("login") as HTMLDialogElement).showModal();
                                         setUserType("caregiver");
                                         sessionStorage.setItem("userType", "caregiver");
+                                        cookies.setCookie("userType", "caregiver", 365, "/");
                                     }}
                                 >
                                     <span>Caregiver</span>
@@ -131,6 +133,7 @@ export default function Navbar() {
                                 <Menu.Divider />
                                 <Menu.Item className='font-semibold hover:bg-teal-500 hover:bg-opacity-60' icon={<MdLogout className='text-xl' />}>
                                     <div role='button' onClick={() => {
+                                        cookies.deleteCookie("userType");
                                         cookies.deleteCookie("token");
                                         sessionStorage.removeItem("email");
                                         sessionStorage.removeItem("userType");

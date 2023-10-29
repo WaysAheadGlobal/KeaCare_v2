@@ -15,33 +15,18 @@ export default function Account() {
 
     useEffect(() => {
         async function getUserInfo(email: string) {
-            if (email) {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`, {
-                    headers: {
-                        "Authorization": `${cookies.getCookie("token")}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const data = await response.json();
-                setUserInfo(data);
-            }
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`, {
+                headers: {
+                    "Authorization": `${cookies.getCookie("token")}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await response.json();
+            setUserInfo(data);
         }
         const email = sessionStorage.getItem("email");
         getUserInfo(email ?? "");
     }, [refreshData]);
-
-    const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                resolve(reader.result);
-            }
-            reader.onerror = (error) => {
-                reject(error);
-            }
-            reader.readAsDataURL(image);
-        })
-    }
 
     const { setAlert } = useContext(AlertContext);
 
@@ -91,7 +76,7 @@ export default function Account() {
                 <div className='flex flex-col gap-[2rem]'>
                     <div className='bg-teal-500 rounded-lg flex flex-col gap-5 items-center justify-start h-[17rem]'>
                         <div className='rounded-full bg-white'>
-                            <div className='rounded-full aspect-square w-[7rem] bg-cover bg-no-repeat bg-center' style={{
+                            <div key={refreshData} className='rounded-full aspect-square w-[7rem] bg-cover bg-no-repeat bg-center' style={{
                                 backgroundImage: `url(${userInfo?.imageUrl ? userInfo?.imageUrl : profilePic.src})`
                             }}></div>
                         </div>
@@ -113,8 +98,37 @@ export default function Account() {
                                         setUserInfo({
                                             ...userInfo,
                                             imageUrl: e.currentTarget.files ? URL.createObjectURL(e.currentTarget.files[0]) : userInfo?.imageURL,
-                                            image: e.currentTarget.files ? await convertToBase64(e.currentTarget.files[0]) : undefined
-                                        })
+                                        });
+
+                                        let formData = new FormData();
+                                        formData.append("image", e.currentTarget.files ? e.currentTarget.files[0] : "");
+                                        formData.append("fileType", e.currentTarget.files ? e.currentTarget.files[0].type.split("/")[1] : "");
+                                        formData.append("id", userInfo?.id)
+
+                                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/uploadImage`, {
+                                            method: "POST",
+                                            cache: "no-store",
+                                            headers: {
+                                                "Authorization": `${cookies.getCookie("token")}`
+                                            },
+                                            body: formData
+                                        });
+
+                                        const data = await response.json();
+                                        setRefreshData(refreshData => refreshData + 1);
+                                        if (data?.success) {
+                                            setAlert({
+                                                message: "Profile Photo Updated.",
+                                                type: "success",
+                                                open: true
+                                            })
+                                        } else {
+                                            setAlert({
+                                                message: "Couldn't update your profile photo.",
+                                                open: true,
+                                                type: "error"
+                                            })
+                                        }
                                     }
                                 }} />
                         </div>

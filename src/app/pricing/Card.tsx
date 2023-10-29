@@ -24,6 +24,7 @@ export default function Card({ price, heading, id, duration }: { price: string, 
                     if (!sessionStorage.getItem("email")) {
                         (document.getElementById("login") as HTMLDialogElement).showModal();
                         setUserType("careseeker");
+                        cookies.setCookie("userType", "careseeker", 365, "/");
                         sessionStorage.setItem("userType", "careseeker");
                         return;
                     }

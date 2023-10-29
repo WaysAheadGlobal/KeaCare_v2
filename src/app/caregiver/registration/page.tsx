@@ -30,32 +30,19 @@ export default function Registration() {
         })
     }, [])
 
-    const convertToBase64 = (image: Blob): Promise<string | ArrayBuffer | null> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                resolve(reader.result);
-            }
-            reader.onerror = (error) => {
-                reject(error);
-            }
-            reader.readAsDataURL(image);
-        })
-    }
 
     const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const profilePhoto = ((document.getElementById("profilePhoto") as HTMLInputElement).files as FileList)[0];
-        const fname = (document.getElementById("fname") as HTMLInputElement).value;
-        const lname = (document.getElementById("lname") as HTMLInputElement).value;
-        const email = (document.getElementById("email_regis") as HTMLInputElement).value;
-        const mobile = (document.getElementById("mobile") as HTMLInputElement).value;
-        const dob = (document.getElementById("dob") as HTMLInputElement).value;
-        const gender = (document.getElementById("gender") as HTMLSelectElement).value;
-        const address = (document.getElementById("address") as HTMLInputElement).value;
-        const city = (document.getElementById("city") as HTMLInputElement).value;
-        const province = (document.getElementById("province") as HTMLInputElement).value;
+        const fname = (document.getElementById("fname") as HTMLInputElement)?.value ?? '';
+        const lname = (document.getElementById("lname") as HTMLInputElement)?.value ?? '';
+        const email = (document.getElementById("email_regis") as HTMLInputElement)?.value ?? '';
+        const mobile = (document.getElementById("mobile") as HTMLInputElement)?.value ?? '';
+        const dob = (document.getElementById("dob") as HTMLInputElement)?.value ?? '';
+        const gender = (document.getElementById("gender") as HTMLSelectElement)?.value ?? '';
+        const address = (document.getElementById("address") as HTMLInputElement)?.value ?? '';
+        const city = (document.getElementById("city") as HTMLInputElement)?.value ?? '';
+        const province = (document.getElementById("province") as HTMLInputElement)?.value ?? '';
         const zipcode = (document.getElementById("zipcode_regis_caregiver") as HTMLInputElement).value;
         const speciality = (document.getElementById("speciality") as HTMLSelectElement).value;
         const experience = (document.getElementById("experience") as HTMLSelectElement).value;
@@ -75,10 +62,6 @@ export default function Registration() {
         const ref2Relation = (document.getElementById("ref2Relation") as HTMLInputElement).value;
 
         const bodyContent = JSON.stringify({
-            image: {
-                file: await convertToBase64(profilePhoto),
-                name: profilePhoto.name.split(".")[0]
-            },
             fname: fname,
             lname: lname,
             email: email,
@@ -125,8 +108,23 @@ export default function Registration() {
 
             const data = await response.json();
             if (data?.success) {
-                setLoading(false);
-                router.push("/caregiver/account");
+                let formData = new FormData();
+                const file = (document.getElementById("profilePhoto") as HTMLInputElement)?.files?.[0];
+                formData.append("image", file ?? "");
+                formData.append("fileType", file?.type.split("/")[1] ?? "");
+                formData.append("id", data?.id);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/uploadImage`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `${cookies.getCookie("token")}`
+                    },
+                    body: formData
+                });
+                const data2 = await res.json();
+                if (data2?.success) {
+                    setLoading(false);
+                    router.push("/caregiver/account");
+                }
             } else {
                 setLoading(false);
             }

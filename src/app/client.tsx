@@ -8,12 +8,15 @@ import UserTypeContext from '@/context/UserType';
 import React, { useMemo, useState, useEffect } from 'react'
 import AlertContext from './AlertContext';
 import Alert from './Alert';
+import { useCookies } from '@/Hooks/useCookies';
 
 export default function Client({ children }: { children: React.ReactNode }) {
     const [userType, setUserType] = useState<string>();
     const values = useMemo(() => ({ userType, setUserType }), [userType]);
+    const cookies = useCookies();
+
     useEffect(() => {
-        const val = sessionStorage.getItem("userType");
+        const val = cookies.getCookie("userType");
         setUserType(val ?? "careseeker");
     }, []);
 
@@ -25,7 +28,7 @@ export default function Client({ children }: { children: React.ReactNode }) {
 
     return (
         <>
-            <UserTypeContext.Provider value={values} >
+            <UserTypeContext.Provider value={values}>
                 <Navbar />
                 <AlertContext.Provider value={{ alert, setAlert }}>
                     <main id="mainBody" className='min-h-[100dvh]'>

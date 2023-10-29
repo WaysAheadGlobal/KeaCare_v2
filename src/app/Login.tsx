@@ -63,14 +63,16 @@ export default function Login() {
         try {
             const bodyContent = JSON.stringify({
                 "email": email.value,
-                "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+                "phoneNo": phoneno.value.split(" ").length !== 1 ? phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", "") : "",
                 "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
             });
+
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/login/otp`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+
                 },
                 body: bodyContent
             });
@@ -125,7 +127,7 @@ export default function Login() {
         const bodyContent = JSON.stringify({
             'email': email.value,
             'token': otp.value,
-            "phoneNo": phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", ""),
+            "phoneNo": phoneno.value.split(" ").length !== 1 ? phoneno.value.substring(phoneno.value.indexOf(" ") + 1).replaceAll(" ", "") : "",
             "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
         });
 
