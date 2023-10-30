@@ -10,7 +10,7 @@ export default function Wallet({ id, className, stripe_account_id }: { id: strin
 
     useEffect(() => {
         async function wallet() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/wallet?email=${sessionStorage.getItem("email")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/wallet?email=${sessionStorage.getItem("email")}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"
@@ -29,7 +29,7 @@ export default function Wallet({ id, className, stripe_account_id }: { id: strin
     }, []);
 
     async function createStripeAccount() {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/createStripeAccount`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/createStripeAccount`, {
             method: "POST",
             headers: {
                 "Authorization": `${cookies.getCookie("token")}`,
@@ -45,7 +45,7 @@ export default function Wallet({ id, className, stripe_account_id }: { id: strin
     }
 
     async function payout() {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/payout`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/payout`, {
             method: "POST",
             headers: {
                 "Authorization": `${cookies.getCookie("token")}`,

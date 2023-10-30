@@ -37,7 +37,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getCaregivers() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getCaregivers?page=1`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getCaregivers?page=1`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"
@@ -51,7 +51,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getReviews() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/review?caregiverId=${searchParams.get("id")}&email=${sessionStorage.getItem("email")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/review?caregiverId=${searchParams.get("id")}&email=${sessionStorage.getItem("email")}`, {
                 cache: "no-store",
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
@@ -68,7 +68,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getCaregiverById() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("id")}`, {
                 cache: "no-store",
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
@@ -83,7 +83,7 @@ export default function Details() {
 
     useEffect(() => {
         async function getFavourite() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getfavourite?careseekerEmail=${sessionStorage.getItem("email")}&caregiverId=${searchParams.get("id")}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"
@@ -112,7 +112,7 @@ export default function Details() {
             careseekerEmail: sessionStorage.getItem("email"),
             caregiverId: searchParams.get("id")
         };
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/favourites`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/favourites`, {
             method: favourite ? "DELETE" : "POST",
             body: JSON.stringify(bodyContent),
             headers: {
@@ -136,7 +136,7 @@ export default function Details() {
         const bodyContent = {
             receiverId: searchParams.get("id")
         };
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/contacts`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/contacts`, {
             method: "POST",
             body: JSON.stringify(bodyContent),
             headers: {
@@ -189,7 +189,7 @@ export default function Details() {
                                     ...review,
                                     caregiverId: searchParams.get("id")
                                 });
-                                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/review`, {
+                                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/review`, {
                                     method: Object?.keys(reviews.userReview).length !== 0 ? "PUT" : "POST",
                                     headers: {
                                         "Content-Type": "application/json",

@@ -9,7 +9,7 @@ export default function Dashboard() {
 
     React.useEffect(() => {
         async function dashboard() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/dashboard`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/admin/dashboard`, {
                 cache: "no-store",
                 headers: {
                     "Authorization": `${cookies.getCookie("adminToken")}`,

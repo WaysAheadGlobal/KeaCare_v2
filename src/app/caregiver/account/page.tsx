@@ -21,7 +21,7 @@ export default function Account() {
 
     useEffect(() => {
         async function getUserInfo(email: string) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?email=${email}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?email=${email}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"
@@ -56,7 +56,7 @@ export default function Account() {
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/updateAccount`, {
+                    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/updateAccount`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export default function Account() {
                                     formData.append("fileType", e.currentTarget.files ? e.currentTarget.files[0].type.split("/")[1] : "");
                                     formData.append("id", userInfo?.id)
 
-                                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/uploadImage`, {
+                                    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/uploadImage`, {
                                         method: "POST",
                                         headers: {
                                             "Authorization": `${cookies.getCookie("token")}`
@@ -283,7 +283,7 @@ export default function Account() {
                                 formData.append("fileType", e.currentTarget.files ? e.currentTarget.files[0].type.split("/")[1] : "");
                                 formData.append("id", userInfo?.id)
 
-                                const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/uploadVideo`, {
+                                const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/uploadVideo`, {
                                     method: "POST",
                                     headers: {
                                         "Authorization": `${cookies.getCookie("token")}`

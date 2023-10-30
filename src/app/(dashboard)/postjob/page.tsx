@@ -60,7 +60,7 @@ export default function PostJob() {
 
                     const bodyContent = JSON.stringify({ job: { ...job, ...ObjectToString(job.time) }, email: sessionStorage.getItem("email") });
 
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/postjob`, {
+                    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/postjob`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

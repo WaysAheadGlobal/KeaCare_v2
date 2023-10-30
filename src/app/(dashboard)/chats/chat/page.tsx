@@ -27,7 +27,7 @@ export default function Chat() {
 
     useEffect(() => {
         async function getCaregiverById() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("cw")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/getCaregiverInfo?id=${searchParams.get("cw")}`, {
                 cache: "no-store",
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
@@ -44,7 +44,7 @@ export default function Chat() {
         setChats([]);
         setMessage("");
         async function getAllChats() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/chats/all/${searchParams.get("cw")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/chats/all/${searchParams.get("cw")}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': cookies.getCookie("token") as string,
@@ -65,7 +65,7 @@ export default function Chat() {
         e.preventDefault();
         if (!message) return;
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/chats`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/chats`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': cookies.getCookie("token") as string,

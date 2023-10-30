@@ -36,7 +36,7 @@ export default function Card({ price, heading, id, duration }: { price: string, 
                         redo: sessionStorage.getItem("pricing") === "redo"
                     });
 
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/payment`, {
+                    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/payment`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

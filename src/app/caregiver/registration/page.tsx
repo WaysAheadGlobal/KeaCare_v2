@@ -97,7 +97,7 @@ export default function Registration() {
 
         try {
             setLoading(true);
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/registration`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/registration`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -113,7 +113,7 @@ export default function Registration() {
                 formData.append("image", file ?? "");
                 formData.append("fileType", file?.type.split("/")[1] ?? "");
                 formData.append("id", data?.id);
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/caregiver/uploadImage`, {
+                const res = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/uploadImage`, {
                     method: "POST",
                     headers: {
                         "Authorization": `${cookies.getCookie("token")}`

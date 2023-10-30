@@ -32,7 +32,7 @@ export default function JobDetails() {
 
     useEffect(() => {
         async function getJobById() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getjob?id=${searchParams.get("id")}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"
@@ -82,7 +82,7 @@ export default function JobDetails() {
                         languages,
                         id: searchParams.get("id"),
                     });
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/updatejob`, {
+                    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/updatejob`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",

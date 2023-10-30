@@ -19,7 +19,7 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     useEffect(() => {
         async function filter() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rateStart=${filters?.rateStart ?? ""}&rateEnd=${filters?.rateEnd ?? ""}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}&page=${searchParams.get("page") ?? 1}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/filters?speciality=${filters?.speciality}&pet=${filters?.pets}&rateStart=${filters?.rateStart ?? ""}&rateEnd=${filters?.rateEnd ?? ""}&experience=${filters?.experience}&daysAWeek=${filters?.daysAWeek}&hrs=${filters?.hrs}&gender=${filters?.gender}&age=${filters?.age}&languages=${filters?.languages}&addservices=${filters?.addservices}&rating=${filters?.rating}&page=${searchParams.get("page") ?? 1}`, {
                 cache: "no-store",
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
@@ -38,7 +38,7 @@ export default function Caregivers({ filters }: { filters: any }) {
 
     useEffect(() => {
         async function getCaregiverByName() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/filterByName?name=${search}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/filterByName?name=${search}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"

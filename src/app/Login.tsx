@@ -19,7 +19,7 @@ export default function Login() {
     const [phoneNo, setPhoneNo] = useState<E164Number>();
 
     async function handleGoogleLogin(credentials: CredentialResponse) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/google-login`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/google-login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -68,7 +68,7 @@ export default function Login() {
             });
 
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/login/otp`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/login/otp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -131,7 +131,7 @@ export default function Login() {
             "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
         });
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/login`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

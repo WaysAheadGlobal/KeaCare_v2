@@ -3,7 +3,7 @@ import Favourite from './Favourite';
 
 async function getFavourites(email: string, cookies: any) {
     if (email) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/favourites?careseekerEmail=${email}`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/favourites?careseekerEmail=${email}`, {
             headers: {
                 "Authorization": `${cookies.getCookie("token")}`,
                 "Content-Type": "application/json"

@@ -30,7 +30,7 @@ export default function CaregiverList() {
     }, []);
 
     async function getContacts() {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/contacts`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/contacts`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

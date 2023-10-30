@@ -3,7 +3,7 @@ import React from 'react'
 
 async function getPostings(email: string | null, cookies: any) {
     if (email) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/posts?email=${email}`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/posts?email=${email}`, {
             headers: {
                 "Authorization": `${cookies.getCookie("token")}`,
                 "Content-Type": "application/json"

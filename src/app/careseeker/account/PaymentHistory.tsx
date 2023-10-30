@@ -10,7 +10,7 @@ export default function PaymentHistory({ id, className }: { id: string, classNam
 
     useEffect(() => {
         async function getPaymentHistory() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/paymentHistory?email=${sessionStorage.getItem("email")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/paymentHistory?email=${sessionStorage.getItem("email")}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"

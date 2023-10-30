@@ -4,7 +4,7 @@ import Appointment from './Appointment';
 
 async function getAppointments(email: string | null, cookies: any) {
     if (email) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/appointments?careseekerEmail=${email}`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments?careseekerEmail=${email}`, {
             headers: {
                 "Authorization": `${cookies.getCookie("token")}`,
                 "Content-Type": "application/json"

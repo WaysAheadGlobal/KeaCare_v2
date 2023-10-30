@@ -15,7 +15,7 @@ export default function Account() {
 
     useEffect(() => {
         async function getUserInfo(email: string) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/account?email=${email}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/account?email=${email}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"
@@ -45,7 +45,7 @@ export default function Account() {
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/updateAccount`, {
+                    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/updateAccount`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -105,7 +105,7 @@ export default function Account() {
                                         formData.append("fileType", e.currentTarget.files ? e.currentTarget.files[0].type.split("/")[1] : "");
                                         formData.append("id", userInfo?.id)
 
-                                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/uploadImage`, {
+                                        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/uploadImage`, {
                                             method: "POST",
                                             cache: "no-store",
                                             headers: {

@@ -37,7 +37,7 @@ export default function Signup() {
             "token": otp_element.value
         });
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/signup`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -85,7 +85,7 @@ export default function Signup() {
                 "countryCode": phoneno.value.substring(0, phoneno.value.indexOf(" "))
             });
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/${userType}/signup/otp`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/${userType}/signup/otp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

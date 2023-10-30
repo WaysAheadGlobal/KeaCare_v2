@@ -15,6 +15,8 @@ const verifyCareseekers = (req, res, next) => {
             } else {
                 req.body.email = email;
                 req.query.email = email;
+                req.body.careseekerEmail = email;
+                req.query.careseekerEmail = email;
                 req.body.role = "careseeker";
                 req.body.id = results[0].id;
                 next();

@@ -10,7 +10,7 @@ export default function Subscription({ id, className }: { id: string, className:
 
     useEffect(() => {
         async function getSubscription() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getSubcription?email=${sessionStorage.getItem("email")}`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getSubcription?email=${sessionStorage.getItem("email")}`, {
                 headers: {
                     "Authorization": `${cookies.getCookie("token")}`,
                     "Content-Type": "application/json"
@@ -50,7 +50,7 @@ export default function Subscription({ id, className }: { id: string, className:
                 <button className='bg-teal-500 hover:bg-teal-600 py-2 px-4 rounded-md text-white'
                     onClick={async (e) => {
                         e.preventDefault();
-                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/portal?email=${sessionStorage.getItem("email")}`, {
+                        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/portal?email=${sessionStorage.getItem("email")}`, {
                             headers: {
                                 "Authorization": `${cookies.getCookie("token")}`,
                                 "Content-Type": "application/json"

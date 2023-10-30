@@ -7,7 +7,7 @@ export default function Pricing() {
     const [products, setProducts] = useState<any[]>([]);
     useEffect(() => {
         async function getProducts() {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/getproducts`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/getproducts`, {
                 cache: "no-cache",
             });
             const data = await response.json();

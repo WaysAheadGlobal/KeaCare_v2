@@ -20,7 +20,7 @@ export default function Login() {
 
     React.useEffect(() => {
         async function verifyToken(token: string) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/verify-token`, {
+            const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/admin/verify-token`, {
                 method: "POST",
                 headers: {
                     "Authorization": `${token}`,
@@ -44,7 +44,7 @@ export default function Login() {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/login`, {
+        const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/admin/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

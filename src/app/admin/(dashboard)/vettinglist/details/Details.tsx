@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Button from './Button';
 
 async function getCaregiver(id: string, cookies: any) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/getcaregiver?id=${id}`, {
+    const res = await fetch(`https://webapi.waysdatalabs.com/keacare/api/admin/getcaregiver?id=${id}`, {
         cache: "no-store",
         headers: {
             "Authorization": `${cookies.getCookie("token")}`,

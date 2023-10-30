@@ -12,7 +12,7 @@ export default function ListItem({ id, image, name, speciality }: { id: string, 
     const refDivider = React.useRef<HTMLHRElement>(null);
 
     async function verifyCaregiver(id: string, action: "verify" | "not verify") {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/caregivers/verify?id=${id}&action=${action}`, {
+        const res = await fetch(`https://webapi.waysdatalabs.com/keacare/api/admin/caregivers/verify?id=${id}&action=${action}`, {
             method: "PUT"
         });
         await res.json();

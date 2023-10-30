@@ -130,7 +130,7 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                     price: price * Time.length,
                                     appointment: ObjectToString(appointment),
                                 });
-                                const response1 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/appointments/checkAppointments`, {
+                                const response1 = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments/checkAppointments`, {
                                     method: "POST",
                                     headers: {
                                         "Authorization": `${cookies.getCookie("token")}`,
@@ -140,7 +140,7 @@ export default function Appointment({ price, id, workingHrs }: { price: number, 
                                 });
                                 const check = await response1.json();
                                 if (check?.success) {
-                                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/careseeker/appointments`, {
+                                    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/careseeker/appointments`, {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json",

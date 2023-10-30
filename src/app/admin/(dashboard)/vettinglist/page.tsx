@@ -14,7 +14,7 @@ export default function VettingList() {
 
     React.useEffect(() => {
         async function getVettingList(page?: string) {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/caregivers?page=${page ?? 1}`, {
+            const res = await fetch(`https://webapi.waysdatalabs.com/keacare/api/admin/caregivers?page=${page ?? 1}`, {
                 cache: "no-store",
                 headers: {
                     "Authorization": `${cookies.getCookie("adminToken")}`,

@@ -4,7 +4,7 @@ import ListItem from './ListItem';
 import Link from 'next/link';
 
 async function getPaymentInfo(page?: number, cookies?: any) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/keacare/api/admin/caregivers/payment?page=${page ?? 1}`, {
+    const response = await fetch(`https://webapi.waysdatalabs.com/keacare/api/admin/caregivers/payment?page=${page ?? 1}`, {
         cache: "no-store",
         headers: {
             "Authorization": `${cookies.getCookie("adminToken")}`,

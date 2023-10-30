@@ -18,6 +18,8 @@ const verifyCaregivers = (req, res, next) => {
                 }
                 req.body.email = email;
                 req.query.email = email;
+                req.body.caregiverEmail = email;
+                req.query.caregiverEmail = email;
                 req.body.role = "caregiver";
                 req.body.id = results[0].id;
                 next();
