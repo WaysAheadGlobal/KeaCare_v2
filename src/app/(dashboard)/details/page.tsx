@@ -1,7 +1,7 @@
 "use client"
 
 import Image from 'next/image'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { use, useContext, useEffect, useRef, useState } from 'react'
 import { BsCalendarCheck, BsCalendar2Week, BsCalendar3Week, BsArrowLeft, BsStarFill } from 'react-icons/bs'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import specialityIcon from '../../../../public/specialityIcon.png'
@@ -34,6 +34,8 @@ export default function Details() {
     const searchParams = useSearchParams();
     const [favourite, setFavourite] = useState<boolean>(false);
     const { setAlert } = useContext(AlertContext);
+    const videoDialogRef = useRef<HTMLDialogElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         async function getCaregivers() {
@@ -224,6 +226,28 @@ export default function Details() {
                         </form>
                     </div>
                 </dialog>
+                <dialog
+                    ref={videoDialogRef}
+                    id="video_player_dialog"
+                    className='w-[60dvw] h-[70dvh] p-0 bg-transparent'
+                    key={caregiver?.id + "dialog"}
+                >
+                    <div className='flex flex-col'>
+                        <button className="self-end p-2 text-black text-xl rounded-full hover:bg-black hover:bg-opacity-10" onClick={() => {
+                            videoDialogRef.current?.close();
+                            videoRef.current?.pause();
+                        }}>
+                            <IoClose />
+                        </button>
+                        <video
+                            ref={videoRef}
+                            src={caregiver?.videoUrl}
+                            controls
+                            className="w-full h-[60dvh] bg-black rounded-lg"
+                            controlsList='nodownload'
+                        ></video>
+                    </div>
+                </dialog>
                 <section className='flex flex-col w-full gap-3 mb-5 lg:mb-0'>
                     <p className='self-start cursor-pointer text-teal-500 font-semibold flex gap-2 items-center justify-center hover:underline' onClick={() => {
                         router.back();
@@ -268,7 +292,11 @@ export default function Details() {
                             <div className='flex flex-row justify-between items-center'>
                                 <div className='space-y-2'>
                                     <p className='text-lg font-bold'>{caregiver?.fname + " " + caregiver?.lname}</p>
-                                    <button className='bg-teal-500 text-white px-5 py-3 rounded-lg'>See Introductory Video</button>
+                                    <button className='bg-teal-500 text-white px-5 py-3 rounded-lg'
+                                        onClick={() => {
+                                            videoDialogRef.current?.showModal();
+                                        }}
+                                    >See Introductory Video</button>
                                 </div>
                                 <div className='flex flex-col gap-3 items-end'>
                                     <div className='flex flex-row gap-2 items-center justify-center text-red-500'>
@@ -356,7 +384,7 @@ export default function Details() {
                             </div>
                         </div>
                     </div>
-                </section>
+                    d</section>
                 <section id="appointments" className="opacity-0 h-0 relative -z-50 transition-all duration-300 self-start w-full">
                     <Divider />
                     <Appointment price={caregiver?.rate} id={Number(searchParams.get("id"))} workingHrs={caregiver?.workingHrs} />

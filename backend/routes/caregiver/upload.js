@@ -9,10 +9,8 @@ const bucket = storage.bucket("keacare_blob_storage"); // Get this from Google C
 
 
 const uploadImage = async (req, res) => {
-    console.log("Made it /upload");
     try {
         if (req.file) {
-            console.log("File found, trying to upload...");
             const blob = bucket.file(`caregiver_image/caregiver${req.body.id}.${req.body.fileType}`);
             const blobStream = blob.createWriteStream();
 
@@ -25,7 +23,6 @@ const uploadImage = async (req, res) => {
             blobStream.end(req.file.buffer);
 
         } else {
-            console.log("No file found");
             res.status(400).json({ success: false });
         }
     } catch (error) {
@@ -35,10 +32,8 @@ const uploadImage = async (req, res) => {
 }
 
 const uploadVideo = async (req, res) => {
-    console.log("Made it /upload");
     try {
         if (req.file) {
-            console.log("File found, trying to upload...");
             const blob = bucket.file(`caregiver_video/caregiver${req.body.id}.${req.body.fileType}`);
             const blobStream = blob.createWriteStream();
 
@@ -51,7 +46,6 @@ const uploadVideo = async (req, res) => {
             blobStream.end(req.file.buffer);
 
         } else {
-            console.log("No file found");
             res.status(400).json({ success: false });
         }
     } catch (error) {

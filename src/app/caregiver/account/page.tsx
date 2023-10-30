@@ -262,7 +262,7 @@ export default function Account() {
                         <input type="file" id="video" className='w-0' accept='video/*' onChange={async (e) => {
                             if (e.currentTarget.files && e.currentTarget.files[0].size > 50 * 1048576) {
                                 setAlert({
-                                    message: "Profile Photo size too big.",
+                                    message: "Video size too big.",
                                     type: "warning",
                                     open: true
                                 })

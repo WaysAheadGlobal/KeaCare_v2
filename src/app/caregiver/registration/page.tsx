@@ -22,6 +22,8 @@ export default function Registration() {
     const { setAlert } = useContext(AlertContext);
     const cookies = useCookies();
     const certificationsRef = useRef<HTMLSelectElement>(null);
+    const [videoSrc, setVideoSrc] = useState<string>("");
+    const videoFileRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setAutoFill({
@@ -33,6 +35,12 @@ export default function Registration() {
 
     const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setAlert({
+            message: "Please wait while we are processing your request.",
+            type: "info",
+            open: true
+        });
 
         const fname = (document.getElementById("fname") as HTMLInputElement)?.value ?? '';
         const lname = (document.getElementById("lname") as HTMLInputElement)?.value ?? '';
@@ -121,7 +129,22 @@ export default function Registration() {
                     body: formData
                 });
                 const data2 = await res.json();
-                if (data2?.success) {
+
+                let formData_ = new FormData();
+                const file_ = videoFileRef.current?.files?.[0];
+                formData_.append("video", file_ ?? "");
+                formData_.append("fileType", file_?.type.split("/")[1] ?? "");
+                formData_.append("id", data?.id);
+                const res_ = await fetch(`https://webapi.waysdatalabs.com/keacare/api/caregiver/uploadVideo`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `${cookies.getCookie("token")}`
+                    },
+                    body: formData_
+                });
+                const data3 = await res_.json();
+
+                if (data2?.success && data3?.success) {
                     setLoading(false);
                     router.push("/caregiver/account");
                 }
@@ -228,7 +251,26 @@ export default function Registration() {
                         <input id="rate" required type="text" className='border-[1px] border-black p-3 rounded-lg' placeholder='Example 20' />
                     </div>
                     <p className='col-[1/3] text-center self-center'>Add Video Introduction (add one of the following format mp4, avi, mov)</p>
-                    <button className='col-[1/3] text-white rounded-lg bg-teal-500 h-[3rem] sm:w-full md:w-[30rem] justify-self-center'>Upload Intro Video</button>
+                    <video
+                        className='col-[1/3] rounded-lg h-[20rem] w-full sm:w-[30rem] justify-self-center'
+                        controls
+                        src={videoSrc}
+                        controlsList='nodownload'
+                    />
+                    <div className='col-[1/3] text-white rounded-lg bg-teal-500 h-[3rem] w-full sm:w-[30rem] justify-self-center flex items-center justify-center'>
+                        <label htmlFor="video" className='cursor-pointer'>Upload Intro Video</label>
+                        <input ref={videoFileRef} type="file" id="video" className='w-0' accept='video/*' onChange={async (e) => {
+                            if (e.currentTarget.files && e.currentTarget.files[0].size > 50 * 1048576) {
+                                setAlert({
+                                    message: "Video size too big.",
+                                    type: "warning",
+                                    open: true
+                                })
+                            } else {
+                                setVideoSrc(URL.createObjectURL(e.currentTarget.files ? e.currentTarget.files[0] : new Blob()));
+                            }
+                        }} />
+                    </div>
                     <div className='flex flex-col col-[1/3]'>
                         <span>Introduce Yourself*</span>
                         <textarea id="bio" required className='border-[1px] border-black p-3 rounded-lg' />
