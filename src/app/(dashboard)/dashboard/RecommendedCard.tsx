@@ -42,10 +42,15 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
                     <span>Multilingual</span>
                 </div>
             </div>
-            <button className='bg-teal-500 text-white rounded-md flex items-center justify-center gap-3 p-3'>
+            <Link href={{
+                pathname: "/details",
+                query: {
+                    id: caregiver?.id
+                }
+            }} className='bg-teal-500 text-white rounded-md flex items-center justify-center gap-3 p-3'>
                 <HiMiniVideoCamera />
                 <p>See Introductory Video!</p>
-            </button>
+            </Link>
             <div className='flex flex-col gap-2 p-2'>
                 <div className='flex flex-row gap-3 items-center justify-start'>
                     <Image src={specialityIcon.src} alt='experience' width={specialityIcon.width} height={specialityIcon.height} className='w-[1.3rem]' />
@@ -64,7 +69,7 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
                     <p>Can multitask: {(caregiver?.task?.split(",").length > 1) ? "Yes" : "No"}</p>
                 </div>
             </div>
-            {/* <div className='flex-grow'></div> */}            
+            {/* <div className='flex-grow'></div> */}
             <div className='flex items-center justify-between p-2'>
                 <Link href={{
                     pathname: "/details",
