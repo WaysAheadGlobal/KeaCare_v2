@@ -10,15 +10,19 @@ const HowItWorks = dynamic(() => import('@/app/HowItWorks'));
 const Leaders = dynamic(() => import('@/app/Leaders'));
 const Responsive_Compassionate = dynamic(() => import('@/app/Responsive_Compassionate'));
 const Introduction = dynamic(() => import('@/app/Introduction'));
+const Banners = dynamic(() => import('@/app/banners'));
 const ValueProposition = dynamic(() => import('@/app/ValueProposition'));
 const AboutUs = dynamic(() => import('@/app/AboutUs'));
 const Chat = dynamic(() => import('@/app/Chat'));
+const Services = dynamic(()=> import('@/app/Services'));
 
 
 export default function Home() {
     const { setUserType } = useContext(UserTypeContext);
     return (
         <>
+            <Banners/>
+            <Services/>
             <Introduction />
             <AboutUs />
             <ValueProposition />

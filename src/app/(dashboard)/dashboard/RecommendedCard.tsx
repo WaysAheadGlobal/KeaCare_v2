@@ -9,6 +9,7 @@ import specialityIcon from '../../../../public/specialityIcon.png'
 import experienceIcon from '../../../../public/experienceIcon.png'
 import multitaskIcon from '../../../../public/multitaskIcon.png'
 import petsIcon from '../../../../public/petsIcon.png'
+import VerrifiedTickMark from '../../../../public/VerrifiedTickMark.png'
 import Link from 'next/link'
 
 export default function RecommendedCard({ caregiver }: { caregiver: any }) {
@@ -20,7 +21,23 @@ export default function RecommendedCard({ caregiver }: { caregiver: any }) {
 
     return (
         <div className='flex flex-col p-2 rounded-lg bg-white transition-shadow shadow-lg hover:shadow-2xl gap-3'>
-            <Image src={caregiver?.imageUrl} width={300} height={300} alt='caregiver' className='flex-grow w-full sm:w-[300px] h-[300px] rounded-lg object-cover object-center' />
+              <div className='flex flex-row-reverse flex-wrap'> {/* Added items-center */}
+        
+        {caregiver?.isVerified ? (
+            <div className='flex-shrink-0 ml-auto -mt-4 mr-2'> {/* Adjusted margins */}
+                <img src={VerrifiedTickMark.src} alt="VerifiedTickMark" className='w-8 h-8' />
+                <p className='text-green-700 tracking-tight text-sm pl-1'>Vetted</p> 
+            </div>
+        ) : null}
+        <Image 
+            src={caregiver?.imageUrl} 
+            width={250} 
+            height={250} 
+            alt='caregiver' 
+            className='flex-shrink-0 w-full sm:w-[300px] h-[300px] rounded-lg object-cover object-center' 
+        />
+    </div>
+
             <div className='flex flex-row justify-between px-2 items-center'>
                 <p className='font-semibold'>{caregiver?.fname + " " + caregiver?.lname}</p>
                 <div className='flex flex-row gap-2 items-center justify-center text-red-500'>

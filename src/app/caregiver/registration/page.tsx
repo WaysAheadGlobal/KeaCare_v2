@@ -160,7 +160,7 @@ export default function Registration() {
     return (
         <>
             <h1 className='py-[3rem] px-[2rem] text-center text-3xl text-white bg-teal-500 font-bold'>Complete your Registration</h1>
-            <section className='flex flex-col items-center justify-center p-[2rem] sm:p-[5rem]'>
+            <section className='flex flex-col items-center justify-center p-[2rem] sm:p-[5rem] bg-[#F3FDFD] '>
                 <form className='md:px-[5rem] md:py-[5rem] flex flex-col md:grid md:grid-cols-2 md:grid-rows-[auto] gap-[2rem] md:border-[1px] md:border-black rounded-lg h-fit w-full md:w-fit'
                     onSubmit={handleRegistration} >
                     <p className='col-[1/3] font-semibold text-2xl self-center md:self-end'>Your Personal Information</p>

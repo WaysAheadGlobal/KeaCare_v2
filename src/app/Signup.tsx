@@ -9,6 +9,7 @@ import Alert from './Alert'
 import AlertContext from './AlertContext'
 import PhoneInput from 'react-phone-number-input'
 import { E164Number } from 'libphonenumber-js/types'
+import SingupAdsPicture from '../../public/SingupAdsPicture.png';
 
 export default function Signup() {
     const { userType } = useContext(UserTypeContext);
@@ -129,13 +130,23 @@ export default function Signup() {
     return (
         <dialog id="signup" className='rounded-lg backdrop:bg-black backdrop:bg-opacity-70 p-0'>
             <Alert />
+                    
+            <div className='flex flex row '>
+                <div className="hidden md:block">
+  <img src={SingupAdsPicture.src} className="w-48 h-full" />
+</div> 
+
             <div className='flex flex-col gap-3 p-2 w-screen sm:w-[30rem]'>
                 <IoClose className='self-end text-2xl relative z-10' onClick={() => {
                     (document.getElementById("signup") as HTMLDialogElement).close();
                 }} />
+                
                 <div className='flex flex-col gap-3 -mt-10 p-5'>
-                    <h1 className='text-xl font-semibold'>Signup as a {userType}</h1>
-                    <h2 className='text-lg'>Already a Member? <span className='text-teal-500 cursor-pointer' onClick={() => {
+                <h1 className=' font-semibold text-teal-600 m-auto text-2xl uppercase' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}>JOIN US NOW AS A {userType}</h1>
+                <h1 className=' font-medium m-auto text-xl'>and touch details of thousands</h1>
+                    <h1 className=' font-medium m-auto text-xl'>qualified  <span>{userType=== "careseeker" ? "Care giver" : "Care taker"}</span> profile</h1>
+                    {/* <h1 className='text-xl font-semibold'>Signup as a {userType}</h1> */}
+                    <h2  className=' font- text-gray-600 m-auto text-xl mtt-6' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}>Already a Member? <span className='text-teal-500 cursor-pointer' onClick={() => {
                         (document.getElementById("signup") as HTMLDialogElement).close();
                         (document.getElementById("login") as HTMLDialogElement).showModal();
                     }}>Log In</span></h2>
@@ -176,6 +187,7 @@ export default function Signup() {
                     </div>
                 </div>
             </div>
+            </div> 
         </dialog>
     )
 }

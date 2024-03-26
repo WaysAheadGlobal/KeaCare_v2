@@ -28,6 +28,7 @@ export default function Caregivers({ filters }: { filters: any }) {
             });
 
             const data = await response.json();
+            console.log(data);
             setCaregivers(data);
         }
         filter();

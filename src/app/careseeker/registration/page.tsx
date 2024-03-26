@@ -70,7 +70,7 @@ export default function Registration() {
             <div className='p-10 bg-teal-500'>
                 <h1 className='text-center text-3xl font-semibold text-white'>Complete your Registration</h1>
             </div>
-            <div className='flex flex-col items-center justify-center'>
+            <div className='flex flex-col items-center justify-center bg-[#F3FDFD]'>
                 <div className='flex flex-col lg:grid lg:grid-rows-[auto] lg:grid-cols-2 gap-[2rem] mt-10 w-full p-5 lg:w-[60rem]'>
                     <p className='col-[1/3] row-[1/2] lg:self-end text-2xl'>Personal Information</p>
                     <div className='flex flex-col'>

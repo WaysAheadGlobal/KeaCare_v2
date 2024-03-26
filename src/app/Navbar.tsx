@@ -42,8 +42,27 @@ export default function Navbar() {
                         e.currentTarget.parentElement?.classList.toggle('h-[7rem]');
                         e.currentTarget.parentElement?.classList.toggle('h-full');
                     }} />
-                    <div className='md:flex-grow'></div>
-                    <ul className='flex flex-col md:flex-row gap-3'>
+                    <div className='md:flex-grow'>
+                    <ul className='flex flex-col md:flex-row gap-8'>
+                     <li className='cursor-pointer hover:text-red-500  text-blue-700'>
+                        Find a CareGiver
+                     </li>
+
+                     <li className='cursor-pointer hover:text-red-500  text-blue-700'>
+                        Find a Job
+                     </li>
+                    <li className='cursor-pointer hover:text-red-500 text-blue-700' onClick={() => {
+                            if (pathname !== "/") {
+                                router.push("/#about");
+                            }
+                            document.getElementById("about")?.scrollIntoView({
+                                behavior: "smooth",
+                                inline: 'center'
+                            })
+                        }}>About Us</li>
+                        </ul>
+                    </div>
+                    {/* <ul className='flex flex-col md:flex-row gap-3'>
                         <li className='cursor-pointer hover:text-red-500'>
                             <Link href={"/"} >
                                 Home
@@ -85,11 +104,12 @@ export default function Navbar() {
                                 inline: 'center'
                             })
                         }}>Book a Service</li>
-                    </ul>
-                    <div className='flex flex-row gap-5'>
-                        <Menu trigger='click' shadow='lg' width={200}>
+                    </ul> */}
+                    <div>
+                    <Menu trigger='click' shadow='lg' width={200}>
                             <Menu.Target>
-                                <button className={`${jwtToken && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg`}>Join Now</button>
+                            <button className={`${jwtToken && 'hidden'} font-semibold text-blue-900 hover:border-white hover:bg-blue-300 hover:text-white px-5 py-3 rounded-[15px] bg-teal-200`}>SIGN IN</button>
+
                             </Menu.Target>
                             <Menu.Dropdown className='rounded-lg'>
                                 <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
@@ -114,6 +134,66 @@ export default function Navbar() {
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>
+                    </div>
+
+                    <div>
+                    <Menu trigger='click' shadow='lg' width={200}>
+                            <Menu.Target>
+                            <button className={`${jwtToken && 'hidden'} font-semibold text-blue-900 hover:border-white hover:bg-blue-300 hover:text-white px-5 py-3 rounded-[15px] bg-teal-400`}>JOIN NOW</button>
+
+                            </Menu.Target>
+                            <Menu.Dropdown className='rounded-lg'>
+                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
+                                    onClick={() => {
+                                        (document.getElementById("login") as HTMLDialogElement).showModal();
+                                        setUserType("careseeker");
+                                        sessionStorage.setItem("userType", "careseeker");
+                                        cookies.setCookie("userType", "careseeker", 365, "/");
+                                    }}>
+                                    <span>Careseeker</span>
+                                </Menu.Item>
+                                <Menu.Divider />
+                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
+                                    onClick={() => {
+                                        (document.getElementById("login") as HTMLDialogElement).showModal();
+                                        setUserType("caregiver");
+                                        sessionStorage.setItem("userType", "caregiver");
+                                        cookies.setCookie("userType", "caregiver", 365, "/");
+                                    }}
+                                >
+                                    <span>Caregiver</span>
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
+                    </div>
+                    <div className='flex flex-row '>
+                        {/* <Menu trigger='click' shadow='lg' width={200}>
+                            <Menu.Target>
+                                <button className={`${jwtToken && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-2 rounded-lg`}>JOIN NOW</button>
+                            </Menu.Target>
+                            <Menu.Dropdown className='rounded-lg'>
+                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
+                                    onClick={() => {
+                                        (document.getElementById("login") as HTMLDialogElement).showModal();
+                                        setUserType("careseeker");
+                                        sessionStorage.setItem("userType", "careseeker");
+                                        cookies.setCookie("userType", "careseeker", 365, "/");
+                                    }}>
+                                    <span>Careseeker</span>
+                                </Menu.Item>
+                                <Menu.Divider />
+                                <Menu.Item className='font-semibold text-base hover:bg-teal-500 hover:bg-opacity-60'
+                                    onClick={() => {
+                                        (document.getElementById("login") as HTMLDialogElement).showModal();
+                                        setUserType("caregiver");
+                                        sessionStorage.setItem("userType", "caregiver");
+                                        cookies.setCookie("userType", "caregiver", 365, "/");
+                                    }}
+                                >
+                                    <span>Caregiver</span>
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu> */}
                         <Menu trigger='click' shadow="lg" width={200}>
                             <Menu.Target>
                                 <button disabled={pathname === "/pricing" || pathname === "/caregiver/registration" || pathname === "/careseeker/registration"} className={`${!jwtToken && 'hidden'} border-2 border-gray-500 text-gray-500 bg-inherit hover:border-white hover:bg-gray-500 hover:text-white px-5 py-3 rounded-lg cursor-pointer disabled:bg-gray-400`}>My Account</button>
@@ -148,7 +228,7 @@ export default function Navbar() {
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>
-                        <button className='px-5 py-3 rounded-full bg-red-600 text-white'>SOS/Emergency</button>
+                        <button className='px-5 py-3 text-orange-500 font-'>1800-911-911 <br/> <span>SOS call</span></button>
                     </div>
                 </section>
             </nav>
