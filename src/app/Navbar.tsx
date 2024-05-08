@@ -44,13 +44,49 @@ export default function Navbar() {
                     }} />
                     <div className='md:flex-grow'>
                     <ul className='flex flex-col md:flex-row gap-8'>
-                     <li className='cursor-pointer hover:text-red-500  text-blue-700'>
+                     <li className='cursor-pointer hover:text-red-500  text-blue-700' onClick={() => {
+                            if (pathname !== "/") {
+                                router.push("/#responsive_compassionate");
+                            }
+                            document.getElementById("responsive_compassionate")?.scrollIntoView({
+                                behavior: "smooth",
+                                inline: 'center'
+                            })
+                        }}>
                         Find a CareGiver
                      </li>
-
-                     <li className='cursor-pointer hover:text-red-500  text-blue-700'>
-                        Find a Job
+                     <li className='cursor-pointer hover:text-red-500  text-blue-700' onClick={() => {
+                            if (pathname !== "/") {
+                                router.push("/#responsive_compassionate");
+                            }
+                            document.getElementById("responsive_compassionate")?.scrollIntoView({
+                                behavior: "smooth",
+                                inline: 'center'
+                            })
+                        }}>
+                        Child Care
                      </li>
+                     <li className='cursor-pointer hover:text-red-500  text-blue-700' onClick={() => {
+                            if (pathname !== "/") {
+                                router.push("/#responsive_compassionate");
+                            }
+                            document.getElementById("responsive_compassionate")?.scrollIntoView({
+                                behavior: "smooth",
+                                inline: 'center'
+                            })
+                        }}>
+                        Elder Care
+                     </li>
+
+                     <li className='cursor-pointer hover:text-red-500 text-blue-700' onClick={() => {
+                            if (pathname !== "/") {
+                                router.push("/#working");
+                            }
+                            document.getElementById("working")?.scrollIntoView({
+                                behavior: "smooth",
+                                inline: 'center'
+                            })
+                        }}>Find a Job</li>
                     <li className='cursor-pointer hover:text-red-500 text-blue-700' onClick={() => {
                             if (pathname !== "/") {
                                 router.push("/#about");
