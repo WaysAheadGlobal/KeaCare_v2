@@ -1,0 +1,6 @@
+<span class="iconify" data-icon="carbon:view-off-filled"></span>
+Iconify SVG framework will load icon data from Iconify API and replace that placeholder with SVG.
+
+Make sure you import Iconify SVG framework:
+
+<script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
