@@ -24,7 +24,8 @@ async function searchJobs(req, res) {
         ${addservices ? `LOCATE('${addservices}', jobs_.additionalService) != 0` : ''}
         ${addservices && rating ? ' AND ' : ''}
         ${rating ? `jobs_.rating >= ${rating}` : ''}
-        AND careseekers_.id = jobs_.userId
+        ${(speciality || pet || rate || age || experience || languages || addservices || rating) ? ' AND ' : ''}
+        careseekers_.id = jobs_.userId
         AND jobs_.status = 'active'
     `, (error, results) => {
         if (error) throw error;

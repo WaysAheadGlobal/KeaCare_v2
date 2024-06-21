@@ -11,7 +11,15 @@ const bucket = storage.bucket("keacare_blob_storage"); // Get this from Google C
 const uploadImage = async (req, res) => {
     try {
         if (req.file) {
-            const blob = bucket.file(`caregiver_image/caregiver${req.body.id}.${req.body.fileType}`);
+            connection.query(`SELECT imageUrl FROM caregivers_ WHERE id = ?`, [req.body.id], (err, result) => {
+                if (err) throw err;
+                if (result[0].imageUrl) {
+                    const filename = result[0].imageUrl.split("/").pop();
+                    const file = bucket.file(`caregiver_image/${filename}`);
+                    file.delete();
+                }
+            });
+            const blob = bucket.file(`caregiver_image/caregiver${Date.now()}.${req.body.fileType}`);
             const blobStream = blob.createWriteStream();
 
             blobStream.on("finish", () => {
@@ -34,7 +42,15 @@ const uploadImage = async (req, res) => {
 const uploadVideo = async (req, res) => {
     try {
         if (req.file) {
-            const blob = bucket.file(`caregiver_video/caregiver${req.body.id}.${req.body.fileType}`);
+            connection.query(`SELECT videoUrl FROM caregivers_ WHERE id = ?`, [req.body.id], (err, result) => {
+                if (err) throw err;
+                if (result[0].videoUrl) {
+                    const filename = result[0].videoUrl.split("/").pop();
+                    const file = bucket.file(`caregiver_video/${filename}`);
+                    file.delete();
+                }
+            });
+            const blob = bucket.file(`caregiver_video/caregiver${Date.now()}.${req.body.fileType}`);
             const blobStream = blob.createWriteStream();
 
             blobStream.on("finish", () => {

@@ -12,7 +12,9 @@ const verifyCareseekers = (req, res, next) => {
             if (err) {
                 res.status(401).send("Access Denied");
                 throw err
-            } else {
+            }
+            else if (results.length === 0) res.status(401).send("Access Denied");
+            else {
                 req.body.email = email;
                 req.query.email = email;
                 req.body.careseekerEmail = email;

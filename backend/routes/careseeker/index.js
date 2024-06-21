@@ -27,6 +27,7 @@ const { getAllChatsBySenderIdAndReceiverId, getLastChatBySenderIdAndReceiverId, 
 const { getContacts, addContact } = require("../chats/contacts");
 const Multer = require("multer");
 const { uploadImage } = require("./upload");
+const getCaregiverInfo = require("../caregiver/account");
 
 
 const multerImage = Multer({
@@ -55,6 +56,7 @@ CareseekerRouter.get("/getproducts", getProducts);
 CareseekerRouter.use(verifyCareseekers);
 CareseekerRouter.post("/registration", body("email").trim().isEmail(), Register);
 CareseekerRouter.get("/getCaregivers", getCaregivers);
+CareseekerRouter.get("/getCaregiverInfo", getCaregiverInfo);
 CareseekerRouter.get("/filters", filters);
 CareseekerRouter.get("/filterByName", getCaregiversByName);
 CareseekerRouter.post("/postjob", body("email").trim().isEmail(), PostJob);

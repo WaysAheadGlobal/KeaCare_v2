@@ -21,7 +21,7 @@ const getLastChatBySenderIdAndReceiverId = (req, res) => {
 const addChat = (req, res) => {
     const { id, receiverId, message, role } = req.body;
     const sql = `INSERT INTO chats (senderId, receiverId, message, senderType, receiverType, modified_on) VALUES (?, ?, ?, ?, ?, NOW())`;
-    connection.query(sql, [id, receiverId, message, role, role === "careseeker" ? "caregiver" : "careseeker"], (err, result) => {
+    connection.query(sql, [id, Number(receiverId), message, role, role === "careseeker" ? "caregiver" : "careseeker"], (err, result) => {
         if (err) {
             res.status(500).json({ message: 'Internal server error' });
             throw err;

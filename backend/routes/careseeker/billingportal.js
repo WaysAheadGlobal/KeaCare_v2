@@ -10,7 +10,7 @@ async function portal(req, res) {
 
     // This is the url to which the customer will be redirected when they are done
     // managing their billing with the portal.
-    const returnUrl = "https://keacare.waysdatalabs.com/careseeker/account";
+    const returnUrl = "https://kea.care/careseeker/account";
 
     connection.query(`SELECT stripeId FROM careseekers_ WHERE email = '${email}'`, async (err, results) => {
         if (err) throw err;

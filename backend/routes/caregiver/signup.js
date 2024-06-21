@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const { PrismaClient } = require("@prisma/client");
 const { sendOTP } = require("../../mail/MailService.js");
 const jwt = require("jsonwebtoken");
+const { sendOTPtoPhoneNumber, verifyOTP } = require("../../twilio/OTPService.js");
 
 const prisma = new PrismaClient();
 
@@ -48,7 +49,7 @@ async function Signup(req, res) {
     const errors = validationResult(req);
     try {
         if (req.body.phoneNo) {
-            const user = await prisma.careseekers_.findUnique({
+            const user = await prisma.caregivers_.findUnique({
                 where: {
                     mobile: req.body.phoneNo
                 }
@@ -59,8 +60,15 @@ async function Signup(req, res) {
             }
             const verificationResponse = await verifyOTP({ countryCode: req.body.countryCode, phoneNumber: req.body.phoneNo, otp: req.body.token });
             if (verificationResponse.status === "approved") {
-                const jwtToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET_KEY, {
+                const jwtToken = jwt.sign({ email: req.body.email }, process.env.JWT_SECRET_KEY, {
                     algorithm: "HS512"
+                });
+                const user = await prisma.caregivers_.create({
+                    data: {
+                        mobile: req.body.phoneNo,
+                        email: req.body.email,
+                        token: req.body.token
+                    }
                 });
                 res.status(200).json({
                     "success": true,

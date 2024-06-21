@@ -11,7 +11,15 @@ const bucket = storage.bucket("keacare_blob_storage"); // Get this from Google C
 const uploadImage = async (req, res) => {
     try {
         if (req.file) {
-            const blob = bucket.file(`careseeker_image/careseeker${req.body.id}.${req.body.fileType}`);
+            connection.query(`SELECT imageUrl FROM careseekers_ WHERE id = ?`, [req.body.id], (err, result) => {
+                if (err) throw err;
+                if (result[0].imageUrl) {
+                    const filename = result[0].imageUrl.split("/").pop();
+                    const file = bucket.file(`careseeker_image/${filename}`);
+                    file.delete();
+                }
+            });
+            const blob = bucket.file(`careseeker_image/careseeker${Date.now()}.${req.body.fileType}`);
 
             const blobStream = blob.createWriteStream();
 

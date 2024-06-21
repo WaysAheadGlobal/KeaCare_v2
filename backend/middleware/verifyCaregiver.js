@@ -12,7 +12,9 @@ const verifyCaregivers = (req, res, next) => {
             if (err) {
                 res.status(401).send("Access Denied");
                 throw err;
-            } else {
+            }
+            else if (results.length === 0) res.status(401).send("Access Denied");
+            else {
                 if (!req.body) {
                     next();
                 }

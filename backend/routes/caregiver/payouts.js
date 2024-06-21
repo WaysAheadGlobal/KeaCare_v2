@@ -37,8 +37,8 @@ const createStripeAccount = async (req, res) => {
 
         const accountLink = await stripe.accountLinks.create({
             account: account.id,
-            refresh_url: 'https://keacare.waysdatalabs.com/caregiver/account',
-            return_url: 'https://keacare.waysdatalabs.com/caregiver/account',
+            refresh_url: 'https://kea.care/caregiver/account',
+            return_url: 'https://kea.care/caregiver/account',
             type: 'account_onboarding',
         });
 

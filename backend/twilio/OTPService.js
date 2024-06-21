@@ -7,7 +7,7 @@ const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TO
 async function sendOTPtoPhoneNumber({ countryCode, phoneNumber }) {
     try {
         const otpResponse = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID).verifications.create({
-            to: `+${countryCode}${phoneNumber}`,
+            to: `${countryCode}${phoneNumber}`,
             channel: 'sms'
         });
 
@@ -20,7 +20,7 @@ async function sendOTPtoPhoneNumber({ countryCode, phoneNumber }) {
 async function verifyOTP({ countryCode, phoneNumber, otp }) {
     try {
         const otpResponse = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID).verificationChecks.create({
-            to: `+${countryCode}${phoneNumber}`,
+            to: `${countryCode}${phoneNumber}`,
             code: otp
         });
 

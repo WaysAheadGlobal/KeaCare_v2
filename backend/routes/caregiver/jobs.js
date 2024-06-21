@@ -11,7 +11,8 @@ async function jobs(req, res) {
                 if (error) throw error;
 
                 if (results[0]) {
-                    connection.query(`SELECT jobs_.*, careseekers_.imageUrl, careseekers_.fname, careseekers_.lname FROM jobs_ INNER JOIN careseekers_ WHERE jobs_.userId = careseekers_.id`, (err, results_) => {
+                    connection.query(`SELECT DISTINCT jobs_.*, careseekers_.imageUrl, careseekers_.fname, careseekers_.lname FROM jobs_ INNER JOIN careseekers_, applicants WHERE jobs_.userId = careseekers_.id AND jobs_.status = 'active' 
+                    AND applicants.applicantId != ${req.body.id} AND jobs_.id != applicants.jobId;`, (err, results_) => {
                         if (err) throw err;
 
                         res.status(200).json(results_);

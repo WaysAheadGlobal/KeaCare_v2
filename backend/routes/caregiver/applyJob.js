@@ -17,7 +17,7 @@ async function applyJob(req, res) {
             if (caregiver) {
                 const job = await prisma.jobs_.findUnique({
                     where: {
-                        id: req.body.jobId,
+                        id: parseInt(req.body.jobId),
                         status: "active"
                     }
                 });
@@ -32,7 +32,7 @@ async function applyJob(req, res) {
                 if (!applicant) {
                     const job = await prisma.jobs_.update({
                         where: {
-                            id: req.body.jobId,
+                            id: parseInt(req.body.jobId),
                             status: "active"
                         },
                         data: {

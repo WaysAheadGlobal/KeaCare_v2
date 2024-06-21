@@ -6,7 +6,8 @@ function UpdateJob(req, res) {
     if (!errors.isEmpty() && errors.errors[0].path === 'email') {
         res.status(400).send('Invalid email address. Please try again.');
     } else {
-        const { id, speciality, time, additionalService, languages, hourlyRate, experience, age, location, comfortableWithPets, rating, availability, jobDescription, date } = req.body;
+        const { jid, speciality, time, additionalService, languages, hourlyRate, experience, age, location, comfortableWithPets, rating, availability, jobDescription, date } = req.body;
+        
         connection.query(`
         UPDATE jobs_
         SET
@@ -25,12 +26,11 @@ function UpdateJob(req, res) {
             status = 'active',
             modifiedOn = NOW(),
             date = '${date}'
-            WHERE id = ${id}`, (error, results) => {
+            WHERE id = ${jid}`, (error, results) => {
             if (error) throw error;
 
             res.status(200).json({ success: true });
-        }
-        )
+        });
     }
 }
 

@@ -15,6 +15,14 @@ app.use("/keacare/api/careseeker", CareseekerRouter);
 app.use("/keacare/api/caregiver", CaregiverRouter);
 app.use("/keacare/api/admin", adminRouter);
 
+app.get("/keacare/api/assets/:filename", (req, res) => {
+    res.sendFile(__dirname + "/assets/" + req.params.filename, (err) => {
+        if (err) {
+            res.status(404).send("File not found");
+        }
+    });
+});
+
 app.listen(3004, () => {
     if (connection.state === "disconnected") {
         connection.connect((err) => {

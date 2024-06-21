@@ -72,6 +72,7 @@ model careseekers_ {
 model caregivers_ {
   id                  Int         @id @unique @default(autoincrement())
   stripe_account_id   String?     @unique
+  government_id       String?     @unique
   fname               String?
   lname               String?
   email               String?     @unique
@@ -95,19 +96,22 @@ model caregivers_ {
   videoUrl            String?     @db.VarChar(500)
   rating              Float?      @default(0.0)
   reviews             Int         @default(0)
-  languages           String?
+  languages           String?     @db.MediumText
   isVerified          Boolean     @default(false)
   speciality          Speciality?
   experience          Float?
   comfortableWithPets Boolean?
   task                String?
   rate                Float?
-  daysAWeek           String?     @db.VarChar(500)
-  workingHrs          String?     @db.VarChar(500)
-  bio                 String?     @db.VarChar(500)
+  daysAWeek           String?     @db.MediumText
+  workingHrs          String?     @db.MediumText
+  bio                 String?     @db.MediumText
   certifications      String?     @db.VarChar(500)
   distance            String?     @db.VarChar(500)
   education           String?     @db.VarChar(500)
+  smoke               String?
+  videoSurveillance   String?
+  socialmedia         String?     @db.VarChar(500)
   ref1Email           String?     @db.VarChar(500)
   ref1Name            String?     @db.VarChar(500)
   ref1Phone           String?     @db.VarChar(500)
@@ -121,14 +125,14 @@ model caregivers_ {
 model jobs_ {
   id                  Int      @id @unique @default(autoincrement())
   userId              Int
-  additionalService   String   @db.VarChar(100)
+  additionalService   String   @db.MediumText
   age                 String   @db.VarChar(100)
   availability        Int
   comfortableWithPets Boolean
   experience          Int
   hourlyRate          Int
   date                String
-  jobDescription      String   @db.VarChar(1000)
+  jobDescription      String   @db.MediumText
   language            String
   location            String   @db.VarChar(100)
   rating              Float
@@ -138,6 +142,7 @@ model jobs_ {
   createdOn           DateTime @default(now())
   modifiedOn          DateTime @updatedAt
   responses           Int      @default(0)
+  address             String?  @db.VarChar(300)
 }
 
 model appointments_ {
@@ -218,4 +223,25 @@ model contacts {
   modified_on  DateTime @updatedAt
   senderType   String
   receiverType String
+}
+
+model documentProof {
+  id          BigInt   @id @unique @default(autoincrement())
+  caregiverId Int
+  url         String
+  createdAt   DateTime @default(now())
+}
+
+model certificates {
+  id          BigInt   @id @unique @default(autoincrement())
+  caregiverId Int
+  url         String
+  createdAt   DateTime @default(now())
+}
+
+model otherReviews {
+  id          BigInt   @id @unique @default(autoincrement())
+  caregiverId Int
+  url         String
+  createdAt   DateTime @default(now())
 }

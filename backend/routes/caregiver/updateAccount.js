@@ -18,7 +18,7 @@ async function UpdateAccount(req, res) {
 
             if (caregiver) {
                 try {
-                    const { fname, lname, mobile, dob, gender, address, city, province, zipcode, device_type, status, languages, speciality, experience, comfortableWithPets, task, rate, daysAWeek, workingHrs, bio, certifications, distance, education, ref1Email, ref1Name, ref1Phone, ref1Relation, ref2Email, ref2Name, ref2Phone, ref2Relation } = req.body;
+                    const { fname, lname, mobile, dob, gender, address, city, province, zipcode, device_type, status, languages, speciality, experience, comfortableWithPets, task, rate, daysAWeek, workingHrs, bio, certifications, distance, education, ref1Email, ref1Name, ref1Phone, ref1Relation, ref2Email, ref2Name, ref2Phone, ref2Relation, smoke, videoSurveillance, socialmedia } = req.body;
                     const updatedCaregiver = await prisma.caregivers_.update({
                         where: {
                             email: email,
@@ -54,7 +54,10 @@ async function UpdateAccount(req, res) {
                             ref2Email: ref2Email,
                             ref2Name: ref2Name,
                             ref2Phone: ref2Phone,
-                            ref2Relation: ref2Relation
+                            ref2Relation: ref2Relation,
+                            smoke: smoke,
+                            videoSurveillance: videoSurveillance,
+                            socialmedia: socialmedia
                         }
                     });
                     res.status(200).json({ "success": true, ...updatedCaregiver });

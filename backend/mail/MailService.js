@@ -15,6 +15,8 @@ const nodemailer = require("nodemailer");
 
 }); */ // !smtp error
 
+const mail = "kea-connect@kea.care";
+
 const transporter = nodemailer.createTransport({
     host: "smtp.office365.com",
     secureConnection: false,
@@ -23,15 +25,15 @@ const transporter = nodemailer.createTransport({
         ciphers: "SSLv3",
     },
     auth: {
-        user: "dev@waysaheadglobal.com",
-        pass: "Singapore@2022",
+        user: mail,
+        pass: "Kea@4Ssao43b",
     },
 });
 
 async function sendOTP(email, otp, action) {
     try {
         await transporter.sendMail({
-            from: "dev@waysaheadglobal.com",
+            from: mail,
             to: email,
             subject: `OTP for ${action === "Log in" ? "logging In" : "Signing Up"
                 } in KeaCare`,
@@ -54,7 +56,7 @@ async function sendOTP(email, otp, action) {
 async function sendReceipt(email, url) {
     try {
         await transporter.sendMail({
-            from: "dev@waysaheadglobal.com",
+            from: mail,
             to: email,
             subject: "Purchase Details | KeaCare",
             html: `<p>Hello ${email},</p> 
@@ -74,7 +76,7 @@ async function sendAppointment(email, from, to, type) {
     try {
         if (type === "careseeker") {
             await transporter.sendMail({
-                from: "dev@waysaheadglobal.com",
+                from: mail,
                 to: email,
                 subject: "Appointment Scheduled",
                 html: `<p>Hello ${from},</p> 
@@ -86,7 +88,7 @@ async function sendAppointment(email, from, to, type) {
             });
         } else {
             await transporter.sendMail({
-                from: "dev@waysaheadglobal.com",
+                from: mail,
                 to: email,
                 subject: "Appointment Scheduled",
                 html: `<p>Dear ${from},</p> 
@@ -108,7 +110,7 @@ async function sendAppointment(email, from, to, type) {
 async function sendAccountVerificationCompletedMail(to, receiverEmail) {
     try {
         await transporter.sendMail({
-            from: "dev@waysaheadglobal.com",
+            from: mail,
             to: receiverEmail,
             subject: "Account Verification Completed",
             html: `<p>Hello ${to},</p>
