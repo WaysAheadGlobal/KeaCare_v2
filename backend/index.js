@@ -7,7 +7,7 @@ const connection = require('./db/connection');
 const Expiry = require('./routes/careseeker/expiry');
 const age = require('./routes/caregiver/age');
 const adminRouter = require('./routes/admin');
-
+const PORT = process.env.PORT;
 const app = express();
 app.use(cors());
 
@@ -23,7 +23,7 @@ app.get("/keacare/api/assets/:filename", (req, res) => {
     });
 });
 
-app.listen(3004, () => {
+app.listen(PORT, () => {
     if (connection.state === "disconnected") {
         connection.connect((err) => {
             if (err) {
@@ -35,5 +35,5 @@ app.listen(3004, () => {
         setInterval(Expiry, 3600000);
         setInterval(age, 3600000);
     }
-    console.log("Server Started on Port 3004");
+    console.log("Server Started on Port", PORT);
 })
